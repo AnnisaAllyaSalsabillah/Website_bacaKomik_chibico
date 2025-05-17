@@ -10,6 +10,7 @@ class ChapterImage extends Model
     protected $fillable = [
         'image_path',
         'page_number',
+        'file_id',
     ];
 
     public function chapter(){

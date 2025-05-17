@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('chapter_id')->constrained()->onDelete('cascade');
             $table->string('image_path');
+            $table->string('file_id')->nullable();
             $table->integer('page_number');
             $table->timestamps();
         });

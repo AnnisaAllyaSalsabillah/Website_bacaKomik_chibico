@@ -24,7 +24,7 @@ class AdminComicController extends Controller
     public function store(Request $request) {
         $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:komiks, slug',
+            'slug' => 'nullable|string|max:255|unique:komiks,slug',
             'sinopsis' => 'nullable|string',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'rank' => 'nullable|string',
@@ -91,7 +91,7 @@ class AdminComicController extends Controller
 
         $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:komiks, slug,' . $komik->id,
+            'slug' => 'nullable|string|max:255|unique:komiks,slug,' . $komik->id,
             'sinopsis' => 'nullable|string',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'rank' => 'nullable|string',
