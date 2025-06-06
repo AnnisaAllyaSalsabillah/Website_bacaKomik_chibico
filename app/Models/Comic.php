@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comic extends Model
 {
+    protected $table = 'komiks';
+
     protected $fillable = [
         'title',
         'sinopsis',
@@ -40,7 +42,7 @@ class Comic extends Model
     }
 
     public function upvotes(){
-        return  $this->hasMany(Upvote::class);
+        return  $this->hasMany(Upvote::class, 'komik_id');
     }
 
     public function histories(){
