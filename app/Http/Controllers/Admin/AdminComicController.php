@@ -82,7 +82,11 @@ class AdminComicController extends Controller
     public function edit($id) {
         $komik = Comic::with('genres')->findOrFail($id);
         $genres = Genre::all();
-        return view('admin.komiks.edit', compact('komik', 'genres'));
+        
+        return response()->json([
+            'komik' => $komik,
+            'genres' => $genres,
+        ]);
     }
 
     public function update(Request $request, $id) {
