@@ -1,5 +1,7 @@
 <!-- resources/views/admin/komiks/index.blade.php -->
+@extends('layouts.admin')
 
+@section('content')
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,3 +11,4 @@
     <h1>Daftar Komik</h1>
 </body>
 </html>
+@endsection

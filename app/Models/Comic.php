@@ -34,11 +34,11 @@ class Comic extends Model
     }
 
     public function chapters(){
-        return $this->hasMany(Chapter::class);
+        return $this->hasMany(Chapter::class, 'komik_id');
     }
 
     public function bookmarks(){
-        return this->hasMany(Bookmark::class);
+        return $this->hasMany(Bookmark::class);
     }
 
     public function upvotes(){

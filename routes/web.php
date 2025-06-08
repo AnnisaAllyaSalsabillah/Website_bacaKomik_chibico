@@ -19,10 +19,20 @@ use App\Http\Controllers\User\PengumumanController;
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('komiks', AdminComicController::class);
     Route::resource('genres', AdminGenreController::class);
-    Route::resource('chapters', AdminChapterController::class);
-    Route::resource('pengumumans', AdminPengumumanController::class);
+    Route::resource('pengumuman', AdminPengumumanController::class);
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::prefix('komiks/{id}')->group(function () {
+        Route::get('chapters', [AdminChapterController::class, 'index'])->name('chapters.index');
+        Route::get('chapters/create', [AdminChapterController::class, 'create'])->name('chapters.create');
+        Route::post('chapters', [AdminChapterController::class, 'store'])->name('chapters.store');
+        Route::get('chapters/{chapterId}/edit', [AdminChapterController::class, 'edit'])->name('chapters.edit');
+        Route::put('chapters/{chapterId}', [AdminChapterController::class, 'update'])->name('chapters.update');
+        Route::delete('chapters/{chapterId}', [AdminChapterController::class, 'destroy'])->name('chapters.destroy');
+    });
 });
+
+
 
 // USER ROUTES
 Route::prefix('user')->name('user.')->group(function () {
