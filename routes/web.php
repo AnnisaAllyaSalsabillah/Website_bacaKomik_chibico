@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\AdminComicController;
 use App\Http\Controllers\Admin\AdminGenreController;
 use App\Http\Controllers\Admin\AdminChapterController;
 use App\Http\Controllers\Admin\AdminPengumumanController;
-use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\User\ComicController;
 use App\Http\Controllers\User\ChapterController;
 use App\Http\Controllers\User\BookmarkController;
@@ -14,13 +14,18 @@ use App\Http\Controllers\User\CommentController;
 use App\Http\Controllers\User\HistoryController;
 use App\Http\Controllers\User\SearchController;
 use App\Http\Controllers\User\PengumumanController;
+use App\Http\Controllers\HomeController;
 
-// ADMIN ROUTES 
+// HOME ROUTE
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// ADMIN ROUTES
 Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
     Route::resource('komiks', AdminComicController::class);
     Route::resource('genres', AdminGenreController::class);
     Route::resource('pengumuman', AdminPengumumanController::class);
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('komiks/{id}')->group(function () {
         Route::get('chapters', [AdminChapterController::class, 'index'])->name('chapters.index');
@@ -31,8 +36,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('chapters/{chapterId}', [AdminChapterController::class, 'destroy'])->name('chapters.destroy');
     });
 });
-
-
 
 // USER ROUTES
 Route::prefix('user')->name('user.')->group(function () {
@@ -45,4 +48,3 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::resource('search', SearchController::class);
     Route::resource('pengumumans', PengumumanController::class);
 });
-
