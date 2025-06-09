@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Chapter extends Model
 {
@@ -27,6 +28,4 @@ class Chapter extends Model
     public function images(){
         return $this->hasMany(ChapterImage::class);
     }
-
-
 }

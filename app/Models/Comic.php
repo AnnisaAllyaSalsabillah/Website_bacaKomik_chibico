@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Str;
 
 class Comic extends Model
 {
@@ -22,30 +22,37 @@ class Comic extends Model
         'status',
     ];
 
-    public static function boot(){
+    protected static function boot()
+    {
         parent::boot();
-        static::creating(function($comic){
+
+        static::creating(function ($comic) {
             $comic->slug = Str::slug($comic->title);
         });
     }
 
-    public function genres(){
+    public function genres()
+    {
         return $this->belongsToMany(Genre::class, 'comic_genre');
     }
 
-    public function chapters(){
+    public function chapters()
+    {
         return $this->hasMany(Chapter::class, 'komik_id');
     }
 
-    public function bookmarks(){
+    public function bookmarks()
+    {
         return $this->hasMany(Bookmark::class);
     }
 
-    public function upvotes(){
-        return  $this->hasMany(Upvote::class, 'komik_id');
+    public function upvotes()
+    {
+        return $this->hasMany(Upvote::class, 'komik_id');
     }
 
-    public function histories(){
+    public function histories()
+    {
         return $this->hasMany(History::class);
     }
 }

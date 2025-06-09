@@ -6,7 +6,7 @@ use App\Models\Upvote;
 use App\Models\Comic;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illmunate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 
 class UpvoteController extends Controller
 {
