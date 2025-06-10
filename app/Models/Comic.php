@@ -33,7 +33,7 @@ class Comic extends Model
 
     public function genres()
     {
-        return $this->belongsToMany(Genre::class, 'comic_genre');
+        return $this->belongsToMany(Genre::class, 'comic_genre', 'komik_id', 'genre_id');
     }
 
     public function chapters()
@@ -55,4 +55,10 @@ class Comic extends Model
     {
         return $this->hasMany(History::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }

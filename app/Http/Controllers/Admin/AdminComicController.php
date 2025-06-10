@@ -13,7 +13,8 @@ class AdminComicController extends Controller
 {
     public function index() {
         $komiks = Comic::with('genres')->latest()->get();
-        return view('admin.komiks.index', compact('komiks'));
+        $genres = Genre::all();
+        return view('admin.komiks.index', compact('komiks', 'genres'));
     }
 
     public function create() {
@@ -43,8 +44,8 @@ class AdminComicController extends Controller
             $imagePath = $image->getPathname();
             $imageName = $image->getClientOriginalName();
 
-            $response = Http::withBasicAuth(env('IMAGEKIT_PUBLIC_KEY'), env('IMAGEKIT_PRIVATE_KEY'))
-                ->attach('file', file_get_contents($imagePath), $imageName)
+            $response = Http::withBasicAuth(env('IMAGEKIT_PRIVATE_KEY'), '')
+                ->attach('file', fopen($imagePath, 'r'), $imageName)
                 ->post('https://upload.imagekit.io/api/v1/files/upload', [
                     'fileName' => $imageName,
                     'folder' => '/chibico',
@@ -52,7 +53,13 @@ class AdminComicController extends Controller
             
             if($response->successful()) {
                 $coverUrl = $response->json()['url'];
+            }else {
+                return back()->withErrors([
+                    'cover_image' => 'Gagal mengunggah cover image'
+                ]);
             }
+            
+
         }
 
         $komik = Comic::create([
@@ -114,8 +121,8 @@ class AdminComicController extends Controller
             $imagePath = $image->getPathname();
             $imageName = $image->getClientOriginalName();
 
-            $response = Http::withBasicAuth(env('IMAGEKIT_PUBLIC_KEY'), env('IMAGEKIT_PRIVATE_KEY'))
-                ->attach('file', file_get_contents($imagePath), $imageName)
+            $response = Http::withBasicAuth(env('IMAGEKIT_PRIVATE_KEY'), '')
+                ->attach('file', fopen($imagePath, 'r'), $imageName)
                 ->post('https://upload.imagekit.io/api/v1/files/upload', [
                     'fileName' => $imageName,
                     'folder' => '/chibico',
@@ -123,6 +130,10 @@ class AdminComicController extends Controller
             
             if($response->successful()) {
                 $coverUrl = $response->json()['url'];
+            }else {
+                return back()->withErrors([
+                    'cover_image' => 'Gagal mengunggah cover image'
+                ]);
             }
         }
 
@@ -146,6 +157,17 @@ class AdminComicController extends Controller
             'success', 'Komik berhasil diperbarui!'
         );
     }
+
+    public function show($id)
+    {
+        $komik = Comic::with('genres')->findOrFail($id);
+
+        return response()->json([
+            'komik' => $komik,
+        ]);
+    }
+
+
 
     public function destroy($id) {
         $komik = Comic::findOrFail($id);

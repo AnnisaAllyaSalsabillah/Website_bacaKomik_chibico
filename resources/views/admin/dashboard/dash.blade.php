@@ -1,9 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<!-- Navbar dengan animasi smooth -->
 <div class="navbar bg-base-100 shadow-lg sticky top-0 z-50 transition-all duration-300">
-  <!-- Logo Section -->
   <div class="navbar-start">
     <a class="btn btn-ghost text-xl md:text-2xl text-secondary font-bold hover:scale-105 transition-transform duration-200">
       Chibico
@@ -20,12 +18,9 @@
   </div>
 </div>
 
-<!-- Main Content Area -->
 <div class="min-h-screen bg-gradient-to-br from-base-200 to-base-300">
-  <!-- Container dengan padding responsive -->
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
     
-    <!-- Welcome Section -->
     <div class="mb-8 animate-fade-in">
       <div class="bg-gradient-to-r from-pink-500 to-purple-600 text-white p-6 lg:p-8 rounded-2xl shadow-xl">
         <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
@@ -37,9 +32,9 @@
       </div>
     </div>
 
-    <!-- Stats Grid -->
+    
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-8">
-  <!-- Total komik Card -->
+  <!-- Total komik -->
   <div class="stat bg-base-100 shadow-lg rounded-2xl p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
     <div class="stat-figure text-primary">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block h-8 w-8 stroke-current">
@@ -50,7 +45,7 @@
     <div class="stat-value text-primary text-2xl sm:text-3xl">{{ number_format($totalComics) }}</div>
   </div>
 
-  <!-- Total chapters Card -->
+  <!-- Total chapters -->
   <div class="stat bg-base-100 shadow-lg rounded-2xl p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
     <div class="stat-figure text-secondary">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block h-8 w-8 stroke-current">
@@ -61,7 +56,7 @@
     <div class="stat-value text-secondary text-2xl sm:text-3xl">{{ number_format($totalChapters) }}</div>
   </div>
 
-  <!-- Total users Card -->
+  <!-- Total users -->
   <div class="stat bg-base-100 shadow-lg rounded-2xl p-6 hover:shadow-xl transition-all duration-300 hover:scale-105 sm:col-span-2 lg:col-span-1">
     <div class="stat-figure text-secondary">
       <div class="stat-figure text-secondary">
@@ -85,7 +80,7 @@
     </div>
   </div>
 
-    <!-- Quick Actions Section -->
+    <!-- Quick Actions -->
 <div class="mb-8">
   <h2 class="text-xl lg:text-2xl font-bold mb-4 text-base-content">Quick Actions</h2>
   <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4">
@@ -120,7 +115,7 @@
   </div>
 </div>
 
-    <!-- Top 5 Komik dengan Upvote Terbanyak Section -->
+    <!-- Top 5 Komik dengan Upvote Terbanyak -->
     <div class="mb-8">
       <h2 class="text-xl lg:text-2xl font-bold mb-6 text-base-content flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -134,7 +129,6 @@
           <div class="grid gap-4">
             @foreach($topUpvoteComics as $index => $komik)
               <div class="flex items-center space-x-4 p-4 bg-base-200 rounded-xl hover:bg-base-300 transition-all duration-200 hover:scale-[1.02]">
-                <!-- Ranking Badge -->
                 <div class="flex-shrink-0">
                   <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white
                     {{ $index == 0 ? 'bg-gradient-to-r from-yellow-400 to-yellow-600' : '' }}
@@ -152,7 +146,7 @@
                   </div>
                 </div>
 
-                <!-- Comic Cover (jika ada) -->
+                <!-- Cover komik -->
                 <div class="flex-shrink-0">
                   <div class="w-16 h-20 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center overflow-hidden">
                     @if(isset($komik->cover_image) && $komik->cover_image)
@@ -165,7 +159,7 @@
                   </div>
                 </div>
 
-                <!-- Comic Info -->
+                <!-- Komik Info -->
                 <div class="flex-1 min-w-0">
                   <h3 class="font-bold text-base sm:text-lg text-base-content truncate">{{ $komik->title }}</h3>
                   <p class="text-sm text-base-content/70 truncate">
@@ -176,14 +170,12 @@
                     @endif
                   </p>
                   <div class="flex items-center mt-2 space-x-4">
-                    <!-- Upvote Count -->
                     <div class="flex items-center space-x-1 text-red-500">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                       </svg>
                       <span class="text-sm font-semibold">{{ number_format($komik->upvotes_count) }}</span>
                     </div>
-                    <!-- Chapter Count (jika ada relasi) -->
                     @if(isset($komik->chapters_count))
                       <div class="flex items-center space-x-1 text-blue-500">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -195,7 +187,6 @@
                   </div>
                 </div>
 
-                <!-- Action Button -->
                 <div class="flex-shrink-0">
                   <button class="btn btn-sm btn-circle btn-ghost hover:btn-primary transition-all duration-200">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -221,7 +212,7 @@
       </div>
     </div>
 
-    <!-- Recent Activity Section -->
+    <!-- riwayat aktivitas -->
     <div class="bg-base-100 rounded-2xl shadow-lg p-6 lg:p-8">
       <h2 class="text-xl lg:text-2xl font-bold mb-6 text-base-content">Aktivitas Terbaru</h2>
       <div class="space-y-4">
@@ -271,7 +262,6 @@
   </div>
 </div>
 
-<!-- Custom CSS untuk animasi -->
 <style>
 @keyframes fade-in {
   from {
@@ -288,25 +278,21 @@
   animation: fade-in 0.6s ease-out;
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom hover effects */
 .hover-lift:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive text scaling */
 @media (max-width: 640px) {
   .stat-value {
     font-size: 1.5rem;
   }
 }
 
-/* Enhanced mobile menu animation */
 .dropdown-content {
   animation: slideDown 0.3s ease-out;
 }
