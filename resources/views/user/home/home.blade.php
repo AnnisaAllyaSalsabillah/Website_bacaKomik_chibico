@@ -75,84 +75,83 @@
                         <p class="text-sm">Brief description for course 1.</p>
                       </div>
                     </a>
-                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition">
+                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
                       <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.webp" alt="Course 2" class="object-cover rounded-lg w-full h-full" />
+                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
                       </figure>
                       <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 2</h2>
-                        <p class="text-sm">Brief description for course 2.</p>
+                        <h2 class="card-title text-base">Course Title 1</h2>
+                        <p class="text-sm">Brief description for course 1.</p>
                       </div>
                     </a>
                   </div>
 
                   <!-- Slide 2 -->
                   <div class="carousel-item flex flex-col gap-4 w-full">
-                    <button class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition">
+                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
                       <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.webp" alt="Course 3" class="object-cover rounded-lg w-full h-full" />
+                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
                       </figure>
                       <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 3</h2>
-                        <p class="text-sm">Brief description for course 3.</p>
+                        <h2 class="card-title text-base">Course Title 1</h2>
+                        <p class="text-sm">Brief description for course 1.</p>
                       </div>
-                    </button>
-                    <button class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition">
+                    </a>
+                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
                       <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1494253109108-2e30c049369b.webp" alt="Course 4" class="object-cover rounded-lg w-full h-full" />
+                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
                       </figure>
                       <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 4</h2>
-                        <p class="text-sm">Brief description for course 4.</p>
+                        <h2 class="card-title text-base">Course Title 1</h2>
+                        <p class="text-sm">Brief description for course 1.</p>
                       </div>
-                    </button>
+                    </a>
                   </div>
 
                   <!-- Tambahkan slide 3 dan 4 sesuai kebutuhan -->
                   <!-- Slide 3 -->
                   <div class="carousel-item flex flex-col gap-4 w-full">
-                    <button class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition">
+                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
                       <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1606788075761-0b7e9e7dfcfe.webp" alt="Course 5" class="object-cover rounded-lg w-full h-full" />
+                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
                       </figure>
                       <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 5</h2>
-                        <p class="text-sm">Brief description for course 5.</p>
+                        <h2 class="card-title text-base">Course Title 1</h2>
+                        <p class="text-sm">Brief description for course 1.</p>
                       </div>
-                    </button>
-                    <button class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition">
+                    </a>
+                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
                       <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1606829541836-25dc7f7a1d3c.webp" alt="Course 6" class="object-cover rounded-lg w-full h-full" />
+                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
                       </figure>
                       <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 6</h2>
-                        <p class="text-sm">Brief description for course 6.</p>
+                        <h2 class="card-title text-base">Course Title 1</h2>
+                        <p class="text-sm">Brief description for course 1.</p>
                       </div>
-                    </button>
+                    </a>
                   </div>
 
                   <!-- Slide 4 -->
                   <div class="carousel-item flex flex-col gap-4 w-full">
-                    <button class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition">
+                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
                       <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1607746882042-944635dfe10e.webp" alt="Course 7" class="object-cover rounded-lg w-full h-full" />
+                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
                       </figure>
                       <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 7</h2>
-                        <p class="text-sm">Brief description for course 7.</p>
+                        <h2 class="card-title text-base">Course Title 1</h2>
+                        <p class="text-sm">Brief description for course 1.</p>
                       </div>
-                    </button>
-                    <button class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition">
+                    </a>
+                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
                       <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1609982773473-1f3122c6cb2f.webp" alt="Course 8" class="object-cover rounded-lg w-full h-full" />
+                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
                       </figure>
                       <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 8</h2>
-                        <p class="text-sm">Brief description for course 8.</p>
+                        <h2 class="card-title text-base">Course Title 1</h2>
+                        <p class="text-sm">Brief description for course 1.</p>
                       </div>
-                    </button>
+                    </a>
                   </div>
-                </div>
 
                 </ul>
               </div>
