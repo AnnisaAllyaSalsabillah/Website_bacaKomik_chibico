@@ -10,6 +10,6 @@ class HomeController extends Controller
     {
         $comics = Comic::with('genres')->latest()->take(20)->get();
         
-        return view('home', compact('comics'));
+        return view('user.home.home', compact('comics'));
     }
 }
