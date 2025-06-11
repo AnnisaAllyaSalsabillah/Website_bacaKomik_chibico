@@ -15,14 +15,20 @@ use App\Http\Controllers\User\HistoryController;
 use App\Http\Controllers\User\SearchController;
 use App\Http\Controllers\User\PengumumanController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\User\ExploreController;
+use App\Http\Controllers\User\LibraryController;
+use App\Http\Controllers\User\ProfileController;
 
-// HOME ROUTE
+// HOME ROUTES
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/explore', [ExploreController::class, 'index'])->name('explore');
+Route::get('/library', [LibraryController::class, 'index'])->name('library');
+Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 // ADMIN ROUTES
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     Route::resource('komiks', AdminComicController::class);
     Route::resource('genres', AdminGenreController::class);
     Route::resource('pengumuman', AdminPengumumanController::class);
@@ -47,4 +53,12 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::resource('history', HistoryController::class);
     Route::resource('search', SearchController::class);
     Route::resource('pengumumans', PengumumanController::class);
+    
+});
+
+
+Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });

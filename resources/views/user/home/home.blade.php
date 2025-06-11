@@ -10,26 +10,36 @@
             <div class="splide relative w-full splide--slide splide--ltr splide--draggable is-active is-overflow is-initialized" id="splide04" role="region" aria-roledescription="carousel">
               <div class="splide__track splide__track--slide splide__track--ltr splide__track--draggable" id="splide04-track" style="padding-left: 0px; padding-right: 0px;" aria-live="off" aria-atomic="true" aria-busy="false">
                 <div class="carousel carousel-center bg-neutral rounded-box max-w-4xl p-4 space-x-4">
-                  <div class="carousel-item w-full border border-gray-300 rounded-box overflow-hidden">
+                  <a href="" class="carousel-item w-full border border-gray-300 rounded-box overflow-hidden">
+                    <div class="carousel-item w-full border border-gray-300 rounded-box overflow-hidden">
                     <img
                       src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
                       class="w-full object-cover h-[300px]" />
                   </div>
-                  <div class="carousel-item w-full border border-gray-300 rounded-box overflow-hidden">
+                  </a>
+                  <a href="" class="carousel-item w-full border border-gray-300 rounded-box overflow-hidden">
+                    <div class="carousel-item w-full border border-gray-300 rounded-box overflow-hidden">
                     <img
                       src="https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.webp"
                       class="w-full object-cover h-[300px]" />
                   </div>
-                  <div class="carousel-item w-full border border-gray-300 rounded-box overflow-hidden">
+                  </a>
+                  <a href="" class="carousel-item w-full border border-gray-300 rounded-box overflow-hidden">
+                    <div class="carousel-item w-full border border-gray-300 rounded-box overflow-hidden">
                     <img
                       src="https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.webp"
                       class="w-full object-cover h-[300px]" />
                   </div>
-                  <div class="carousel-item w-full border border-gray-300 rounded-box overflow-hidden">
+                  </a>
+                  
+                  <a href="" class="carousel-item w-full border border-gray-300 rounded-box overflow-hidden">
+                    <div class="carousel-item w-full border border-gray-300 rounded-box overflow-hidden">
                     <img
                       src="https://img.daisyui.com/images/stock/photo-1494253109108-2e30c049369b.webp"
                       class="w-full object-cover h-[300px]" />
                   </div>
+                  </a>
+                  
                 </div>
               </div>
 
@@ -66,7 +76,7 @@
                   <div class="carousel w-full max-w-4xl space-y-4">
                   <!-- Slide 1 -->
                   <div class="carousel-item flex flex-col gap-4 w-full">
-                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
+                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumumans/show">
                       <figure class="w-24 h-24 p-2">
                         <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
                       </figure>
@@ -111,7 +121,7 @@
                   <!-- Tambahkan slide 3 dan 4 sesuai kebutuhan -->
                   <!-- Slide 3 -->
                   <div class="carousel-item flex flex-col gap-4 w-full">
-                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
+                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumumans/show">
                       <figure class="w-24 h-24 p-2">
                         <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
                       </figure>
@@ -172,53 +182,73 @@
       </div>
 
 
-      <div class="md:py-24 py-12 px-6 md:px-6">
+  <div class="md:py-6 py-8 px-6 md:px-6">
   <h2 class="text-2xl font-semibold mb-6">Rekomendasi</h2>
-  <div class="mb-6">
-    <button class="btn btn-soft">Manhwa</button>
-    <button class="btn btn-soft">Manga</button>
-    <button class="btn btn-soft">Manhua</button>
+  <div class="mb-6 flex gap-2">
+    <a href="{{ route('home', ['type' => 'Manhwa']) }}" class="btn btn-soft {{ $type == 'Manhwa' ? 'btn-active' : '' }}">Manhwa</a>
+    <a href="{{ route('home', ['type' => 'Manga']) }}" class="btn btn-soft {{ $type == 'Manga' ? 'btn-active' : '' }}">Manga</a>
+    <a href="{{ route('home', ['type' => 'Manhua']) }}" class="btn btn-soft {{ $type == 'Manhua' ? 'btn-active' : '' }}">Manhua</a>
   </div>
   
-  <div class="grid grid-cols-3 gap-x-[2px] gap-y-[2px] max-w-[560px] mx-0">
-    <!-- Card 1 -->
-    <a href="/rekomendasi/1" class="block rounded-xl overflow-hidden shadow-md hover:shadow-lg transition" style="width: 180px;">
-      <img
-        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-        alt="Rekomendasi 1"
-        class="w-full h-96 object-cover"
-      />
-    </a>
+    <div class="grid grid-cols-3 gap-x-[2px] gap-y-[2px] max-w-[560px] mx-0">
+      <!-- Card 1 -->
+      <a href="/rekomendasi/1" class="block rounded-xl overflow-hidden shadow-md hover:shadow-lg transition" style="width: 180px;">
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+          alt="Rekomendasi 1"
+          class="w-full h-96 object-cover"
+        />
+      </a>
 
-    <!-- Card 2 -->
-    <a href="/rekomendasi/2" class="block rounded-xl overflow-hidden shadow-md hover:shadow-lg transition" style="width: 180px;">
-      <img
-        src="https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.webp"
-        alt="Rekomendasi 2"
-        class="w-full h-96 object-cover"
-      />
-    </a>
+      <!-- Card 2 -->
+      <a href="/rekomendasi/2" class="block rounded-xl overflow-hidden shadow-md hover:shadow-lg transition" style="width: 180px;">
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.webp"
+          alt="Rekomendasi 2"
+          class="w-full h-96 object-cover"
+        />
+      </a>
 
-    <!-- Card 3 -->
-    <a href="/rekomendasi/3" class="block rounded-xl overflow-hidden shadow-md hover:shadow-lg transition" style="width: 180px;">
-      <img
-        src="https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.webp"
-        alt="Rekomendasi 3"
-        class="w-full h-96 object-cover"
-      />
-    </a>
-  </div>
-</div>
-
-
-      <div class="py-12 px-4 md:px-24">
-        <a href="">Update</a>
-      </div>
-
-      <div class="md:py-24 py-12 px-12 md:px-24">
-        <a href="">Populer</a>
-      </div>
+      <!-- Card 3 -->
+      <a href="/rekomendasi/3" class="block rounded-xl overflow-hidden shadow-md hover:shadow-lg transition" style="width: 180px;">
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.webp"
+          alt="Rekomendasi 3"
+          class="w-full h-96 object-cover"
+        />
+      </a>
     </div>
+  </div>
+
+
+      <div class="md:py-6 py-8 px-6 md:px-6">
+  <h2 class="text-2xl font-semibold mb-6">Update</h2>
+  
+    <div class="grid grid-cols-3 gap-x-[2px] gap-y-[2px] max-w-[560px] mx-0">
+      <!-- Card 1 -->
+      <a href="/rekomendasi/1" class="block rounded-xl overflow-hidden shadow-md hover:shadow-lg transition" style="width: 180px;">
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+          alt="Rekomendasi 1"
+          class="w-full h-96 object-cover"
+        />
+      </a>
+    </div>
+  </div>
+
+      <div class="md:py-6 py-8 px-6 md:px-6">
+  <h2 class="text-2xl font-semibold mb-6">Populer</h2>
+    <div class="grid grid-cols-3 gap-x-[2px] gap-y-[2px] max-w-[560px] mx-0">
+      <!-- Card 1 -->
+      <a href="/rekomendasi/1" class="block rounded-xl overflow-hidden shadow-md hover:shadow-lg transition" style="width: 180px;">
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+          alt="Rekomendasi 1"
+          class="w-full h-96 object-cover"
+        />
+      </a>
+    </div>
+  </div>
   </div>
   
   
