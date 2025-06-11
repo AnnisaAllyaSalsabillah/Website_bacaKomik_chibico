@@ -11,7 +11,7 @@ class AdminPengumumanController extends Controller
 {
     public function index()
     {
-        $pengumuman = Pengumuman::all();
+        $pengumuman = Pengumuman::orderBy('created_at', 'desc')->get();
         return view('admin.pengumuman.index', compact('pengumuman'));
     }
 
@@ -20,7 +20,8 @@ class AdminPengumumanController extends Controller
         return view('admin.pengumuman.create');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
@@ -29,20 +30,24 @@ class AdminPengumumanController extends Controller
 
         $imageUrl = null;
 
-        if($request->hasFile('thumbnail')){
+        if ($request->hasFile('thumbnail')) {
             $image = $request->file('thumbnail');
             $imageData = base64_encode(file_get_contents($image));
 
-            $response = Http::withHeaders([
-                'Authorization' => 'Basic ' . base64_encode(env('IMAGEKIT_PRIVATE_KEY') . ':' ),
-            ])->post('https://upload.imagekit.io/api/v1/files/upload', [
-                'file' => 'data:' . $image->getMimeType() . ';base64,' . $imageData,
-                'fileName' => $image->getClientOriginalName(),
-                'folder' => '/chibico/pengumuman',
-            ]);
+            try {
+                $response = Http::withHeaders([
+                    'Authorization' => 'Basic ' . base64_encode(env('IMAGEKIT_PRIVATE_KEY') . ':'),
+                ])->post('https://upload.imagekit.io/api/v1/files/upload', [
+                    'file' => 'data:' . $image->getMimeType() . ';base64,' . $imageData,
+                    'fileName' => $image->getClientOriginalName(),
+                    'folder' => '/chibico/pengumuman',
+                ]);
 
-            if($response->successful()){
-                $imageUrl = $response->json()['url'];
+                if ($response->successful()) {
+                    $imageUrl = $response->json()['url'];
+                }
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Gagal mengupload gambar: ' . $e->getMessage());
             }
         }
 
@@ -51,44 +56,65 @@ class AdminPengumumanController extends Controller
             'content' => $request->content,
             'thumbnail' => $imageUrl,
             'date' => now(),
-
         ]);
 
         return redirect()->route('admin.pengumuman.index')->with('success', 'Hoho, Pengumuman berhasil ditambahkan!');
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         $pengumuman = Pengumuman::findOrFail($id);
         return view('admin.pengumuman.edit', compact('pengumuman'));
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $pengumuman = Pengumuman::findOrFail($id);
+        
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $thumbnailPath = $pengumuman->thumbnail;
-        if($request->hasFile('thumbnail')){
-            $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
+        $imageUrl = $pengumuman->thumbnail; // Keep existing thumbnail by default
+
+        if ($request->hasFile('thumbnail')) {
+            $image = $request->file('thumbnail');
+            $imageData = base64_encode(file_get_contents($image));
+
+            try {
+                $response = Http::withHeaders([
+                    'Authorization' => 'Basic ' . base64_encode(env('IMAGEKIT_PRIVATE_KEY') . ':'),
+                ])->post('https://upload.imagekit.io/api/v1/files/upload', [
+                    'file' => 'data:' . $image->getMimeType() . ';base64,' . $imageData,
+                    'fileName' => $image->getClientOriginalName(),
+                    'folder' => '/chibico/pengumuman',
+                ]);
+
+                if ($response->successful()) {
+                    $imageUrl = $response->json()['url'];
+                }
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Gagal mengupload gambar: ' . $e->getMessage());
+            }
         }
 
         $pengumuman->update([
             'title' => $request->title,
             'content' => $request->content,
-            'thumbnail' => $thumbnailPath,
+            'thumbnail' => $imageUrl,
             'date' => now(),
         ]);
 
         return redirect()->route('admin.pengumuman.index')->with('success', 'Hoho, Pengumuman berhasil diupdate!');
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $pengumuman = Pengumuman::findOrFail($id);
         $pengumuman->delete();
+        
         return redirect()->route('admin.pengumuman.index')->with('success', 'Hoho, Pengumuman berhasil dihapus!');
     }
-
 }

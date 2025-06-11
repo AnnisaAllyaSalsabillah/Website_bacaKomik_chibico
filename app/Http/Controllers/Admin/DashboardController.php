@@ -17,6 +17,7 @@ class DashboardController extends Controller
         $totalComics = Comic::count();
         $totalChapters = Chapter::count();
         $totalUser = User::count();
+        $defaultComic = Comic::first();
 
         // Mengambil Top 5 komik dengan upvote terbanyak
         // Termasuk informasi chapter count jika diperlukan
@@ -34,7 +35,8 @@ class DashboardController extends Controller
             'totalChapters' => $totalChapters,
             'totalUser' => $totalUser,
             'topUpvoteComics' => $topUpvoteComics,
-            'recentActivities' => $recentActivities
+            'recentActivities' => $recentActivities,
+            'defaultComic' => $defaultComic
         ]);
     }
 
