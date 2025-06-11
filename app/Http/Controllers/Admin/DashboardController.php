@@ -21,7 +21,7 @@ class DashboardController extends Controller
         // Mengambil Top 5 komik dengan upvote terbanyak
         // Termasuk informasi chapter count jika diperlukan
         $topUpvoteComics = Comic::withCount(['upvotes', 'chapters'])
-            ->with(['genre', 'user']) // Jika ada relasi genre dan user
+            ->with(['genres', 'user']) // Jika ada relasi genre dan user
             ->orderBy('upvotes_count', 'desc')
             ->take(5)
             ->get();
