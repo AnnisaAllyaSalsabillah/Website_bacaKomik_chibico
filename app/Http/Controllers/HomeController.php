@@ -3,13 +3,54 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comic;
+use Illuminate\Http\Request;
+use App\Models\Chapter;
 
 class HomeController extends Controller
 {
-    public function index()
-    {
-        $comics = Comic::with('genres')->latest()->take(20)->get();
-        
-        return view('user.home.home', compact('comics'));
-    }
+    public function index(Request $request)
+{
+    $type = $request->query('type', 'Manhwa');
+
+    // Komik utama
+    $comics = Comic::with('genres')
+        ->where('type', $type)
+        ->latest()
+        ->take(12)
+        ->get();
+
+    // Komik rekomendasi
+    $recommendedComics = Comic::withCount('upvotes')
+        ->where('type', $type)
+        ->orderByDesc('upvotes_count')
+        ->take(9)
+        ->get();
+
+    // Komik update terbaru
+    $latestUpdatedComics = Comic::with(['latestChapter'])
+        ->where('type', $type)
+        ->whereHas('chapters')
+        ->withCount('upvotes')
+        ->join('chapters', 'komiks.id', '=', 'chapters.komik_id')
+        ->select('komiks.*')
+        ->orderByDesc('chapters.release_at')
+        ->distinct()
+        ->take(9)
+        ->get();
+
+    // Komik populer berdasarkan upvotes
+    $popularComics = Comic::withCount('upvotes')
+        ->where('type', $type)
+        ->orderByDesc('upvotes_count')
+        ->take(9)
+        ->get();
+
+    return view('user.home.home', compact(
+        'comics',
+        'recommendedComics',
+        'latestUpdatedComics',
+        'popularComics',
+        'type'
+    ));
+}
 }

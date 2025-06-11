@@ -34,16 +34,16 @@
   <header class="shadow-sm bg-base-100">
     <div class="navbar container mx-auto">
       <div class="navbar-start">
-        <a href="/home" class="text-xl font-bold btn btn-ghost lg:ml-">Chibico</a>
+        <a href="/" class="text-xl font-bold btn btn-ghost lg:ml-">Chibico</a>
       </div>
 
       <!-- Menu Tengah: hanya tampil di layar sm ke atas -->
       <div class="navbar-center hidden sm:flex flex-wrap justify-center gap-2">
         <ul class="flex flex-wrap gap-2 px-1">
-          <li><a class="btn btn-sm btn-ghost" href="#">Home</a></li>
-          <li><a class="btn btn-sm btn-ghost" href="#">Explore</a></li>
-          <li><a class="btn btn-sm btn-ghost" href="#">Library</a></li>
-          <li><a class="btn btn-sm btn-ghost" href="#">Search</a></li>
+          <li><a class="btn btn-sm btn-ghost" href="{{ route('home') }}">Home</a></li>
+          <li><a class="btn btn-sm btn-ghost" href="{{ route('explore') }}">Explore</a></li>
+          <li><a class="btn btn-sm btn-ghost" href="{{ route('library') }}">Library</a></li>
+          <li><a class="btn btn-sm btn-ghost" href="{{ route('user.search.index') }}">Search</a></li>
         </ul>
       </div>
 
@@ -58,10 +58,10 @@
             </svg>
           </label>
           <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-48 z-[1]">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Explore</a></li>
-            <li><a href="#">Library</a></li>
-            <li><a href="#">Search</a></li>
+            <li><a href="{{ route('home') }}">Home</a></li>
+            <li><a href="{{ route('explore') }}">Explore</a></li>
+            <li><a href="{{ route('library') }}">Library</a></li>
+            <li><a href="{{ route('user.search.index') }}">Search</a></li>
           </ul>
         </div>
       </div>
@@ -85,7 +85,6 @@
           </div>
           <ul class="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-48 z-[1] ml-4 ">
             <li><a>Profile</a></li>
-            <li><a>Settings</a></li>
             <li><a>Logout</a></li>
           </ul>
         </div>
