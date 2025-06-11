@@ -19,6 +19,9 @@ use App\Http\Controllers\User\ExploreController;
 use App\Http\Controllers\User\LibraryController;
 use App\Http\Controllers\User\ProfileController;
 
+
+Route::get('/komiks/{slug}', [ComicController::class, 'show'])->name('komiks.show');
+
 // HOME ROUTES
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/explore', [ExploreController::class, 'index'])->name('explore');

@@ -10,12 +10,16 @@ class ExploreController extends Controller
 {
     public function index()
     {
-        // Ambil 4 komik terbaru untuk slider
+        // Ambil 4 komik terbaru untuk slider (misalnya yang ditandai sebagai "featured" di masa depan)
         $featuredComics = Comic::latest()->take(4)->get();
 
-        // Ambil semua komik untuk grid, lengkap dengan genre
+        // Ambil semua komik untuk ditampilkan di grid, sekaligus ambil genre-nya (eager loading)
         $comics = Comic::with('genres')->latest()->get();
 
-        return view('user.explore.index', compact('featuredComics', 'comics'));
+        // Kirim ke view user.explore.index
+        return view('user.explore.index', [
+            'featuredComics' => $featuredComics,
+            'comics' => $comics,
+        ]);
     }
 }
