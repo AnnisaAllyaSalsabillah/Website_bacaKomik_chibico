@@ -13,103 +13,29 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Mengambil statistik dasar
         $totalComics = Comic::count();
         $totalChapters = Chapter::count();
         $totalUser = User::count();
         $defaultComic = Comic::first();
 
-        // Mengambil Top 5 komik dengan upvote terbanyak
-        // Termasuk informasi chapter count jika diperlukan
         $topUpvoteComics = Comic::withCount(['upvotes', 'chapters'])
-            ->with(['genres', 'user']) // Jika ada relasi genre dan user
+            ->with(['genres', 'user']) 
             ->orderBy('upvotes_count', 'desc')
             ->take(5)
             ->get();
-
-        // Data aktivitas terbaru (opsional - bisa ditambahkan)
-        $recentActivities = $this->getRecentActivities();
 
         return view('admin.dashboard.dash', [
             'totalComics' => $totalComics,
             'totalChapters' => $totalChapters,
             'totalUser' => $totalUser,
             'topUpvoteComics' => $topUpvoteComics,
-            'recentActivities' => $recentActivities,
             'defaultComic' => $defaultComic
         ]);
     }
 
+
     /**
-     * Mengambil aktivitas terbaru untuk dashboard
      * 
-     * @return \Illuminate\Support\Collection
-     */
-    private function getRecentActivities()
-    {
-        $activities = collect();
-
-        // Komik terbaru (3 terakhir)
-        $recentComics = Comic::latest()
-            ->take(3)
-            ->get()
-            ->map(function ($comic) {
-                return [
-                    'type' => 'comic_added',
-                    'title' => 'Komik baru ditambahkan: ' . $comic->title,
-                    'time' => $comic->created_at->diffForHumans(),
-                    'icon' => 'plus',
-                    'color' => 'primary'
-                ];
-            });
-
-        // Chapter terbaru (3 terakhir)
-        $recentChapters = Chapter::with('comic')
-            ->latest()
-            ->take(3)
-            ->get()
-            ->map(function ($chapter) {
-                return [
-                    'type' => 'chapter_added',
-                    'title' => 'Chapter baru: ' . ($chapter->comic->title ?? 'Unknown') . ' - Ch.' . $chapter->chapter_number,
-                    'time' => $chapter->created_at->diffForHumans(),
-                    'icon' => 'edit',
-                    'color' => 'secondary'
-                ];
-            });
-
-        // User terbaru (2 terakhir)
-        $recentUsers = User::latest()
-            ->take(2)
-            ->get()
-            ->map(function ($user) {
-                return [
-                    'type' => 'user_joined',
-                    'title' => 'User baru bergabung: ' . $user->name,
-                    'time' => $user->created_at->diffForHumans(),
-                    'icon' => 'user',
-                    'color' => 'accent'
-                ];
-            });
-
-        // Gabungkan semua aktivitas dan urutkan berdasarkan waktu
-        $activities = $activities
-            ->concat($recentComics)
-            ->concat($recentChapters)
-            ->concat($recentUsers)
-            ->sortByDesc(function ($activity) {
-                // Mengurutkan berdasarkan waktu terbaru
-                // Karena kita menggunakan diffForHumans(), kita perlu metode lain
-                // Alternatif: simpan created_at asli untuk sorting
-                return time(); // Placeholder - bisa dioptimalkan
-            })
-            ->take(6); // Ambil 6 aktivitas terbaru
-
-        return $activities;
-    }
-
-    /**
-     * Mengambil data statistik tambahan untuk chart/graph
      * 
      * @return array
      */
@@ -135,7 +61,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * API endpoint untuk mendapatkan data real-time
+     * 
      * 
      * @return \Illuminate\Http\JsonResponse
      */

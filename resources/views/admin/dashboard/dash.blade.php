@@ -84,7 +84,6 @@
     <div class="mb-8">
       <h2 class="text-xl lg:text-2xl font-bold mb-4 text-base-content">Quick Actions</h2>
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4 mb-4">
-        <!-- Baris pertama: 2 button -->
         <a href="{{ route('admin.komiks.index') }}" class="btn btn-primary btn-lg flex-col h-auto py-4 hover:scale-105 transition-all duration-200">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -100,7 +99,7 @@
         </a>
       </div>
       
-      <!-- Baris kedua: 1 button penuh -->
+      
       <div class="grid grid-cols-1">
         <a href="{{ route('admin.pengumuman.index') }}" class="btn btn-info btn-lg flex-col h-auto py-4 hover:scale-105 transition-all duration-200">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -205,54 +204,6 @@
             <p class="text-sm text-base-content/50">Tambahkan komik pertama untuk melihat statistik upvote</p>
           </div>
         @endif
-      </div>
-    </div>
-
-    <!-- riwayat aktivitas -->
-    <div class="bg-base-100 rounded-2xl shadow-lg p-6 lg:p-8">
-      <h2 class="text-xl lg:text-2xl font-bold mb-6 text-base-content">Aktivitas Terbaru</h2>
-      <div class="space-y-4">
-        <div class="flex items-center space-x-4 p-4 bg-base-200 rounded-lg hover:bg-base-300 transition-all duration-200">
-          <div class="avatar">
-            <div class="w-10 h-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
-            </div>
-          </div>
-          <div class="flex-1">
-            <p class="font-semibold text-sm sm:text-base">Komik baru ditambahkan</p>
-            <p class="text-xs sm:text-sm text-base-content/70">2 jam yang lalu</p>
-          </div>
-        </div>
-        
-        <div class="flex items-center space-x-4 p-4 bg-base-200 rounded-lg hover:bg-base-300 transition-all duration-200">
-          <div class="avatar">
-            <div class="w-10 h-10 rounded-full bg-secondary text-secondary-content flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-            </div>
-          </div>
-          <div class="flex-1">
-            <p class="font-semibold text-sm sm:text-base">Pengumuman diperbarui</p>
-            <p class="text-xs sm:text-sm text-base-content/70">5 jam yang lalu</p>
-          </div>
-        </div>
-        
-        <div class="flex items-center space-x-4 p-4 bg-base-200 rounded-lg hover:bg-base-300 transition-all duration-200">
-          <div class="avatar">
-            <div class="w-10 h-10 rounded-full bg-accent text-accent-content flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </div>
-          </div>
-          <div class="flex-1">
-            <p class="font-semibold text-sm sm:text-base">User baru bergabung</p>
-            <p class="text-xs sm:text-sm text-base-content/70">1 hari yang lalu</p>
-          </div>
-        </div>
       </div>
     </div>
   </div>

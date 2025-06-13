@@ -7,8 +7,8 @@
     <!-- Header Section -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-base-content mb-2">📢 Kelola Pengumuman</h1>
-            <p class="text-base-content/70">Kelola semua pengumuman untuk pembaca komik</p>
+            <h1 class="text-3xl font-bold text-base-content mb-2">📢 Panel Pengumuman</h1>
+            <p class="text-base-content/70">Tinggal ketik, klik, dan... boom! Semua pembaca langsung tahu.</p>
         </div>
         <button onclick="openCreateModal()" class="btn btn-primary gap-2 shadow-lg hover:shadow-xl transition-all duration-300">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -20,12 +20,12 @@
 
     <!-- Success Alert -->
     @if(session('success'))
-    <div class="alert alert-success shadow-lg mb-6 animate-pulse">
-        <svg class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        <span>{{ session('success') }}</span>
-    </div>
+        <div class="alert shadow-lg mb-6 animate-pulse" style="background-color: #065F46; color: #A7F3D0; border: 1px solid #047857; border-radius: 12px; padding: 16px;">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>{{ session('success') }}</span>
+        </div>
     @endif
 
     <!-- Stats Cards -->
@@ -38,7 +38,6 @@
             </div>
             <div class="stat-title">Total Pengumuman</div>
             <div class="stat-value text-primary">{{ $pengumuman->count() }}</div>
-            <div class="stat-desc">Semua pengumuman aktif</div>
         </div>
         
         <div class="stat bg-gradient-to-br from-secondary/10 to-secondary/5">
@@ -48,8 +47,7 @@
                 </svg>
             </div>
             <div class="stat-title">Terbaru</div>
-            <div class="stat-value text-secondary">{{ $pengumuman->where('created_at', '>=', now()->subDays(7))->count() }}</div>
-            <div class="stat-desc">Minggu ini</div>
+            <div class="stat-value text-secondary">{{ $pengumuman->where('created_at', '>=', now()->subDays(3))->count() }}</div>
         </div>
     </div>
 
@@ -78,11 +76,12 @@
              data-title="{{ strtolower($item->title) }}" 
              data-date="{{ $item->created_at->timestamp }}">
             
-            <!-- Card Image -->
-            @if($item->thumbnail)
+            <!-- thumbnail image -->
+            @if($item->thumbnail && $item->thumbnail !== '' && $item->thumbnail !== null)
             <figure class="relative overflow-hidden">
                 <img src="{{ $item->thumbnail }}" alt="{{ $item->title }}" 
-                     class="w-full h-48 object-cover transition-transform duration-300 hover:scale-110">
+                    class="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
+                    onerror="this.parentElement.style.display='none'">
                 <div class="absolute top-4 right-4">
                     <div class="badge badge-primary badge-lg">{{ $item->created_at->diffForHumans() }}</div>
                 </div>
@@ -100,7 +99,7 @@
                 <h2 class="card-title text-lg font-bold line-clamp-2">{{ $item->title }}</h2>
                 <p class="text-base-content/70 line-clamp-3">{{ Str::limit(strip_tags($item->content), 100) }}</p>
                 
-                <!-- Meta Info -->
+                
                 <div class="flex items-center gap-2 mt-2">
                     <div class="badge badge-outline">{{ $item->created_at->format('d M Y') }}</div>
                     <div class="badge badge-ghost">{{ str_word_count(strip_tags($item->content)) }} kata</div>
@@ -151,43 +150,37 @@
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
         
-        <h3 id="modalTitle" class="font-bold text-2xl mb-6">📝 Tambah Pengumuman Baru</h3>
+        <h3 id="modalTitle" class="font-bold text-2xl mb-6">Tambah Pengumuman Baru</h3>
         
         <form id="pengumumanForm" method="POST" enctype="multipart/form-data">
             @csrf
             <div id="methodField"></div>
             
-            <!-- Title Input -->
+            
             <div class="form-control w-full mb-6">
                 <label class="label">
                     <span class="label-text font-semibold">Judul Pengumuman</span>
                     <span class="label-text-alt text-error">*wajib</span>
                 </label>
-                <input type="text" name="title" id="titleInput" placeholder="Masukkan judul pengumuman..." 
+                <input type="text" name="title" id="titleInput" placeholder="Masukkan judul..." 
                        class="input input-bordered w-full" required>
-                <label class="label">
-                    <span class="label-text-alt">Gunakan judul yang menarik dan informatif</span>
-                </label>
             </div>
 
-            <!-- Content Input -->
+            
             <div class="form-control w-full mb-6">
                 <label class="label">
                     <span class="label-text font-semibold">Isi Pengumuman</span>
                     <span class="label-text-alt text-error">*wajib</span>
                 </label>
-                <textarea name="content" id="contentInput" placeholder="Tulis isi pengumuman di sini..." 
+                <textarea name="content" id="contentInput" placeholder="Tulis yang ingin kamu beritahu disini..." 
                           class="textarea textarea-bordered h-32" required></textarea>
-                <label class="label">
-                    <span class="label-text-alt">Jelaskan pengumuman dengan detail dan jelas</span>
-                </label>
             </div>
 
-            <!-- Thumbnail Input -->
+        
             <div class="form-control w-full mb-6">
                 <label class="label">
                     <span class="label-text font-semibold">Thumbnail</span>
-                    <span class="label-text-alt">opsional</span>
+                    <span class="label-text-alt text-info">opsional</span>
                 </label>
                 <input type="file" name="thumbnail" id="thumbnailInput" accept="image/*" 
                        class="file-input file-input-bordered w-full" onchange="previewImage(this)">
@@ -195,17 +188,17 @@
                     <span class="label-text-alt">Format: JPG, PNG, JPEG (Max: 2MB)</span>
                 </label>
                 
-                <!-- Image Preview -->
+                
                 <div id="imagePreview" class="mt-4 hidden">
                     <img id="previewImg" class="w-full max-w-sm rounded-lg shadow-lg" alt="Preview">
                 </div>
             </div>
 
-            <!-- Form Actions -->
+            
             <div class="modal-action">
                 <button type="button" onclick="document.getElementById('pengumumanModal').close()" class="btn btn-ghost">Batal</button>
                 <button type="submit" class="btn btn-primary">
-                    <span id="submitText">Simpan Pengumuman</span>
+                    <span id="submitText">Kirim</span>
                     <span id="loadingSpinner" class="loading loading-spinner loading-sm hidden"></span>
                 </button>
             </div>
@@ -221,12 +214,12 @@
         </form>
         
         <div id="viewContent">
-            <!-- Content will be loaded dynamically -->
+            
         </div>
     </div>
 </dialog>
 
-<!-- Delete Confirmation Modal -->
+<!-- Delete konfirmasi -->
 <dialog id="deleteModal" class="modal">
     <div class="modal-box">
         <h3 class="font-bold text-lg text-error mb-4">⚠️ Konfirmasi Hapus</h3>
@@ -245,15 +238,13 @@
 </dialog>
 
 <script>
-// Global variables
 let currentEditId = null;
-let pengumumanData = @json($pengumuman->toArray());
+let pengumumanData = @json($pengumumanData);
+console.log(pengumumanData);
 
-// Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing modal functions...');
     
-    // Initialize modals
     window.pengumumanModal = document.getElementById('pengumumanModal');
     window.viewModal = document.getElementById('viewModal');
     window.deleteModal = document.getElementById('deleteModal');
@@ -265,7 +256,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Open create modal
 function openCreateModal() {
     console.log('Opening create modal...');
     
@@ -289,7 +279,7 @@ function openCreateModal() {
         document.getElementById('imagePreview').classList.add('hidden');
         currentEditId = null;
         
-        // Show modal
+        
         modal.showModal();
         console.log('Modal opened successfully');
         
@@ -318,14 +308,17 @@ function editPengumuman(id) {
         document.getElementById('methodField').innerHTML = '@method("PUT")';
         document.getElementById('submitText').textContent = 'Update Pengumuman';
         
-        // Fill form
+        
         document.getElementById('titleInput').value = pengumuman.title;
         document.getElementById('contentInput').value = pengumuman.content;
         
-        // Show current thumbnail if exists
-        if (pengumuman.thumbnail) {
+        if (pengumuman.thumbnail && pengumuman.thumbnail !== '' && pengumuman.thumbnail !== null) {
             document.getElementById('imagePreview').classList.remove('hidden');
             document.getElementById('previewImg').src = pengumuman.thumbnail;
+            document.getElementById('previewImg').onerror = function() {
+                console.error('Failed to load image:', pengumuman.thumbnail);
+                document.getElementById('imagePreview').classList.add('hidden');
+            };
         } else {
             document.getElementById('imagePreview').classList.add('hidden');
         }
@@ -350,11 +343,16 @@ function viewPengumuman(id) {
     }
     
     try {
+        let thumbnailHtml = '';
+        if (pengumuman.thumbnail && pengumuman.thumbnail !== '' && pengumuman.thumbnail !== null) {
+            thumbnailHtml = `<img src="${pengumuman.thumbnail}" alt="${pengumuman.title}" class="w-full max-w-md mx-auto rounded-lg shadow-lg mb-4" onerror="this.style.display='none'">`;
+        }
+        
         const content = `
             <div class="text-center mb-6">
-                ${pengumuman.thumbnail ? `<img src="${pengumuman.thumbnail}" alt="${pengumuman.title}" class="w-full max-w-md mx-auto rounded-lg shadow-lg mb-4">` : ''}
+                ${thumbnailHtml}
                 <h2 class="text-2xl font-bold mb-2">${pengumuman.title}</h2>
-                <div class="badge badge-primary">${new Date(pengumuman.created_at).toLocaleDateString('id-ID')}</div>
+                <div class="badge badge-primary">${pengumuman.formatted_date}</div>
             </div>
             <div class="prose max-w-none">
                 <p class="text-base-content/80 leading-relaxed">${pengumuman.content}</p>
@@ -390,7 +388,6 @@ function previewImage(input) {
     if (input.files && input.files[0]) {
         const file = input.files[0];
         
-        // Validate file size (2MB)
         if (file.size > 2 * 1024 * 1024) {
             alert('Ukuran file terlalu besar. Maksimal 2MB.');
             input.value = '';
@@ -422,7 +419,7 @@ function filterPengumuman() {
     });
 }
 
-// Sort pengumuman
+// Sorting pengumuman
 function sortPengumuman() {
     const sortValue = document.getElementById('sortSelect').value;
     const container = document.getElementById('pengumumanContainer');
@@ -441,11 +438,11 @@ function sortPengumuman() {
         }
     });
     
-    // Re-append sorted cards
+    
     cards.forEach(card => container.appendChild(card));
 }
 
-// Form submission with loading state
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('pengumumanForm');
     if (form) {
@@ -455,6 +452,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+setTimeout(() => {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            alert.style.transition = 'opacity 0.5s ease-out';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 500);
+        }
+    }, 5000);
 </script>
 
 <style>
