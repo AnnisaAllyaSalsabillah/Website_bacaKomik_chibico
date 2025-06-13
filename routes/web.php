@@ -17,7 +17,7 @@ use App\Http\Controllers\User\PengumumanController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\User\ExploreController;
 use App\Http\Controllers\User\LibraryController;
-use \App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController; // <-- pastikan ini ada
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
@@ -30,9 +30,6 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/explore', [ExploreController::class, 'index'])->name('explore');
 Route::get('/library', [LibraryController::class, 'index'])->name('library');
 Route::get('/search', [SearchController::class, 'index'])->name('search');
-Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
-Route::get('/pengumuman/{id}', [PengumumanController::class, 'show'])->name('pengumuman.show');
-
 
 
 Route::post('/logout', function () {
@@ -73,4 +70,3 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::resource('pengumuman', PengumumanController::class);
     
 });
-

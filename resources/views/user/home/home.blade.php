@@ -112,48 +112,33 @@
           <div class="flex flex-col gap-16 col-span-1">
             <div class="flex items-end justify-between">
               <h2 class="font-semibold md:text-24 md:leading-28 text-20 leading-23">Pengumuman</h2>
-              <a href="/pengumuman" class="md:text-20 md:leading-28 text-16 leading-22 text-general-300">Semua</a>
+              <a href="{{ route('user.pengumuman.index') }}" class="btn btn-sm btn-ghost text-general-300">Semua</a>
             </div>
 
             <div class="splide relative w-full splide--slide splide--ltr splide--draggable is-active is-overflow is-initialized" id="splide05" role="region" aria-roledescription="carousel">
               <div class="splide__track splide__track--slide splide__track--ltr splide__track--draggable" id="splide05-track" style="padding-left: 0px; padding-right: 0px;" aria-live="polite" aria-atomic="true">
                 <ul class="splide__list" id="splide05-list" role="presentation" style="transform: translateX(0px);">
-                  <div class="carousel w-full max-w-4xl space-y-4">
-
-        @forelse($pengumuman->chunk(2) as $chunk)
-          <!-- Slide -->
-          <div class="carousel-item flex flex-col gap-4 w-full">
-            @foreach($chunk as $item)
-              <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="{{ route('user.pengumuman.show', $item->id) }}">
-                <figure class="w-24 h-24 p-2">
-                  <img src="{{ $item->thumbnail }}" alt="{{ $item->title }}" class="object-cover rounded-lg w-full h-full" />
-                </figure>
-                <div class="card-body p-4">
-                  <h2 class="card-title text-base">{{ $item->title }}</h2>
-                  <p class="text-sm line-clamp-2">{{ Str::limit(strip_tags($item->content), 20) }}</p>
-                </div>
-              </a>
-            @endforeach
-          </div>
-        @empty
-          <p class="text-center text-gray-400 w-full py-10">Belum ada pengumuman.</p>
-        @endforelse
-
-      </div>
-
+                  <div class="carousel w-full max-w-4xl space-y-0 space-x-4">
+                    @forelse($pengumuman->chunk(2) as $chunk)
+                      <!-- Slide -->
+                      <div class="md:py- carousel-item flex flex-col gap-0 w-full max-w-4xl space-y-4">
+                        @foreach($chunk as $item)
+                          <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="{{ route('user.pengumuman.show', $item->id) }}">
+                            <figure class="w-24 h-24 p-2">
+                              <img src="{{ $item->thumbnail }}" alt="{{ $item->title }}" class="object-cover rounded-lg w-full h-full" />
+                            </figure>
+                            <div class="card-body p-4">
+                              <h2 class="card-title text-base">{{Str::limit(strip_tags($item->title), 20)}}</h2>
+                              <p class="text-sm line-clamp-2">{{ Str::limit(strip_tags($item->content), 20) }}</p>
+                            </div>
+                          </a>
+                        @endforeach
+                      </div>
+                    @empty
+                      <p class="text-center text-gray-400 w-full py-10">Belum ada pengumuman.</p>
+                    @endforelse
+                  </div>
                 </ul>
-              </div>
-              <div class="flex items-center gap-16 justify-center mt-16">
-                <button class="w-36 h-36 bg-base-card rounded-4 flex items-center justify-center opacity-50"></button>
-                <div class="flex items-center justify-center gap-8 p-2">
-                  @for ($j = 1; $j <= 5; $j++)
-                    <button class="w-16 h-16 flex items-center justify-center transition-all duration-300 rounded-full border border-transparent">
-                      <div class="w-8 h-8 rounded-full bg-base-white"></div>
-                    </button>
-                  @endfor
-                </div>
-                <button class="w-36 h-36 bg-base-card rounded-4 flex items-center justify-center opacity-100"></button>
-              </div>
             </div>
           </div>
         </div>
