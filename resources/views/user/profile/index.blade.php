@@ -3,131 +3,118 @@
 @section('title', 'Profile')
 
 @section('content')
-<div class="min-h-screen bg-gray-50 py-8">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="bg-white shadow-sm rounded-lg mb-6">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h1 class="text-2xl font-bold text-gray-900">Profile</h1>
-                <p class="text-sm text-gray-600 mt-1">Manage your personal information</p>
+
+@php
+    $user = $user ?? (object)[
+        'name' => 'Dummy User',
+        'username' => 'dummyuser',
+        'email' => 'dummy@example.com',
+        'created_at' => now(),
+        'updated_at' => now(),
+        'profile_picture' => null,
+    ];
+@endphp
+
+<div class="min-h-screen w-full bg-[#0b0b0f] px-6 py-10 font-inter text-white relative z-0">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-pink-800/10 via-[#1a1b23]/50 to-transparent blur-3xl z-[-1]"></div>
+
+    <!-- Header -->
+<div class="mb-12 text-center">
+    <h1 class="text-6xl font-extrabold text-white drop-shadow-glow">
+        Profile
+    </h1>
+    <p class="text-white text-sm mt-2 tracking-wide">Welcome back, {{ $user->name }}.</p>
+</div>
+
+
+    <!-- Alert -->
+    @if(session('success'))
+        <div class="max-w-4xl mx-auto mb-8 animate-fade-in-down">
+            <div class="bg-pink-800/20 border border-pink-500/40 rounded-xl p-4 text-sm text-pink-200 shadow-lg backdrop-blur">
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ session('success') }}</span>
+                </div>
             </div>
         </div>
+    @endif
 
-        <!-- Success Message -->
-        @if(session('success'))
-            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+    <!-- Profile Card -->
+    <div class="w-full px-4 md:px-10 xl:px-32">
+        <div class="bg-[#15151c]/90 border border-[#393451] rounded-2xl shadow-[0_0_60px_rgba(255,0,150,0.05)] backdrop-blur-md p-10">
+            <!-- Top Section -->
+            <div class="flex flex-col md:flex-row items-center gap-8 mb-10">
+                <!-- Profile Picture -->
+                <div>
+                    @if($user->profile_picture)
+                        <img src="{{ asset('storage/' . $user->profile_picture) }}"
+                             class="w-32 h-32 rounded-full border-4 border-pink-300 object-cover shadow-[0_0_25px_rgba(255,192,203,0.5)] transition duration-300"
+                             alt="{{ $user->name }}">
+                    @else
+                        <div class="w-32 h-32 rounded-full bg-[#2e2b3b] border-4 border-pink-300 flex items-center justify-center shadow-lg">
+                            <svg class="w-14 h-14 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Info -->
+                <div class="text-center md:text-left">
+                    <h2 class="text-3xl font-bold text-pink-200">{{ $user->name }}</h2>
+                    <p class="text-pink-100 text-sm">@<span class="font-mono">{{ $user->username }}</span></p>
+                    <p class="text-pink-100 text-xs mt-1">{{ $user->email }}</p>
+                </div>
+            </div>
+
+            <!-- Details -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Personal -->
+                <div>
+                    <h3 class="text-lg font-semibold text-pink-400 mb-4 border-b border-pink-500 pb-1">✨ Personal Info</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li><span class="text-pink-300 inline-block w-28">Name:</span> {{ $user->name }}</li>
+                        <li><span class="text-pink-300 inline-block w-28">Username:</span> {{ $user->username ?? 'Not set' }}</li>
+                        <li><span class="text-pink-300 inline-block w-28">Email:</span> {{ $user->email }}</li>
+                    </ul>
+                </div>
+
+                <!-- Account -->
+                <div>
+                    <h3 class="text-lg font-semibold text-pink-400 mb-4 border-b border-pink-500 pb-1">🔐 Account Info</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li><span class="text-pink-300 inline-block w-32">Member since:</span> {{ $user->created_at->format('F j, Y') }}</li>
+                        <li><span class="text-pink-300 inline-block w-32">Last update:</span> {{ $user->updated_at->format('F j, Y') }}</li>
+                        <li>
+                            <span class="text-pink-300 inline-block w-32">Status:</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-600/20 text-green-300 shadow-inner backdrop-blur">
+                                Active
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="mt-10 flex flex-col sm:flex-row gap-4">
+                <a href="{{ route('user.profile.edit') }}"
+                   class="inline-flex items-center px-6 py-3 rounded-xl bg-pink-600 hover:bg-pink-700 text-white shadow-lg hover:shadow-pink-500/30 transition-all duration-300">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
-                    <span class="text-green-800 font-medium">{{ session('success') }}</span>
-                </div>
-            </div>
-        @endif
-
-        <!-- Profile Card -->
-        <div class="bg-white shadow-sm rounded-lg overflow-hidden">
-            <!-- Profile Header -->
-            <div class="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8">
-                <div class="flex items-center space-x-6">
-                    <!-- Profile Picture -->
-                    <div class="flex-shrink-0">
-                        @if($user->profile_picture)
-                            <img class="w-24 h-24 rounded-full border-4 border-white shadow-lg object-cover" 
-                                 src="{{ asset('storage/' . $user->profile_picture) }}" 
-                                 alt="{{ $user->name }}">
-                        @else
-                            <div class="w-24 h-24 rounded-full border-4 border-white shadow-lg bg-gray-300 flex items-center justify-center">
-                                <svg class="w-12 h-12 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-                                </svg>
-                            </div>
-                        @endif
-                    </div>
-                    
-                    <!-- Profile Info -->
-                    <div class="text-white">
-                        <h2 class="text-3xl font-bold">{{ $user->name }}</h2>
-                        @if($user->username)
-                            <p class="text-blue-100 text-lg">@<span class="font-medium">{{ $user->username }}</span></p>
-                        @endif
-                        <p class="text-blue-100 mt-2">{{ $user->email }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Profile Details -->
-            <div class="px-6 py-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Personal Information -->
-                    <div class="space-y-4">
-                        <h3 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
-                            Personal Information
-                        </h3>
-                        
-                        <div class="space-y-3">
-                            <div class="flex items-center text-sm">
-                                <span class="w-20 text-gray-500 font-medium">Name:</span>
-                                <span class="text-gray-900">{{ $user->name }}</span>
-                            </div>
-                            
-                            <div class="flex items-center text-sm">
-                                <span class="w-20 text-gray-500 font-medium">Username:</span>
-                                <span class="text-gray-900">{{ $user->username ?? 'Not set' }}</span>
-                            </div>
-                            
-                            <div class="flex items-center text-sm">
-                                <span class="w-20 text-gray-500 font-medium">Email:</span>
-                                <span class="text-gray-900">{{ $user->email }}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Account Information -->
-                    <div class="space-y-4">
-                        <h3 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
-                            Account Information
-                        </h3>
-                        
-                        <div class="space-y-3">
-                            <div class="flex items-center text-sm">
-                                <span class="w-24 text-gray-500 font-medium">Member since:</span>
-                                <span class="text-gray-900">{{ $user->created_at->format('F j, Y') }}</span>
-                            </div>
-                            
-                            <div class="flex items-center text-sm">
-                                <span class="w-24 text-gray-500 font-medium">Last updated:</span>
-                                <span class="text-gray-900">{{ $user->updated_at->format('F j, Y') }}</span>
-                            </div>
-                            
-                            <div class="flex items-center text-sm">
-                                <span class="w-24 text-gray-500 font-medium">Status:</span>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    Active
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="mt-8 flex flex-col sm:flex-row gap-4">
-                    <a href="{{ route('user.profile.edit') }}" 
-                       class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                        </svg>
-                        Edit Profile
-                    </a>
-                    
-                    <button type="button" 
-                            class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                        </svg>
-                        Change Password
-                    </button>
-                </div>
+                    Edit Profile
+                </a>
+                <button type="button"
+                        class="inline-flex items-center px-6 py-3 rounded-xl bg-[#2a2736] hover:bg-[#3a3750] text-gray-100 border border-pink-600 shadow-lg hover:shadow-pink-300/20 transition-all duration-300">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    Change Password
+                </button>
             </div>
         </div>
     </div>

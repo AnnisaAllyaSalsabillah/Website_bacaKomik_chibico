@@ -68,5 +68,9 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::resource('history', HistoryController::class);
     Route::resource('search', SearchController::class);
     Route::resource('pengumuman', PengumumanController::class);
+
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.update');
     
 });

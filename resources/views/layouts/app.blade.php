@@ -84,8 +84,13 @@
             </div>
           </div>
           <ul class="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-48 z-[1] ml-4 ">
-            <li><a>Profile</a></li>
-            <li><a>Logout</a></li>
+            <li><a href="{{ route('user.profile.index') }}">Profile</a></li>
+            <li>
+              <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit">Logout</button>
+              </form>
+            </li>
           </ul>
         </div>
       </div>
