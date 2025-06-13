@@ -119,94 +119,27 @@
               <div class="splide__track splide__track--slide splide__track--ltr splide__track--draggable" id="splide05-track" style="padding-left: 0px; padding-right: 0px;" aria-live="polite" aria-atomic="true">
                 <ul class="splide__list" id="splide05-list" role="presentation" style="transform: translateX(0px);">
                   <div class="carousel w-full max-w-4xl space-y-4">
-                  <!-- Slide 1 -->
-                  <div class="carousel-item flex flex-col gap-4 w-full">
-                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumumans/show">
-                      <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
-                      </figure>
-                      <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 1</h2>
-                        <p class="text-sm">Brief description for course 1.</p>
-                      </div>
-                    </a>
-                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
-                      <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
-                      </figure>
-                      <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 1</h2>
-                        <p class="text-sm">Brief description for course 1.</p>
-                      </div>
-                    </a>
-                  </div>
 
-                  <!-- Slide 2 -->
-                  <div class="carousel-item flex flex-col gap-4 w-full">
-                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
-                      <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
-                      </figure>
-                      <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 1</h2>
-                        <p class="text-sm">Brief description for course 1.</p>
-                      </div>
-                    </a>
-                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
-                      <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
-                      </figure>
-                      <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 1</h2>
-                        <p class="text-sm">Brief description for course 1.</p>
-                      </div>
-                    </a>
-                  </div>
+        @forelse($pengumuman->chunk(2) as $chunk)
+          <!-- Slide -->
+          <div class="carousel-item flex flex-col gap-4 w-full">
+            @foreach($chunk as $item)
+              <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="{{ route('user.pengumuman.show', $item->id) }}">
+                <figure class="w-24 h-24 p-2">
+                  <img src="{{ $item->thumbnail }}" alt="{{ $item->title }}" class="object-cover rounded-lg w-full h-full" />
+                </figure>
+                <div class="card-body p-4">
+                  <h2 class="card-title text-base">{{ $item->title }}</h2>
+                  <p class="text-sm line-clamp-2">{{ Str::limit(strip_tags($item->content), 20) }}</p>
+                </div>
+              </a>
+            @endforeach
+          </div>
+        @empty
+          <p class="text-center text-gray-400 w-full py-10">Belum ada pengumuman.</p>
+        @endforelse
 
-                  <!-- Tambahkan slide 3 dan 4 sesuai kebutuhan -->
-                  <!-- Slide 3 -->
-                  <div class="carousel-item flex flex-col gap-4 w-full">
-                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumumans/show">
-                      <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
-                      </figure>
-                      <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 1</h2>
-                        <p class="text-sm">Brief description for course 1.</p>
-                      </div>
-                    </a>
-                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
-                      <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
-                      </figure>
-                      <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 1</h2>
-                        <p class="text-sm">Brief description for course 1.</p>
-                      </div>
-                    </a>
-                  </div>
-
-                  <!-- Slide 4 -->
-                  <div class="carousel-item flex flex-col gap-4 w-full">
-                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
-                      <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
-                      </figure>
-                      <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 1</h2>
-                        <p class="text-sm">Brief description for course 1.</p>
-                      </div>
-                    </a>
-                    <a class="card card-side bg-base-100 shadow-md w-full hover:bg-base-200 transition" href="/pengumuman">
-                      <figure class="w-24 h-24 p-2">
-                        <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Course 1" class="object-cover rounded-lg w-full h-full" />
-                      </figure>
-                      <div class="card-body p-4">
-                        <h2 class="card-title text-base">Course Title 1</h2>
-                        <p class="text-sm">Brief description for course 1.</p>
-                      </div>
-                    </a>
-                  </div>
+      </div>
 
                 </ul>
               </div>
