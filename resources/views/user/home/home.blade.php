@@ -157,21 +157,44 @@
   </div>
 
   {{-- Grid Rekomendasi --}}
-  <div class="grid grid-cols-3 gap-[2px] max-w-[560px]">
-    @foreach ($recommendedComics as $comic)
-      <a href="{{ route('komiks.show', $comic->slug) }}" class="block rounded-xl overflow-hidden shadow hover:shadow-md transition" style="width: 180px;">
+  {{-- Grid Rekomendasi --}}
+<div class="grid grid-cols-3 gap-[2px] max-w-[560px]">
+
+  @foreach ($recommendedComics as $comic)
+    <a href="{{ route('komiks.show', $comic->slug) }}" class="relative block rounded-xl overflow-hidden shadow hover:shadow-md transition" style="width: 180px;">
+      
+      <!-- Status Badge -->
+      <div class="absolute top-2 right-2 z-10">
+        <div class="badge badge-{{ $comic->status === 'ongoing' ? 'success' : 'info' }} badge-sm font-medium">
+          {{ ucfirst($comic->status) }}
+        </div>
+      </div>
+
+      <!-- Type Badge -->
+      <div class="absolute top-2 left-2 z-10">
+        <div class="badge badge-{{ $comic->type === 'manga' ? 'primary' : ($comic->type === 'manhwa' ? 'secondary' : 'accent') }} badge-sm font-medium">
+          {{ ucfirst($comic->type) }}
+        </div>
+      </div>
+
+      <!-- Gambar -->
+      <figure>
         <img
           src="{{ $comic->cover_image ?? 'https://via.placeholder.com/150x200?text=No+Image' }}"
           alt="{{ $comic->title }}"
           class="w-full h-72 object-cover"
         />
-        <div class="p-2 bg-base-100">
-          <p class="text-xs text-gray-500">{{ ucfirst($comic->status) }}</p>
-          <p class="text-xs text-yellow-400 font-semibold">★ {{ $comic->upvotes_count }} Rating</p>
-        </div>
-      </a>
-    @endforeach
-  </div>
+      </figure>
+
+      <!-- Info -->
+      <div class="p-2 bg-base-100">
+        <p class="text-xs text-yellow-400 font-semibold">★ {{ $comic->upvotes_count }} Rating</p>
+      </div>
+    </a>
+  @endforeach
+  
+</div>
+
 </div>
 
 {{-- Section Update --}}
@@ -180,12 +203,30 @@
 
   <div class="grid grid-cols-3 gap-[2px] max-w-[560px]">
     @foreach ($latestUpdatedComics as $comic)
-      <a href="{{ route('komiks.show', $comic->slug) }}" class="block rounded-xl overflow-hidden shadow hover:shadow-md transition" style="width: 180px;">
+      <a href="{{ route('komiks.show', $comic->slug) }}" class="relative block rounded-xl overflow-hidden shadow hover:shadow-md transition" style="width: 180px;">
+        
+        <!-- Status Badge -->
+        <div class="absolute top-2 right-2 z-10">
+          <div class="badge badge-{{ $comic->status === 'ongoing' ? 'success' : 'info' }} badge-sm font-medium">
+            {{ ucfirst($comic->status) }}
+          </div>
+        </div>
+
+        <!-- Type Badge -->
+        <div class="absolute top-2 left-2 z-10">
+          <div class="badge badge-{{ $comic->type === 'manga' ? 'primary' : ($comic->type === 'manhwa' ? 'secondary' : 'accent') }} badge-sm font-medium">
+            {{ ucfirst($comic->type) }}
+          </div>
+        </div>
+
+        <!-- Gambar Komik -->
         <img
           src="{{ $comic->cover_image ?? 'https://via.placeholder.com/150x200?text=No+Image' }}"
           alt="{{ $comic->title }}"
           class="w-full h-72 object-cover"
         />
+
+        <!-- Info Komik -->
         <div class="p-2 bg-base-100">
           <p class="text-xs text-gray-500">
             {{ ucfirst($comic->status) }} — Chapter {{ $comic->latestChapter?->chapter ?? '-' }}
@@ -197,26 +238,45 @@
   </div>
 </div>
 
+
 {{-- Section Populer --}}
 <div class="md:py-6 py-8 px-6 md:px-6">
   <h2 class="text-2xl font-semibold mb-6">Populer</h2>
 
   <div class="grid grid-cols-3 gap-[2px] max-w-[560px]">
     @foreach ($popularComics as $comic)
-      <a href="{{ route('komiks.show', $comic->slug) }}" class="block rounded-xl overflow-hidden shadow hover:shadow-md transition" style="width: 180px;">
+      <a href="{{ route('komiks.show', $comic->slug) }}" class="relative block rounded-xl overflow-hidden shadow hover:shadow-md transition" style="width: 180px;">
+        
+        <!-- Status Badge -->
+        <div class="absolute top-2 right-2 z-10">
+          <div class="badge badge-{{ $comic->status === 'ongoing' ? 'success' : 'info' }} badge-sm font-medium">
+            {{ ucfirst($comic->status) }}
+          </div>
+        </div>
+
+        <!-- Type Badge -->
+        <div class="absolute top-2 left-2 z-10">
+          <div class="badge badge-{{ $comic->type === 'manga' ? 'primary' : ($comic->type === 'manhwa' ? 'secondary' : 'accent') }} badge-sm font-medium">
+            {{ ucfirst($comic->type) }}
+          </div>
+        </div>
+
+        <!-- Gambar Komik -->
         <img
           src="{{ $comic->cover_image ?? 'https://via.placeholder.com/150x200?text=No+Image' }}"
           alt="{{ $comic->title }}"
           class="w-full h-72 object-cover"
         />
+
+        <!-- Info Komik -->
         <div class="p-2 bg-base-100">
-          <p class="text-xs text-gray-500">{{ ucfirst($comic->status) }}</p>
           <p class="text-xs text-yellow-400 font-semibold">★ {{ $comic->upvotes_count }} Rating</p>
         </div>
       </a>
     @endforeach
   </div>
 </div>
+
 
   <script>
   document.addEventListener('DOMContentLoaded', function () {
