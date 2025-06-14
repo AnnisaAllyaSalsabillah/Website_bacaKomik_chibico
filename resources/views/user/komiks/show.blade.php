@@ -32,7 +32,24 @@
     <!-- Basic Info -->
     <div class="flex-1 space-y-4">
       <div>
-        <h1 class="text-2xl sm:text-3xl font-bold text-base-content mb-2">{{ $comic->title }}</h1>
+        <h1 class="text-2xl sm:text-3xl font-bold text-base-content mb-2">{{ $comic->title }}
+            <button class="btn btn-outline gap-2 text-yellow-500 border-yellow-500 hover:bg-yellow-500 hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor"
+                viewBox="0 0 20 20">
+                <path
+                    d="M5 3a2 2 0 00-2 2v14l7-4 7 4V5a2 2 0 00-2-2H5z" />
+                </svg>
+                Bookmark
+            </button>
+            <button class="btn btn-outline gap-2 text-red-500 border-red-500 hover:bg-red-500 hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor"
+                viewBox="0 0 20 20">
+                <path
+                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 18.343l-6.828-6.829a4 4 0 010-5.656z" />
+                </svg>
+                Like
+            </button>
+        </h1>
         @if ($comic->alternative_title)
           <p class="text-base-content/70 text-sm sm:text-base font-medium">{{ $comic->alternative_title }}</p>
         @endif
@@ -103,6 +120,25 @@
       </div>
     </div>
     @endif
+    <div class="flex gap-3 mt-4">
+    {{-- Tombol Baca Chapter --}}
+    <a href="#" class="btn btn-primary gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+      viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M14 5l7 7m0 0l-7 7m7-7H3" />
+    </svg>
+    Baca
+  </a>
+    <a href="#comments" class="btn btn-outline gap-2 text-blue-500 border-blue-500 hover:bg-blue-500 hover:text-white">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+      viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.833L3 20l1.25-3.75A8.967 8.967 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+    </svg>
+    Komentar
+  </a>
+    </div>
 
     <div class="bg-base-200 rounded-lg p-4">
       <h3 class="text-lg font-semibold mb-3">Additional Information</h3>

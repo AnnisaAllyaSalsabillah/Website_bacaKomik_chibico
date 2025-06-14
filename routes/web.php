@@ -73,5 +73,7 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/bookmarks', [\App\Http\Controllers\User\BookmarkController::class, 'index'])->name('bookmark.index');
+    Route::post('/bookmark/{id}/toggle', [\App\Http\Controllers\User\BookmarkController::class, 'toggle'])->name('bookmark.toggle');
     
 });
