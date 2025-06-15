@@ -57,8 +57,8 @@
                       <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/10/solo.jpg"
                           class="w-full object-cover h-[300px]" />
                       <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-white">
-                        <h3 class="text-lg font-bold">Judul Komik 4</h3>
-                        <p class="text-sm">Tulisan ini bisa kamu sesuaikan juga sesuai isi komik.</p>
+                        <h3 class="text-lg font-bold">Solo Leveling</h3>
+                        <p class="text-sm">Shadow Monarch telah Kembali</p>
                       </div>
                     </a>
 
@@ -155,8 +155,6 @@
     <a href="{{ route('home', ['type' => 'Manga']) }}" class="btn btn-soft {{ $type == 'Manga' ? 'btn-active' : '' }}">Manga</a>
     <a href="{{ route('home', ['type' => 'Manhua']) }}" class="btn btn-soft {{ $type == 'Manhua' ? 'btn-active' : '' }}">Manhua</a>
   </div>
-
-  {{-- Grid Rekomendasi --}}
   {{-- Grid Rekomendasi --}}
 <div class="grid grid-cols-3 gap-[2px] max-w-[560px]">
 

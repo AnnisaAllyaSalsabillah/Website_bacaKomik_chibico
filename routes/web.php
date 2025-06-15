@@ -19,25 +19,32 @@ use App\Http\Controllers\User\ExploreController;
 use App\Http\Controllers\User\LibraryController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController; // <-- pastikan ini ada
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 
 Route::get('/komiks/{slug}', [ComicController::class, 'show'])->name('komiks.show');
 
+// Authentication Routes
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+    
+});
+
+// Protected Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
 
 // HOME ROUTES
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/explore', [ExploreController::class, 'index'])->name('explore');
 Route::get('/library', [LibraryController::class, 'index'])->name('library');
 Route::get('/search', [SearchController::class, 'index'])->name('search');
-
-
-Route::post('/logout', function () {
-    FacadesAuth::logout();
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
-    return redirect('/login');
-})->name('logout');
 
 
 // ADMIN ROUTES
@@ -72,8 +79,11 @@ Route::prefix('user')->name('user.')->group(function () {
 
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/bookmarks', [\App\Http\Controllers\User\BookmarkController::class, 'index'])->name('bookmark.index');
     Route::post('/bookmark/{id}/toggle', [\App\Http\Controllers\User\BookmarkController::class, 'toggle'])->name('bookmark.toggle');
+    Route::get('/profile/change-password', [ProfileController::class, 'editPassword'])->name('profile.password.edit');
+    Route::put('/profile/change-password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+
     
 });

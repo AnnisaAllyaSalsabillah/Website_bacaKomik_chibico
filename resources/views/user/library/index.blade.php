@@ -3,6 +3,14 @@
 @section('title', 'My Library')
 
 @section('content')
+@if(auth()->check())
+    <span>{{ auth()->user()->name }}</span>
+@else
+    <span>Guest</span>
+@endif
+
+
+
 <div class="min-h-screen bg-gray-50">
     <!-- Header Section -->
     <div class="bg-white shadow-sm">
@@ -16,7 +24,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>
-                    <span>{{ auth()->user()->name }}</span>
+                    <span>{{ auth()->user()->name ?? 'Guest' }}</span>
                 </div>
             </div>
         </div>
@@ -64,8 +72,8 @@
                                     <!-- Comic Cover -->
                                     <div class="flex-shrink-0">
                                         <img src="{{ $history->comic->cover_image ? asset('storage/' . $history->comic->cover_image) : '/images/placeholder.jpg' }}"
-                                             alt="{{ $history->comic->title }}"
-                                             class="w-16 h-20 object-cover rounded-lg shadow-sm">
+                                            alt="{{ $history->comic->title }}"
+                                            class="w-16 h-20 object-cover rounded-lg shadow-sm">
                                     </div>
                                     
                                     <!-- Comic Info -->
@@ -87,7 +95,7 @@
                                     <!-- Action Button -->
                                     <div class="flex-shrink-0">
                                         <a href="{{ route('komiks.show', $history->comic->slug) }}" 
-                                           class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                                            class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
                                             Continue Reading
                                         </a>
                                     </div>
@@ -104,7 +112,7 @@
                             <p class="mt-1 text-sm text-gray-500">Start reading some comics to see your history here.</p>
                             <div class="mt-6">
                                 <a href="{{ route('explore') }}" 
-                                   class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                     Explore Comics
                                 </a>
                             </div>
@@ -121,8 +129,8 @@
                                     <!-- Comic Cover -->
                                     <div class="aspect-w-3 aspect-h-4 bg-gray-200">
                                         <img src="{{ $bookmark->comic->cover_image ? asset('storage/' . $bookmark->comic->cover_image) : '/images/placeholder.jpg' }}"
-                                             alt="{{ $bookmark->comic->title }}"
-                                             class="w-full h-48 object-cover">
+                                            alt="{{ $bookmark->comic->title }}"
+                                            class="w-full h-48 object-cover">
                                     </div>
                                     
                                     <!-- Comic Info -->
@@ -142,7 +150,7 @@
                                         <!-- Action Buttons -->
                                         <div class="flex space-x-2">
                                             <a href="{{ route('komiks.show', $bookmark->comic->slug) }}" 
-                                               class="flex-1 bg-blue-600 text-white text-xs font-medium py-2 px-3 rounded text-center hover:bg-blue-700 transition-colors duration-200">
+                                                class="flex-1 bg-blue-600 text-white text-xs font-medium py-2 px-3 rounded text-center hover:bg-blue-700 transition-colors duration-200">
                                                 Read
                                             </a>
                                             <form action="{{ route('user.bookmark.toggle', $bookmark->comic->id) }}" method="POST" class="inline">
@@ -169,7 +177,7 @@
                             <p class="mt-1 text-sm text-gray-500">Save your favorite comics to easily find them later.</p>
                             <div class="mt-6">
                                 <a href="{{ route('explore') }}" 
-                                   class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                     Discover Comics
                                 </a>
                             </div>

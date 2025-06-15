@@ -26,6 +26,16 @@
       background: #333;
       border-radius: 10px;
     }
+    .modal {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -77,22 +87,44 @@
         </form>
 
         <!-- Profile -->
-        <div class="dropdown dropdown-end">
-          <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-            <div class="w-10 rounded-full">
-              <img src="/images/profile.png" alt="Profile" />
-            </div>
+        <div class="btn btn-ghost btn-circle avatar">
+          <div class="w-10 rounded-full">
+            @auth
+              <a href="{{ route('user.profile.index') }}">
+                @if(Auth::user()->profile_photo)
+                  <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile">
+                @else
+                  <img src="{{ asset('/images/profile.png') }}" alt="Default Profile">
+                @endif
+              </a>
+            @else
+              <div tabindex="0" role="button" class="dropdown dropdown-end">
+                <img src="{{ asset('/images/profile.png') }}" alt="Guest Profile" />
+                <!-- Jika belum login, tampilkan dropdown login/register -->
+                <ul tabindex="0" class="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-60 z-[1]">
+                  <li class="text-sm text-gray-700 px-2">Kamu belum login.</li>
+                  <li><button onclick="showLoginPrompt()" class="text-left w-full text-blue-600">Login / Register</button></li>
+                </ul>
+              </div>
+            @endauth
           </div>
-          <ul class="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-48 z-[1] ml-4 ">
-            <li><a href="{{ route('user.profile.index') }}">Profile</a></li>
-            <li>
-              <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit">Logout</button>
-              </form>
-            </li>
-          </ul>
         </div>
+
+        <!-- Modal Login Prompt -->
+        <div id="loginPrompt" class="modal hidden transition-opacity duration-200 fixed z-50 inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div class="bg-white dark:bg-base-200 p-6 rounded-lg shadow-lg w-[90%] max-w-md text-center">
+            <h2 class="text-lg font-semibold mb-2">Akses Ditolak</h2>
+            <p class="mb-4 text-sm text-gray-600 dark:text-gray-300">Kamu harus login terlebih dahulu untuk mengakses fitur ini.</p>
+            <div class="flex justify-center space-x-4">
+              <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+              <a href="{{ route('register') }}" class="btn btn-secondary">Register</a>
+            </div>
+            <button onclick="hideLoginPrompt()" class="mt-4 text-xs text-gray-500 hover:underline">Batal</button>
+          </div>
+        </div>
+
+
+
       </div>
     </div>
   </header>
@@ -111,6 +143,20 @@
 
   <!-- Custom Scripts -->
   <script src="{{ asset('js/app.js') }}"></script>
+  <script>
+  function showLoginPrompt() {
+    const modal = document.getElementById('loginPrompt');
+    modal.classList.add('show');
+    modal.classList.remove('hidden');
+  }
+  function hideLoginPrompt() {
+    const modal = document.getElementById('loginPrompt');
+    modal.classList.remove('show');
+    modal.classList.add('hidden');
+  }
+</script>
+
+
   
 </body>
 </html>
