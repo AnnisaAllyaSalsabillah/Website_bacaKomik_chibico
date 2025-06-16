@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comic;
 use Illuminate\Http\Request;
 use App\Models\Chapter;
+use App\Models\Pengumuman;
 
 class HomeController extends Controller
 {
@@ -45,12 +46,15 @@ class HomeController extends Controller
         ->take(9)
         ->get();
 
+    $pengumuman = Pengumuman::latest()->get();
+
     return view('user.home.home', compact(
         'comics',
         'recommendedComics',
         'latestUpdatedComics',
         'popularComics',
-        'type'
+        'type',
+        'pengumuman'
     ));
 }
 }

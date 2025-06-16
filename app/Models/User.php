@@ -18,10 +18,13 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+    'name',
+    'username',
+    'email',
+    'password',
+    'profile_photo', // tambahkan ini
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -45,4 +48,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    
+
+    
+
+    public function histories()
+    {
+        return $this->hasMany(\App\Models\History::class);
+    }
+
+    public function bookmarks()
+    {
+        return $this->hasMany(\App\Models\Bookmark::class);
+    }
+    
+
 }

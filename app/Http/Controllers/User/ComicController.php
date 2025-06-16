@@ -14,10 +14,11 @@ class ComicController extends Controller
         return view('user.komiks.index', compact('komiks'));
     }
 
-    public function show($slug){
-        $comic = Comic::where('slug', $slug)->with(['genres', 'chapters' => fn ($q) => $q->orderBy('number', 'desc')])
-        ->firstOrFail();
-
+    public function show($slug)
+{
+    $comic = Comic::with(['genres', 'chapters'])
+                ->where('slug', $slug)
+                ->firstOrFail();
         return view('user.komiks.show', compact('comic'));
     }
 }
