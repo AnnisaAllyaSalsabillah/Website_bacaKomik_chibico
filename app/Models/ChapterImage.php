@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ChapterImage extends Model
 {
     protected $fillable = [
+        'chapter_id',
         'image_path',
         'page_number',
         'file_id',

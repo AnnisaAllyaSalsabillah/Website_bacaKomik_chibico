@@ -114,6 +114,16 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
                         </button>
+                        <!-- Tombol Chapters baru -->
+                        <button class="btn btn-sm btn-circle btn-ghost bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors duration-200" 
+                                onclick="manageChapters({{ $komik->id }})" 
+                                title="Manage Chapters"
+                                type="button"
+                                aria-label="Manage Chapters">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </button>
                         <button class="btn btn-sm btn-circle btn-ghost bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors duration-200" 
                                 onclick="editComic({{ $komik->id }})" 
                                 title="Edit Comic"
@@ -794,6 +804,43 @@
         document.getElementById('deleteForm').action = `/admin/komiks/${id}`;
         document.getElementById('deleteModal').showModal();
     }
+
+    function manageChapters(komikId) {
+    // Tampilkan loading indicator
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.innerHTML = `
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" id="chaptersLoadingOverlay">
+            <div class="bg-base-100 rounded-lg p-6 flex items-center gap-3 shadow-xl">
+                <div class="loading loading-spinner loading-md"></div>
+                <span class="text-sm font-medium">Membuka Chapters</span>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(loadingOverlay);
+
+    // Redirect ke halaman chapters dengan smooth transition
+    setTimeout(() => {
+        window.location.href = `/admin/komiks/${komikId}/chapters`;
+    }, 300);
+}
+
+// Fungsi untuk smooth scroll back dari chapter ke komik
+function backToComics() {
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.innerHTML = `
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" id="backLoadingOverlay">
+            <div class="bg-base-100 rounded-lg p-6 flex items-center gap-3 shadow-xl">
+                <div class="loading loading-spinner loading-md"></div>
+                <span class="text-sm font-medium">Kembali ke Komik</span>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(loadingOverlay);
+
+    setTimeout(() => {
+        window.location.href = '/admin/komiks';
+    }, 300);
+}
 
     setTimeout(() => {
         const alert = document.querySelector('.alert');

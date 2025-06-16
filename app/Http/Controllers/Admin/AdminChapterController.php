@@ -7,24 +7,25 @@ use App\Models\Chapter;
 use App\Models\ChapterImage;
 use App\Models\Comic;
 use Illuminate\Http\Request;
-use Illuminate\Http\Requests;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Http;    
+use Illuminate\Support\Facades\Http;
 
 class AdminChapterController extends Controller
 {
+    // TAMPILKAN LIST CHAPTER PER KOMIK
     public function index($id) {
         $komik = Comic::with('chapters')->findOrFail($id);
         $chapters = $komik->chapters()->latest()->get();
-
         return view('admin.chapters.index', compact('komik', 'chapters'));
     }
 
+    // HALAMAN CREATE CHAPTER
     public function create($id) {
         $komik = Comic::findOrFail($id);
         return view('admin.chapters.create', compact('komik'));
     }
 
+    // SIMPAN DATA CHAPTER
     public function store(Request $request, $id) {
         $request->validate([
             'chapter' => 'required|numeric',
@@ -45,8 +46,8 @@ class AdminChapterController extends Controller
                 $imagePath = $image->getPathname();
                 $imageName = $image->getClientOriginalName();
 
-                $response = Http::withBasicAuth(env('IMAGEKIT_PUBLIC_KEY'), env('IMAGEKIT_PRIVATE_KEY'))
-                    ->attach('file', file_get_contents($imagePath), $imageName)
+                $response = Http::withBasicAuth(env('IMAGEKIT_PRIVATE_KEY'), '')
+                    ->attach('file', fopen($imagePath, 'r'), $imageName)
                     ->post('https://upload.imagekit.io/api/v1/files/upload', [
                         'fileName' => $imageName,
                         'folder' => '/chibico/chapters',
@@ -54,13 +55,16 @@ class AdminChapterController extends Controller
 
                 if($response->successful()){
                     $imageUrl = $response->json()['url'];
+                    $fileId = $response->json()['fileId'];
 
                     ChapterImage::create([
                         'chapter_id' => $chapter->id,
                         'image_path' => $imageUrl,
-                        'file_id' => $response->json()['fileId'],
+                        'file_id' => $fileId,
                         'page_number' => $index + 1,
                     ]);
+                } else {
+                    return back()->withErrors(['images' => 'Gagal mengunggah salah satu image']);
                 }
             }
         }
@@ -68,12 +72,19 @@ class AdminChapterController extends Controller
         return redirect()->route('admin.chapters.index', $id)->with('success', 'Yippy, Chapter berhasil ditambahkan!');
     }
 
+    public function show($chapterId) {
+        $chapter = Chapter::with('images')->findOrFail($chapterId);
+        return response()->json(['chapter' => $chapter]);
+    }
+
+    // HALAMAN EDIT CHAPTER
     public function edit($id, $chapterId) {
         $komik = Comic::findOrFail($id);
         $chapter = $komik->chapters()->with('images')->findOrFail($chapterId);
         return view('admin.chapters.edit', compact('komik', 'chapter'));
     }
 
+    // UPDATE CHAPTER
     public function update(Request $request, $id, $chapterId) {
         $request->validate([
             'chapter' => 'required|numeric',
@@ -93,20 +104,22 @@ class AdminChapterController extends Controller
         ]);
 
         if($request->hasFile('images')){
+            // Hapus image lama di ImageKit
             foreach($chapter->images as $image){
                 if($image->file_id){
-                    Http::withBasicAuth(env('IMAGEKIT_PUBLIC_KEY'), env('IMAGEKIT_PRIVATE_KEY'))
+                    Http::withBasicAuth(env('IMAGEKIT_PRIVATE_KEY'), '')
                         ->delete("https://api.imagekit.io/v1/files/{$image->file_id}");
                 }
             }
             $chapter->images()->delete();
 
+            // Upload ulang images baru
             foreach($request->file('images') as $index => $image){
                 $imagePath = $image->getPathname();
                 $imageName = $image->getClientOriginalName();
 
-                $response = Http::withBasicAuth(env('IMAGEKIT_PUBLIC_KEY'), env('IMAGEKIT_PRIVATE_KEY'))
-                    ->attach('file', file_get_contents($imagePath), $imageName)
+                $response = Http::withBasicAuth(env('IMAGEKIT_PRIVATE_KEY'), '')
+                    ->attach('file', fopen($imagePath, 'r'), $imageName)
                     ->post('https://upload.imagekit.io/api/v1/files/upload', [
                         'fileName' => $imageName,
                         'folder' => "/chibico/chapters/{$chapter->slug}",
@@ -114,12 +127,15 @@ class AdminChapterController extends Controller
 
                 if($response->successful()){
                     $imageUrl = $response->json()['url'];
+                    $fileId = $response->json()['fileId'];
 
                     $chapter->images()->create([
                         'image_path' => $imageUrl,
-                        'file_id' => $response->json()['fileId'],
+                        'file_id' => $fileId,
                         'page_number' => $index + 1,
                     ]);
+                } else {
+                    return back()->withErrors(['images' => 'Gagal mengunggah salah satu image saat update']);
                 }
             }
         }
@@ -127,12 +143,13 @@ class AdminChapterController extends Controller
         return redirect()->route('admin.chapters.index', $id)->with('success', 'Yippy, Chapter berhasil diupdate!');
     }
 
+    // HAPUS CHAPTER
     public function destroy($id){
         $chapter = Chapter::with('images')->findOrFail($id);
 
         foreach($chapter->images as $image){
             if($image->file_id){
-                Http::withBasicAuth(env('IMAGEKIT_PUBLIC_KEY'), env('IMAGEKIT_PRIVATE_KEY'))
+                Http::withBasicAuth(env('IMAGEKIT_PRIVATE_KEY'), '')
                     ->delete("https://api.imagekit.io/v1/files/{$image->file_id}");
             }
         }
@@ -140,6 +157,5 @@ class AdminChapterController extends Controller
         $chapter->delete();
 
         return redirect()->back()->with('success', 'Chapter berhasil dihapus!');
-        
     }
 }

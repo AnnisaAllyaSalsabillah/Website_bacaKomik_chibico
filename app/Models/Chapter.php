@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 class Chapter extends Model
 {
     protected $fillable = [
+        'komik_id',
         'chapter',
         'title',
         'slug',
