@@ -174,7 +174,7 @@
 
         <!-- Chapters Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-            <div>
+            <div class="text-center">
                 <h2 class="text-2xl sm:text-3xl font-bold text-base-content mb-2">Chapters</h2>
                 <p class="text-base-content/70">Manage all chapters for this comic</p>
             </div>
@@ -468,23 +468,23 @@
 
 <!-- Edit Chapter Modal -->
 <dialog id="editChapterModal" class="modal">
-    <div class="modal-box w-11/12 max-w-4xl max-h-[90vh] p-0 overflow-hidden">
-        <!-- Modal Header -->
-        <div class="sticky top-0 z-10 bg-gradient-to-r from-warning to-orange-500 text-white p-6">
+    <div class="modal-box w-11/12 max-w-5xl max-h-[95vh] p-0 overflow-hidden bg-base-100 shadow-2xl">
+        <!-- Modal Header - Enhanced with Primary Theme -->
+        <div class="sticky top-0 z-10 bg-gradient-to-r from-primary via-primary to-primary-focus text-primary-content p-6">
             <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="p-2 bg-white/20 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="flex items-center gap-4">
+                    <div class="p-3 bg-primary-content/20 rounded-xl backdrop-blur-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
                     </div>
-                    <div>
-                        <h2 class="text-2xl font-bold">Edit Chapter</h2>
-                        <p class="text-white/80 text-sm">Update chapter information and images</p>
+                    <div class="space-y-1">
+                        <h2 class="text-2xl font-bold tracking-tight">Edit Chapter</h2>
+                        <p class="text-primary-content/80 text-sm font-medium">Update chapter information and manage images</p>
                     </div>
                 </div>
                 <form method="dialog">
-                    <button class="btn btn-sm btn-circle btn-ghost text-white hover:bg-white/20">
+                    <button class="btn btn-sm btn-circle btn-ghost text-primary-content hover:bg-primary-content/20 hover:rotate-90 transition-all duration-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -493,126 +493,201 @@
             </div>
         </div>
 
-        <!-- Modal Body -->
-        <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
-            <form id="editChapterForm" method="POST" enctype="multipart/form-data">
+        <!-- Modal Body - Improved Layout -->
+        <div class="p-6 overflow-y-auto max-h-[calc(95vh-140px)] space-y-8">
+            <form id="editChapterForm" method="POST" enctype="multipart/form-data" class="space-y-8">
                 @csrf
                 @method('PUT')
                 
-                <!-- Chapter Info Section -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-base">Chapter Number</span>
-                            <span class="label-text-alt text-xs text-error">*Required</span>
-                        </label>
-                        <input type="number" 
-                            name="chapter" 
-                            id="editChapterNumber"
-                            class="input input-bordered input-lg focus:ring-2 focus:ring-warning transition-all" 
-                            placeholder="Enter chapter number" 
-                            min="1"
-                            required>
-                    </div>
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-base">Chapter Title</span>
-                            <span class="label-text-alt text-xs text-error">*Required</span>
-                        </label>
-                        <input type="text" 
-                               name="title" 
-                               id="editChapterTitle"
-                               class="input input-bordered input-lg focus:ring-2 focus:ring-warning transition-all" 
-                               placeholder="Enter chapter title" 
-                               required>
-                    </div>
-                </div>
-
-                <!-- Slug Field -->
-                <div class="form-control mb-6">
-                    <label class="label">
-                        <span class="label-text font-semibold text-base">Chapter Slug</span>
-                        <span class="label-text-alt text-xs text-base-content/60">Auto-generated</span>
-                    </label>
-                    <input type="text" 
-                           name="slug" 
-                           id="editChapterSlug"
-                           class="input input-bordered input-lg focus:ring-2 focus:ring-warning transition-all" 
-                           placeholder="chapter-slug" 
-                           required>
-                </div>
-
-                <!-- Current Images Display -->
-                <div class="mb-8">
-                    <h4 class="font-semibold text-base mb-4">Current Images</h4>
-                    <div id="currentImagesContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
-                        <!-- Current images will be loaded here -->
-                    </div>
-                </div>
-
-                <!-- New Images Upload Section -->
-                <div class="form-control mb-8">
-                    <label class="label">
-                        <span class="label-text font-semibold text-base">Replace All Images</span>
-                        <span class="label-text-alt text-xs text-base-content/60">Optional - Leave empty to keep current images</span>
-                    </label>
-                    
-                    <!-- Custom Upload Area -->
-                    <div class="relative">
-                        <input type="file" 
-                               name="images[]" 
-                               multiple 
-                               accept="image/jpeg,image/png,image/jpg"
-                               class="hidden" 
-                               id="editChapterImages">
+                <!-- Chapter Info Section - Enhanced Cards -->
+                <div class="card bg-base-50 shadow-sm border border-base-200">
+                    <div class="card-body p-6">
+                        <h3 class="card-title text-lg font-semibold text-primary mb-4 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Chapter Information
+                        </h3>
                         
-                        <div id="editUploadArea" class="border-2 border-dashed border-base-300 hover:border-warning transition-all duration-300 rounded-xl p-8 text-center cursor-pointer group">
-                            <div class="space-y-4">
-                                <div class="mx-auto w-16 h-16 bg-warning/10 rounded-full flex items-center justify-center group-hover:bg-warning/20 transition-all">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-semibold text-base flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                                        </svg>
+                                        Chapter Number
+                                    </span>
+                                    <span class="label-text-alt text-xs text-error font-medium">*Required</span>
+                                </label>
+                                <input type="number" 
+                                    name="chapter" 
+                                    id="editChapterNumber"
+                                    class="input input-bordered input-lg focus:input-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 bg-base-100 hover:bg-base-50" 
+                                    placeholder="Enter chapter number" 
+                                    min="1"
+                                    required>
+                            </div>
+                            
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-semibold text-base flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        </svg>
+                                        Chapter Title
+                                    </span>
+                                    <span class="label-text-alt text-xs text-error font-medium">*Required</span>
+                                </label>
+                                <input type="text" 
+                                       name="title" 
+                                       id="editChapterTitle"
+                                       class="input input-bordered input-lg focus:input-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 bg-base-100 hover:bg-base-50" 
+                                       placeholder="Enter chapter title" 
+                                       required>
+                            </div>
+                        </div>
+
+                        <!-- Slug Field - Enhanced -->
+                        <div class="form-control mt-6">
+                            <label class="label">
+                                <span class="label-text font-semibold text-base flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                                     </svg>
+                                    Chapter Slug
+                                </span>
+                                <span class="label-text-alt text-xs text-base-content/60 font-medium">Auto-generated from title</span>
+                            </label>
+                            <input type="text" 
+                                   name="slug" 
+                                   id="editChapterSlug"
+                                   class="input input-bordered input-lg focus:input-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 bg-base-100 hover:bg-base-50" 
+                                   placeholder="chapter-slug" 
+                                   required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Images Section - Enhanced Design -->
+                <div class="card bg-gradient-to-br from-base-50 to-base-100 shadow-sm border border-base-200">
+                    <div class="card-body p-6">
+                        <h3 class="card-title text-lg font-semibold text-primary mb-4 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            Current Images
+                        </h3>
+                        
+                        <div id="currentImagesContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                            <!-- Current images will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Images Upload Section - Enhanced Design -->
+                <div class="card bg-gradient-to-br from-primary/5 to-primary/10 shadow-sm border border-primary/20">
+                    <div class="card-body p-6">
+                        <h3 class="card-title text-lg font-semibold text-primary mb-4 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            Replace All Images
+                            <span class="badge badge-primary badge-sm">Optional</span>
+                        </h3>
+                        
+                        <!-- Custom Upload Area - Enhanced -->
+                        <div class="relative">
+                            <input type="file" 
+                                   name="images[]" 
+                                   multiple 
+                                   accept="image/jpeg,image/png,image/jpg"
+                                   class="hidden" 
+                                   id="editChapterImages">
+                            
+                            <div id="editUploadArea" class="border-2 border-dashed border-primary/30 hover:border-primary hover:bg-primary/5 transition-all duration-300 rounded-2xl p-8 text-center cursor-pointer group relative overflow-hidden">
+                                <!-- Background Pattern -->
+                                <div class="absolute inset-0 opacity-5">
+                                    <div class="absolute inset-0 bg-gradient-to-br from-primary to-primary-focus"></div>
                                 </div>
-                                <div>
-                                    <p class="text-lg font-semibold text-base-content mb-2">Upload new images to replace all current images</p>
-                                    <p class="text-sm text-base-content/60">Support: JPEG, PNG, JPG • Max size: 2MB each</p>
+                                
+                                <div class="relative space-y-6">
+                                    <div class="mx-auto w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                        </svg>
+                                    </div>
+                                    
+                                    <div class="space-y-3">
+                                        <h4 class="text-xl font-bold text-primary">Upload New Images</h4>
+                                        <p class="text-base-content/70 text-sm leading-relaxed max-w-md mx-auto">
+                                            Select new images to replace all current chapter images. 
+                                            <span class="font-medium text-primary">Leave empty to keep existing images.</span>
+                                        </p>
+                                        <div class="flex flex-wrap justify-center gap-2 text-xs text-base-content/60">
+                                            <span class="badge badge-outline badge-sm">JPEG</span>
+                                            <span class="badge badge-outline badge-sm">PNG</span>
+                                            <span class="badge badge-outline badge-sm">JPG</span>
+                                            <span class="badge badge-outline badge-sm">Max 2MB each</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="button" class="btn btn-primary btn-lg gap-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300" id="editChooseImagesBtn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        Choose Images
+                                    </button>
                                 </div>
-                                <button type="button" class="btn btn-warning btn-outline" id="editChooseImagesBtn">
-                                    Choose New Images
+                            </div>
+                        </div>
+                        
+                        <!-- Preview Area for New Images - Enhanced -->
+                        <div id="editImagePreview" class="hidden mt-8 animate-fade-in">
+                            <div class="flex items-center justify-between mb-6">
+                                <h4 class="font-bold text-base text-primary flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    New Images Preview
+                                </h4>
+                                <button type="button" id="editClearImages" class="btn btn-sm btn-ghost text-error hover:bg-error/10 gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                    Clear All
                                 </button>
+                            </div>
+                            <div id="editPreviewContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                <!-- Preview items will be inserted here -->
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Preview Area for New Images -->
-                    <div id="editImagePreview" class="hidden mt-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h4 class="font-semibold text-base">New Images Preview</h4>
-                            <button type="button" id="editClearImages" class="btn btn-sm btn-ghost text-error">
-                                Clear All
-                            </button>
-                        </div>
-                        <div id="editPreviewContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                            <!-- Preview items will be inserted here -->
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Form Actions -->
-                <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-base-200">
-                    <button type="button" 
-                            onclick="document.getElementById('editChapterModal').close()" 
-                            class="btn btn-ghost btn-lg order-2 sm:order-1">
-                        Cancel
-                    </button>
-                    <button type="submit" 
-                            class="btn btn-warning btn-lg gap-2 order-1 sm:order-2 sm:ml-auto"
-                            id="editSubmitBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        Update Chapter
-                    </button>
+                <!-- Form Actions - Enhanced -->
+                <div class="card bg-base-100 shadow-sm border border-base-200">
+                    <div class="card-body p-6">
+                        <div class="flex flex-col sm:flex-row gap-4 justify-end">
+                            <button type="button" 
+                                    onclick="document.getElementById('editChapterModal').close()" 
+                                    class="btn btn-ghost btn-lg gap-2 order-2 sm:order-1 hover:bg-base-200 transition-all duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                Cancel
+                            </button>
+                            <button type="submit" 
+                                    class="btn btn-primary btn-lg gap-2 order-1 sm:order-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                                    id="editSubmitBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Update Chapter
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -688,11 +763,27 @@
         imagePreview.classList.remove('hidden');
         previewContainer.innerHTML = '';
 
+        // Create placeholders for each file first to maintain order
+        const filePreviews = Array.from(files).map((file, index) => {
+            const previewItem = document.createElement('div');
+            previewItem.className = 'relative group';
+            previewItem.innerHTML = `
+                <div class="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
+                    <div class="loading loading-spinner loading-sm"></div>
+                </div>
+                <div class="absolute bottom-2 left-2 badge badge-primary badge-sm">
+                    Page ${index + 1}
+                </div>
+            `;
+            previewContainer.appendChild(previewItem);
+            return { element: previewItem, index };
+        });
+
+        // Now load images and update the corresponding placeholder
         Array.from(files).forEach((file, index) => {
             const reader = new FileReader();
             reader.onload = function(e) {
-                const previewItem = document.createElement('div');
-                previewItem.className = 'relative group';
+                const previewItem = filePreviews[index].element;
                 previewItem.innerHTML = `
                     <div class="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
                         <img src="${e.target.result}" 
@@ -710,12 +801,10 @@
                         Page ${index + 1}
                     </div>
                 `;
-                previewContainer.appendChild(previewItem);
             };
             reader.readAsDataURL(file);
         });
     }
-
     // Global function to remove image
     function removeImage(index) {
         const fileInput = document.getElementById('chapterImages');
@@ -724,11 +813,12 @@
         const files = Array.from(fileInput.files);
         files.splice(index, 1);
         
-        // Create new FileList
+        // Create new FileList maintaining order
         const dt = new DataTransfer();
         files.forEach(file => dt.items.add(file));
         fileInput.files = dt.files;
         
+        // Re-render preview to update indices
         updateImagePreview();
         showToast('Gambar dihapus', 'info');
     }
@@ -1168,11 +1258,27 @@ function updateEditImagePreview() {
     imagePreview.classList.remove('hidden');
     previewContainer.innerHTML = '';
 
+    // Create placeholders for each file first to maintain order
+    const filePreviews = Array.from(files).map((file, index) => {
+        const previewItem = document.createElement('div');
+        previewItem.className = 'relative group';
+        previewItem.innerHTML = `
+            <div class="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
+                <div class="loading loading-spinner loading-sm"></div>
+            </div>
+            <div class="absolute bottom-2 left-2 badge badge-warning badge-sm">
+                Page ${index + 1}
+            </div>
+        `;
+        previewContainer.appendChild(previewItem);
+        return { element: previewItem, index };
+    });
+
+    // Now load images and update the corresponding placeholder
     Array.from(files).forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = function(e) {
-            const previewItem = document.createElement('div');
-            previewItem.className = 'relative group';
+            const previewItem = filePreviews[index].element;
             previewItem.innerHTML = `
                 <div class="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
                     <img src="${e.target.result}" 
@@ -1190,7 +1296,6 @@ function updateEditImagePreview() {
                     Page ${index + 1}
                 </div>
             `;
-            previewContainer.appendChild(previewItem);
         };
         reader.readAsDataURL(file);
     });
@@ -1204,11 +1309,12 @@ function removeEditImage(index) {
     const files = Array.from(fileInput.files);
     files.splice(index, 1);
     
-    // Create new FileList
+    // Create new FileList maintaining order
     const dt = new DataTransfer();
     files.forEach(file => dt.items.add(file));
     fileInput.files = dt.files;
     
+    // Re-render preview to update indices
     updateEditImagePreview();
     showToast('Gambar dihapus', 'info');
 }
@@ -1418,7 +1524,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     .animate-fade-in {
-        animation: fade-in 0.6s ease-out;
+        animation: fade-in 0.5s ease-out;
     }
     
     .line-clamp-2 {
@@ -1482,6 +1588,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .modal-box {
         scrollbar-width: thin;
         scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        scrool-behavior: smooth;
     }
 
     .modal-box::-webkit-scrollbar {
