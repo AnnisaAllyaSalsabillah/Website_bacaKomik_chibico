@@ -428,7 +428,7 @@
                         Cancel
                     </button>
                     <button type="submit" 
-                            class="btn btn-primary btn-lg gap-2 order-1 sm:order-2 sm:ml-auto"
+                            class="btn btn-primary btn-lg gap-2 order-1 sm:order-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                             id="submitBtn">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

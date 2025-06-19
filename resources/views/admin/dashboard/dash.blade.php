@@ -8,13 +8,15 @@
     </a>
   </div>
   <div class="navbar-end">
-    <button class="btn btn-ghost text-white">
-      <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24" fill="none" stroke="#d7dae1" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16 17l5-5m0 0l-5-5m5 5H9" />
-        <path stroke-linecap="round" stroke-linejoin="round" d="M13 21H5a2 2 0 01-2-2V5a2 2 0 012-2h8" />
-      </svg>
-
-    </button>
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="btn btn-ghost text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24" fill="none" stroke="#d7dae1" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 17l5-5m0 0l-5-5m5 5H9" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 21H5a2 2 0 01-2-2V5a2 2 0 012-2h8" />
+            </svg>
+        </button>
+    </form>
   </div>
 </div>
 
