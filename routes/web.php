@@ -68,6 +68,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('chapters/{chapterId}/images', [AdminChapterController::class, 'getImages'])->name('chapters.images');
 
          Route::get('chapters/{chapterId}', [AdminChapterController::class, 'show'])->name('chapters.show');
+
+         Route::get('chapters/{chapterId}/view', [AdminChapterController::class, 'viewChapter'])->name('chapters.view');
     });
 
 });

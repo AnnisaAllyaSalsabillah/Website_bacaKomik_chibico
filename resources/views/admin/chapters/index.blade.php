@@ -231,9 +231,10 @@
                                 </svg>
                             </button>
                             
-                            <a href="{{ route('admin.chapters.edit', [$komik->id, $chapter->id]) }}" 
-                               class="btn btn-circle btn-lg btn-warning shadow-xl transform hover:scale-110 transition-all"
-                               title="Edit Chapter">
+                            <a href="javascript:void(0)" 
+                                onclick="editChapter({{ $komik->id }}, {{ $chapter->id }})"
+                                class="btn btn-circle btn-lg btn-warning shadow-xl transform hover:scale-110 transition-all"
+                                title="Edit Chapter">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
@@ -461,6 +462,159 @@
             </div>
             
             <div id="chapterImages" class="space-y-6"></div>
+        </div>
+    </div>
+</dialog>
+
+<!-- Edit Chapter Modal -->
+<dialog id="editChapterModal" class="modal">
+    <div class="modal-box w-11/12 max-w-4xl max-h-[90vh] p-0 overflow-hidden">
+        <!-- Modal Header -->
+        <div class="sticky top-0 z-10 bg-gradient-to-r from-warning to-orange-500 text-white p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-white/20 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold">Edit Chapter</h2>
+                        <p class="text-white/80 text-sm">Update chapter information and images</p>
+                    </div>
+                </div>
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost text-white hover:bg-white/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+            <form id="editChapterForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                
+                <!-- Chapter Info Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold text-base">Chapter Number</span>
+                            <span class="label-text-alt text-xs text-error">*Required</span>
+                        </label>
+                        <input type="number" 
+                            name="chapter" 
+                            id="editChapterNumber"
+                            class="input input-bordered input-lg focus:ring-2 focus:ring-warning transition-all" 
+                            placeholder="Enter chapter number" 
+                            min="1"
+                            required>
+                    </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold text-base">Chapter Title</span>
+                            <span class="label-text-alt text-xs text-error">*Required</span>
+                        </label>
+                        <input type="text" 
+                               name="title" 
+                               id="editChapterTitle"
+                               class="input input-bordered input-lg focus:ring-2 focus:ring-warning transition-all" 
+                               placeholder="Enter chapter title" 
+                               required>
+                    </div>
+                </div>
+
+                <!-- Slug Field -->
+                <div class="form-control mb-6">
+                    <label class="label">
+                        <span class="label-text font-semibold text-base">Chapter Slug</span>
+                        <span class="label-text-alt text-xs text-base-content/60">Auto-generated</span>
+                    </label>
+                    <input type="text" 
+                           name="slug" 
+                           id="editChapterSlug"
+                           class="input input-bordered input-lg focus:ring-2 focus:ring-warning transition-all" 
+                           placeholder="chapter-slug" 
+                           required>
+                </div>
+
+                <!-- Current Images Display -->
+                <div class="mb-8">
+                    <h4 class="font-semibold text-base mb-4">Current Images</h4>
+                    <div id="currentImagesContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
+                        <!-- Current images will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- New Images Upload Section -->
+                <div class="form-control mb-8">
+                    <label class="label">
+                        <span class="label-text font-semibold text-base">Replace All Images</span>
+                        <span class="label-text-alt text-xs text-base-content/60">Optional - Leave empty to keep current images</span>
+                    </label>
+                    
+                    <!-- Custom Upload Area -->
+                    <div class="relative">
+                        <input type="file" 
+                               name="images[]" 
+                               multiple 
+                               accept="image/jpeg,image/png,image/jpg"
+                               class="hidden" 
+                               id="editChapterImages">
+                        
+                        <div id="editUploadArea" class="border-2 border-dashed border-base-300 hover:border-warning transition-all duration-300 rounded-xl p-8 text-center cursor-pointer group">
+                            <div class="space-y-4">
+                                <div class="mx-auto w-16 h-16 bg-warning/10 rounded-full flex items-center justify-center group-hover:bg-warning/20 transition-all">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-lg font-semibold text-base-content mb-2">Upload new images to replace all current images</p>
+                                    <p class="text-sm text-base-content/60">Support: JPEG, PNG, JPG • Max size: 2MB each</p>
+                                </div>
+                                <button type="button" class="btn btn-warning btn-outline" id="editChooseImagesBtn">
+                                    Choose New Images
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preview Area for New Images -->
+                    <div id="editImagePreview" class="hidden mt-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-semibold text-base">New Images Preview</h4>
+                            <button type="button" id="editClearImages" class="btn btn-sm btn-ghost text-error">
+                                Clear All
+                            </button>
+                        </div>
+                        <div id="editPreviewContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                            <!-- Preview items will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-base-200">
+                    <button type="button" 
+                            onclick="document.getElementById('editChapterModal').close()" 
+                            class="btn btn-ghost btn-lg order-2 sm:order-1">
+                        Cancel
+                    </button>
+                    <button type="submit" 
+                            class="btn btn-warning btn-lg gap-2 order-1 sm:order-2 sm:ml-auto"
+                            id="editSubmitBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Update Chapter
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </dialog>
@@ -891,83 +1045,331 @@
 
     // View chapter images with enhanced loading
     function viewChapter(chapterId) {
-        const modal = document.getElementById('viewChapterModal');
-        const loading = document.getElementById('chapterLoading');
-        const content = document.getElementById('chapterContent');
+        // Show loading overlay
+        const loadingOverlay = document.createElement('div');
+        loadingOverlay.innerHTML = `
+            <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" id="viewLoadingOverlay">
+                <div class="bg-base-100 rounded-lg p-6 flex items-center gap-3 shadow-xl">
+                    <div class="loading loading-spinner loading-md"></div>
+                    <span class="text-sm font-medium">Loading Chapter...</span>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(loadingOverlay);
+
+        // Navigate to chapter view page
+        setTimeout(() => {
+            window.location.href = `/admin/komiks/{{ $komik->id }}/chapters/${chapterId}/view`;
+        }, 500);
+    }
+
+    // Global function untuk edit chapter
+function editChapter(komikId, chapterId) {
+    console.log('Edit chapter:', komikId, chapterId);
+    
+    const modal = document.getElementById('editChapterModal');
+    const form = document.getElementById('editChapterForm');
+    
+    if (!modal || !form) {
+        console.error('Modal atau form tidak ditemukan');
+        return;
+    }
+
+    // Set form action URL
+    form.action = `/admin/komiks/${komikId}/chapters/${chapterId}`;
+    
+    // Show modal dengan loading state
+    modal.showModal();
+    
+    // Load chapter data
+    fetch(`/admin/komiks/${komikId}/chapters/${chapterId}/view`)
+        .then(response => response.json())
+        .then(data => {
+            const chapter = data.chapter;
+            
+            // Populate form fields
+            document.getElementById('editChapterNumber').value = chapter.chapter;
+            document.getElementById('editChapterTitle').value = chapter.title;
+            document.getElementById('editChapterSlug').value = chapter.slug;
+            
+            // Load current images
+            loadCurrentImages(chapter.images);
+            
+            // Clear new image selection
+            const fileInput = document.getElementById('editChapterImages');
+            if (fileInput) {
+                fileInput.value = '';
+                updateEditImagePreview();
+            }
+        })
+        .catch(error => {
+            console.error('Error loading chapter:', error);
+            showToast('Error loading chapter data', 'error');
+            modal.close();
+        });
+}
+
+// Function untuk load current images
+function loadCurrentImages(images) {
+    const container = document.getElementById('currentImagesContainer');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    if (!images || images.length === 0) {
+        container.innerHTML = `
+            <div class="col-span-full text-center py-8">
+                <p class="text-base-content/60">No images found</p>
+            </div>
+        `;
+        return;
+    }
+    
+    images.forEach((image, index) => {
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'relative group';
+        imageDiv.innerHTML = `
+            <div class="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
+                <img src="${image.image_path}" 
+                    alt="Page ${image.page_number}" 
+                    class="w-full h-full object-cover">
+            </div>
+            <div class="absolute bottom-2 left-2 badge badge-warning badge-sm">
+                Page ${image.page_number}
+            </div>
+        `;
+        container.appendChild(imageDiv);
+    });
+}
+
+// Function untuk update preview edit images
+function updateEditImagePreview() {
+    const fileInput = document.getElementById('editChapterImages');
+    const imagePreview = document.getElementById('editImagePreview');
+    const previewContainer = document.getElementById('editPreviewContainer');
+    
+    if (!fileInput || !imagePreview || !previewContainer) {
+        return;
+    }
+    
+    const files = fileInput.files;
+    
+    if (files.length === 0) {
+        imagePreview.classList.add('hidden');
+        previewContainer.innerHTML = '';
+        return;
+    }
+
+    imagePreview.classList.remove('hidden');
+    previewContainer.innerHTML = '';
+
+    Array.from(files).forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const previewItem = document.createElement('div');
+            previewItem.className = 'relative group';
+            previewItem.innerHTML = `
+                <div class="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
+                    <img src="${e.target.result}" 
+                        alt="Page ${index + 1}" 
+                        class="w-full h-full object-cover">
+                </div>
+                <button type="button" 
+                        class="absolute top-2 right-2 btn btn-circle btn-sm btn-error opacity-0 group-hover:opacity-100 transition-opacity"
+                        onclick="removeEditImage(${index})">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <div class="absolute bottom-2 left-2 badge badge-warning badge-sm">
+                    Page ${index + 1}
+                </div>
+            `;
+            previewContainer.appendChild(previewItem);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+// Function untuk remove edit image
+function removeEditImage(index) {
+    const fileInput = document.getElementById('editChapterImages');
+    if (!fileInput) return;
+    
+    const files = Array.from(fileInput.files);
+    files.splice(index, 1);
+    
+    // Create new FileList
+    const dt = new DataTransfer();
+    files.forEach(file => dt.items.add(file));
+    fileInput.files = dt.files;
+    
+    updateEditImagePreview();
+    showToast('Gambar dihapus', 'info');
+}
+
+// Event listeners untuk edit chapter (tambahkan ke DOMContentLoaded)
+document.addEventListener('DOMContentLoaded', function() {
+    // ... existing code ...
+    
+    // Edit chapter form handlers
+    const editUploadArea = document.getElementById('editUploadArea');
+    const editFileInput = document.getElementById('editChapterImages');
+    const editChooseImagesBtn = document.getElementById('editChooseImagesBtn');
+    const editClearImagesBtn = document.getElementById('editClearImages');
+    const editForm = document.getElementById('editChapterForm');
+
+    // Handle click pada button "Choose Images" untuk edit
+    if (editChooseImagesBtn && editFileInput) {
+        editChooseImagesBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            editFileInput.click();
+        });
+    }
+
+    // Upload area click handler untuk edit
+    if (editUploadArea && editFileInput) {
+        editUploadArea.addEventListener('click', function(e) {
+            if (e.target !== editChooseImagesBtn && !e.target.closest('button')) {
+                e.preventDefault();
+                editFileInput.click();
+            }
+        });
+    }
+
+    // Drag and drop untuk edit
+    if (editUploadArea) {
+        editUploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            editUploadArea.classList.add('border-warning', 'bg-warning/5');
+        });
+
+        editUploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            editUploadArea.classList.remove('border-warning', 'bg-warning/5');
+        });
+
+        editUploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            editUploadArea.classList.remove('border-warning', 'bg-warning/5');
+            
+            const files = Array.from(e.dataTransfer.files);
+            handleEditFileSelection(files);
+        });
+    }
+
+    // File input change handler untuk edit
+    if (editFileInput) {
+        editFileInput.addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            
+            if (files.length > 0) {
+                const validFiles = files.filter(validateFile);
+                if (validFiles.length !== files.length) {
+                    const dt = new DataTransfer();
+                    validFiles.forEach(file => dt.items.add(file));
+                    editFileInput.files = dt.files;
+                }
+                updateEditImagePreview();
+                if (validFiles.length > 0) {
+                    showToast(`${validFiles.length} gambar baru dipilih!`, 'success');
+                }
+            } else {
+                updateEditImagePreview();
+            }
+        });
+    }
+
+    // Clear images handler untuk edit
+    if (editClearImagesBtn && editFileInput) {
+        editClearImagesBtn.addEventListener('click', function() {
+            editFileInput.value = '';
+            updateEditImagePreview();
+            showToast('Gambar baru dihapus', 'info');
+        });
+    }
+
+    // Auto-generate slug ketika title berubah di edit form
+    const editTitleInput = document.getElementById('editChapterTitle');
+    const editChapterNumberInput = document.getElementById('editChapterNumber');
+    const editSlugInput = document.getElementById('editChapterSlug');
+    
+    if (editTitleInput && editChapterNumberInput && editSlugInput) {
+        function updateEditSlug() {
+            const chapter = editChapterNumberInput.value;
+            const title = editTitleInput.value;
+            if (chapter && title) {
+                const slug = `ch-${chapter}-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`;
+                editSlugInput.value = slug;
+            }
+        }
         
-        if (loading) loading.classList.remove('hidden');
-        if (content) content.classList.add('hidden');
-        if (modal) modal.showModal();
+        editTitleInput.addEventListener('input', updateEditSlug);
+        editChapterNumberInput.addEventListener('input', updateEditSlug);
+    }
+
+    // Edit form submission handler
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            const chapterNumber = editForm.querySelector('input[name="chapter"]')?.value;
+            const chapterTitle = editForm.querySelector('input[name="title"]')?.value;
+            const chapterSlug = editForm.querySelector('input[name="slug"]')?.value;
+            
+            if (!chapterNumber || !chapterTitle || !chapterSlug) {
+                e.preventDefault();
+                showToast('Harap lengkapi semua field yang required!', 'error');
+                return false;
+            }
+
+            if (parseInt(chapterNumber) < 1) {
+                e.preventDefault();
+                showToast('Nomor chapter harus lebih dari 0!', 'error');
+                return false;
+            }
+
+            const editSubmitBtn = document.getElementById('editSubmitBtn');
+            if (editSubmitBtn) {
+                editSubmitBtn.disabled = true;
+                editSubmitBtn.innerHTML = `
+                    <div class="loading loading-spinner loading-sm"></div>
+                    Updating Chapter...
+                `;
+            }
+
+            return true;
+        });
+    }
+});
+
+    // Function untuk handle file selection di edit
+    function handleEditFileSelection(files) {
+        if (!files || files.length === 0) {
+            return;
+        }
         
-        // Perbaikan endpoint sesuai dengan controller yang ada
-        fetch(`/admin/chapters/${chapterId}/view`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load chapter');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const chapter = data.chapter;
+        const validFiles = Array.from(files).filter(validateFile);
+
+        if (validFiles.length > 0) {
+            const fileInput = document.getElementById('editChapterImages');
+            if (fileInput) {
+                const dt = new DataTransfer();
+                validFiles.forEach(file => dt.items.add(file));
+                fileInput.files = dt.files;
                 
-                const chapterTitle = document.getElementById('chapterTitle');
-                const chapterInfo = document.getElementById('chapterInfo');
-                
-                if (chapterTitle) {
-                    chapterTitle.textContent = `Chapter ${chapter.chapter}: ${chapter.title}`;
-                }
-                if (chapterInfo) {
-                    const releaseDate = chapter.release_at ? new Date(chapter.release_at).toLocaleDateString() : 'Not released';
-                    chapterInfo.textContent = `${chapter.images.length} pages • Released: ${releaseDate}`;
-                }
-                
-                const imagesContainer = document.getElementById('chapterImages');
-                if (imagesContainer) {
-                    imagesContainer.innerHTML = '';
-                    
-                    if (chapter.images && chapter.images.length > 0) {
-                        chapter.images.forEach((image, index) => {
-                            const imageDiv = document.createElement('div');
-                            imageDiv.className = 'text-center';
-                            imageDiv.style.animationDelay = `${index * 0.1}s`;
-                            imageDiv.innerHTML = `
-                                <div class="mb-3">
-                                    <span class="badge badge-primary badge-lg">Page ${image.page_number}</span>
-                                </div>
-                                <img src="${image.image_path}" 
-                                    alt="Page ${image.page_number}" 
-                                    class="max-w-full h-auto rounded-lg shadow-lg mx-auto animate-fade-in"
-                                    loading="lazy" />
-                            `;
-                            imagesContainer.appendChild(imageDiv);
-                        });
-                    } else {
-                        imagesContainer.innerHTML = `
-                            <div class="text-center py-12">
-                                <div class="text-6xl mb-4">📄</div>
-                                <h3 class="text-xl font-bold mb-2">No Images</h3>
-                                <p class="text-base-content/70">This chapter doesn't have any images yet.</p>
-                            </div>
-                        `;
-                    }
-                }
-                
-                if (loading) loading.classList.add('hidden');
-                if (content) content.classList.remove('hidden');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                if (loading) {
-                    loading.innerHTML = `
-                        <div class="text-center py-16">
-                            <div class="text-error text-6xl mb-4">⚠️</div>
-                            <h3 class="text-xl font-bold mb-3 text-error">Error Loading Chapter</h3>
-                            <p class="text-base-content/70 mb-4">Failed to load chapter images</p>
-                            <button onclick="viewChapter(${chapterId})" class="btn btn-primary">Try Again</button>
-                        </div>
-                    `;
-                }
-            });
+                updateEditImagePreview();
+                showToast(`${validFiles.length} gambar baru dipilih!`, 'success');
+            }
+        } else {
+            const fileInput = document.getElementById('editChapterImages');
+            if (fileInput) {
+                fileInput.value = '';
+                updateEditImagePreview();
+            }
+        }
     }
 
     function deleteChapter(komikId, chapterId, chapterNumber, chapterTitle) {
@@ -979,8 +1381,8 @@
         }
         
         if (deleteChapterForm) {
-            // Perbaikan route sesuai dengan controller
-            deleteChapterForm.action = `/admin/chapters/${chapterId}`;
+            // Perbaikan route sesuai dengan parameter controller yang benar
+            deleteChapterForm.action = `/admin/komiks/${komikId}/chapters/${chapterId}`;
         }
         
         const modal = document.getElementById('deleteChapterModal');

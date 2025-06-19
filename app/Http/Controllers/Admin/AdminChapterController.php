@@ -99,8 +99,8 @@ class AdminChapterController extends Controller
         $chapter->update([
             'chapter' => $request->chapter,
             'title' => $request->title,
-            'slug' => $request->slug ?? Str::slug('chapter-'.$request->chapter),
-            'release_at' => $request->release_at ?? now(),
+            'slug' => $request->slug ?? Str::slug('ch-'.$request->chapter.'-'.$request->title.'-'.Str::random(3)),
+            'release_at' => $request->release_at ?? $chapter->release_at,
         ]);
 
         if($request->hasFile('images')){
@@ -113,7 +113,7 @@ class AdminChapterController extends Controller
             }
             $chapter->images()->delete();
 
-            // Upload ulang images baru
+            // Upload ulang images baru dengan folder yang konsisten
             foreach($request->file('images') as $index => $image){
                 $imagePath = $image->getPathname();
                 $imageName = $image->getClientOriginalName();
@@ -122,7 +122,7 @@ class AdminChapterController extends Controller
                     ->attach('file', fopen($imagePath, 'r'), $imageName)
                     ->post('https://upload.imagekit.io/api/v1/files/upload', [
                         'fileName' => $imageName,
-                        'folder' => "/chibico/chapters/{$chapter->slug}",
+                        'folder' => '/chibico/chapters', // Konsisten dengan method store
                     ]);
 
                 if($response->successful()){
@@ -143,10 +143,27 @@ class AdminChapterController extends Controller
         return redirect()->route('admin.chapters.index', $id)->with('success', 'Yippy, Chapter berhasil diupdate!');
     }
 
-    // HAPUS CHAPTER
-    public function destroy($id){
-        $chapter = Chapter::with('images')->findOrFail($id);
+    public function getImages($id, $chapterId) {
+        $chapter = Chapter::with('images')->findOrFail($chapterId);
+        return response()->json([
+            'images' => $chapter->images->sortBy('page_number')->values()
+        ]);
+    }
 
+    public function viewChapter($id, $chapterId) {
+        $komik = Comic::findOrFail($id);
+        $chapter = Chapter::with(['images' => function($query) {
+            $query->orderBy('page_number', 'asc');
+        }])->where('komik_id', $id)->findOrFail($chapterId);
+        
+        return view('admin.chapters.view', compact('komik', 'chapter'));
+    }
+
+    // HAPUS CHAPTER
+    public function destroy($komikId, $chapterId){
+        $chapter = Chapter::with('images')->findOrFail($chapterId);
+
+        // Hapus semua images dari ImageKit
         foreach($chapter->images as $image){
             if($image->file_id){
                 Http::withBasicAuth(env('IMAGEKIT_PRIVATE_KEY'), '')
@@ -156,6 +173,6 @@ class AdminChapterController extends Controller
 
         $chapter->delete();
 
-        return redirect()->back()->with('success', 'Chapter berhasil dihapus!');
+        return redirect()->route('admin.chapters.index', $komikId)->with('success', 'Chapter berhasil dihapus!');
     }
 }
