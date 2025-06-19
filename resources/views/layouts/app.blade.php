@@ -41,13 +41,12 @@
 <body class="min-h-screen flex flex-col">
 
   <!-- Navbar -->
-  <header class="shadow-sm bg-base-100">
+  <header class="shadow-sm">
     <div class="navbar container mx-auto">
       <div class="navbar-start">
         <a href="/" class="text-xl font-bold btn btn-ghost lg:ml-">Chibico</a>
       </div>
 
-      <!-- Menu Tengah: hanya tampil di layar sm ke atas -->
       <div class="navbar-center hidden sm:flex flex-wrap justify-center gap-2">
         <ul class="flex flex-wrap gap-2 px-1">
           <li><a class="btn btn-sm btn-ghost" href="{{ route('home') }}">Home</a></li>
@@ -57,7 +56,6 @@
         </ul>
       </div>
 
-      <!-- Menu Hamburger: hanya tampil di layar kecil -->
       <div class="navbar-center sm:hidden">
         <div class="dropdown">
           <label tabindex="0" class="btn btn-ghost btn-circle">
@@ -77,14 +75,7 @@
       </div>
 
       <div class="navbar-end gap-2">
-        <!-- Search Form -->
-        <form class="hidden md:flex gap-2" role="search">
-          <input
-            type="text"
-            placeholder="Search Komik"
-            class="input input-bordered w-32 md:w-40 focus:w-64 transition-all duration-300 ease-in-out"
-          />
-        </form>
+        
 
         <!-- Profile -->
         <div class="btn btn-ghost btn-circle avatar">
@@ -100,7 +91,6 @@
             @else
               <div tabindex="0" role="button" class="dropdown dropdown-end">
                 <img src="{{ asset('/images/profile.png') }}" alt="Guest Profile" />
-                <!-- Jika belum login, tampilkan dropdown login/register -->
                 <ul tabindex="0" class="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-60 z-[1]">
                   <li class="text-sm text-gray-700 px-2">Kamu belum login.</li>
                   <li><button onclick="showLoginPrompt()" class="text-left w-full text-blue-600">Login / Register</button></li>
@@ -157,6 +147,5 @@
 </script>
 
 
-  
 </body>
 </html>
