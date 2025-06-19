@@ -1081,9 +1081,14 @@ function editChapter(komikId, chapterId) {
     // Show modal dengan loading state
     modal.showModal();
     
-    // Load chapter data
-    fetch(`/admin/komiks/${komikId}/chapters/${chapterId}/view`)
-        .then(response => response.json())
+    // Load chapter data dari endpoint yang benar
+    fetch(`/admin/komiks/${komikId}/chapters/${chapterId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             const chapter = data.chapter;
             

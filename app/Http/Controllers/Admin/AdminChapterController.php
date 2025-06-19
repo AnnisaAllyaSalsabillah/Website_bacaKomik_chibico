@@ -72,8 +72,11 @@ class AdminChapterController extends Controller
         return redirect()->route('admin.chapters.index', $id)->with('success', 'Yippy, Chapter berhasil ditambahkan!');
     }
 
-    public function show($chapterId) {
-        $chapter = Chapter::with('images')->findOrFail($chapterId);
+    public function show($komikId, $chapterId) {
+        $chapter = Chapter::with(['images' => function($query) {
+            $query->orderBy('page_number', 'asc');
+        }])->where('komik_id', $komikId)->findOrFail($chapterId);
+        
         return response()->json(['chapter' => $chapter]);
     }
 
