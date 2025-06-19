@@ -18,17 +18,10 @@ class DashboardController extends Controller
         $totalUser = User::count();
         $defaultComic = Comic::first();
 
-        $topUpvoteComics = Comic::withCount(['upvotes', 'chapters'])
-            ->with(['genres', 'user']) 
-            ->orderBy('upvotes_count', 'desc')
-            ->take(5)
-            ->get();
-
         return view('admin.dashboard.dash', [
             'totalComics' => $totalComics,
             'totalChapters' => $totalChapters,
             'totalUser' => $totalUser,
-            'topUpvoteComics' => $topUpvoteComics,
             'defaultComic' => $defaultComic
         ]);
     }
@@ -39,26 +32,7 @@ class DashboardController extends Controller
      * 
      * @return array
      */
-    public function getChartData()
-    {
-        // Data untuk chart mingguan/bulanan
-        $comicsPerMonth = Comic::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-            ->whereYear('created_at', now()->year)
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
-
-        $chaptersPerMonth = Chapter::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-            ->whereYear('created_at', now()->year)
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
-
-        return [
-            'comics_per_month' => $comicsPerMonth,
-            'chapters_per_month' => $chaptersPerMonth
-        ];
-    }
+    
 
     /**
      * 
@@ -71,11 +45,7 @@ class DashboardController extends Controller
             'totalComics' => Comic::count(),
             'totalChapters' => Chapter::count(),
             'totalUsers' => User::count(),
-            'totalUpvotes' => Upvote::count(),
-            'topComics' => Comic::withCount('upvotes')
-                ->orderBy('upvotes_count', 'desc')
-                ->take(5)
-                ->get(['id', 'title', 'upvotes_count'])
+            
         ]);
     }
 }

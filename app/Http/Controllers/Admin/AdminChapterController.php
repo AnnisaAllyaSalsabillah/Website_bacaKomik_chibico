@@ -12,20 +12,17 @@ use Illuminate\Support\Facades\Http;
 
 class AdminChapterController extends Controller
 {
-    // TAMPILKAN LIST CHAPTER PER KOMIK
     public function index($id) {
         $komik = Comic::with('chapters')->findOrFail($id);
         $chapters = $komik->chapters()->latest()->get();
         return view('admin.chapters.index', compact('komik', 'chapters'));
     }
 
-    // HALAMAN CREATE CHAPTER
     public function create($id) {
         $komik = Comic::findOrFail($id);
         return view('admin.chapters.create', compact('komik'));
     }
 
-    // SIMPAN DATA CHAPTER
     public function store(Request $request, $id) {
         $request->validate([
             'chapter' => 'required|numeric',
@@ -80,14 +77,12 @@ class AdminChapterController extends Controller
         return response()->json(['chapter' => $chapter]);
     }
 
-    // HALAMAN EDIT CHAPTER
     public function edit($id, $chapterId) {
         $komik = Comic::findOrFail($id);
         $chapter = $komik->chapters()->with('images')->findOrFail($chapterId);
         return view('admin.chapters.edit', compact('komik', 'chapter'));
     }
 
-    // UPDATE CHAPTER
     public function update(Request $request, $id, $chapterId) {
         $request->validate([
             'chapter' => 'required|numeric',
@@ -107,7 +102,6 @@ class AdminChapterController extends Controller
         ]);
 
         if($request->hasFile('images')){
-            // Hapus image lama di ImageKit
             foreach($chapter->images as $image){
                 if($image->file_id){
                     Http::withBasicAuth(env('IMAGEKIT_PRIVATE_KEY'), '')
@@ -116,7 +110,6 @@ class AdminChapterController extends Controller
             }
             $chapter->images()->delete();
 
-            // Upload ulang images baru dengan folder yang konsisten
             foreach($request->file('images') as $index => $image){
                 $imagePath = $image->getPathname();
                 $imageName = $image->getClientOriginalName();
@@ -125,7 +118,7 @@ class AdminChapterController extends Controller
                     ->attach('file', fopen($imagePath, 'r'), $imageName)
                     ->post('https://upload.imagekit.io/api/v1/files/upload', [
                         'fileName' => $imageName,
-                        'folder' => '/chibico/chapters', // Konsisten dengan method store
+                        'folder' => '/chibico/chapters', 
                     ]);
 
                 if($response->successful()){
@@ -162,11 +155,10 @@ class AdminChapterController extends Controller
         return view('admin.chapters.view', compact('komik', 'chapter'));
     }
 
-    // HAPUS CHAPTER
+
     public function destroy($komikId, $chapterId){
         $chapter = Chapter::with('images')->findOrFail($chapterId);
 
-        // Hapus semua images dari ImageKit
         foreach($chapter->images as $image){
             if($image->file_id){
                 Http::withBasicAuth(env('IMAGEKIT_PRIVATE_KEY'), '')
