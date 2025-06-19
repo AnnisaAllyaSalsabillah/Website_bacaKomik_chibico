@@ -39,12 +39,12 @@
   <!-- Total komik -->
   <div class="stat bg-base-100 shadow-lg rounded-2xl p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
     <div class="stat-figure text-primary">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block h-8 w-8 stroke-current">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block h-8 w-8 stroke-current text-secondary">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
       </svg>
     </div>
     <div class="stat-title text-sm sm:text-base">Total Komik</div>
-    <div class="stat-value text-primary text-2xl sm:text-3xl">{{ number_format($totalComics) }}</div>
+    <div class="stat-value text-secondary text-2xl sm:text-3xl">{{ number_format($totalComics) }}</div>
   </div>
 
   <!-- Total chapters -->

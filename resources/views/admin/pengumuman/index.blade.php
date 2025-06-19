@@ -10,7 +10,7 @@
             <h1 class="text-3xl font-bold text-base-content mb-2">📢 Panel Pengumuman</h1>
             <p class="text-base-content/70">Tinggal ketik, klik, dan... boom! Semua pembaca langsung tahu.</p>
         </div>
-        <button onclick="openCreateModal()" class="btn btn-primary gap-2 shadow-lg hover:shadow-xl transition-all duration-300">
+        <button onclick="openCreateModal()" class="btn btn-secondary gap-2 shadow-lg hover:shadow-xl transition-all duration-300">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
             </svg>
@@ -31,13 +31,13 @@
     <!-- Stats Cards -->
     <div class="stats stats-vertical lg:stats-horizontal shadow-xl mb-8 w-full">
         <div class="stat bg-gradient-to-br from-primary/10 to-primary/5">
-            <div class="stat-figure text-primary">
+            <div class="stat-figure text-secondary">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
                 </svg>
             </div>
             <div class="stat-title">Total Pengumuman</div>
-            <div class="stat-value text-primary">{{ $pengumuman->count() }}</div>
+            <div class="stat-value text-secondary">{{ $pengumuman->count() }}</div>
         </div>
         
         <div class="stat bg-gradient-to-br from-secondary/10 to-secondary/5">
@@ -83,7 +83,7 @@
                     class="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                     onerror="this.parentElement.style.display='none'">
                 <div class="absolute top-4 right-4">
-                    <div class="badge badge-primary badge-lg">{{ $item->created_at->diffForHumans() }}</div>
+                    <div class="badge badge-secondary badge-lg">{{ $item->created_at->diffForHumans() }}</div>
                 </div>
             </figure>
             @else
@@ -135,7 +135,7 @@
                     </svg>
                     <h3 class="text-2xl font-bold mb-2">Belum ada pengumuman</h3>
                     <p class="text-base-content/70 mb-6">Mulai dengan menambahkan pengumuman pertama untuk pembaca komik</p>
-                    <button onclick="openCreateModal()" class="btn btn-primary">Tambah Pengumuman Pertama</button>
+                    <button onclick="openCreateModal()" class="btn btn-secondary">Tambah Pengumuman Pertama</button>
                 </div>
             </div>
         </div>
@@ -197,7 +197,7 @@
             
             <div class="modal-action">
                 <button type="button" onclick="document.getElementById('pengumumanModal').close()" class="btn btn-ghost">Batal</button>
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-secondary">
                     <span id="submitText">Kirim</span>
                     <span id="loadingSpinner" class="loading loading-spinner loading-sm hidden"></span>
                 </button>
@@ -268,7 +268,7 @@ function openCreateModal() {
             return;
         }
         
-        // Reset modal content
+        // Reset content
         document.getElementById('modalTitle').textContent = '📝 Tambah Pengumuman Baru';
         form.action = '{{ route("admin.pengumuman.store") }}';
         document.getElementById('methodField').innerHTML = '';
@@ -352,7 +352,7 @@ function viewPengumuman(id) {
             <div class="text-center mb-6">
                 ${thumbnailHtml}
                 <h2 class="text-2xl font-bold mb-2">${pengumuman.title}</h2>
-                <div class="badge badge-primary">${pengumuman.formatted_date}</div>
+                <div class="badge badge-secondary">${pengumuman.formatted_date}</div>
             </div>
             <div class="prose max-w-none">
                 <p class="text-base-content/80 leading-relaxed">${pengumuman.content}</p>

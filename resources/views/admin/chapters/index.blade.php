@@ -2,22 +2,19 @@
 
 @section('content')
 <div class="min-h-screen bg-base-200">
-    <!-- Hero Section with Blurred Background -->
     <div class="relative overflow-hidden">
-        <!-- Blurred Background Image -->
         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80">
             <div class="absolute inset-0 bg-cover bg-center bg-no-repeat blur-sm scale-110 opacity-30"
                  style="background-image: url('{{ $komik->cover_image ?? '/images/no-cover.png' }}');">
             </div>
         </div>
         
-        <!-- Content Overlay -->
+        <!-- Content -->
         <div class="relative z-10 container mx-auto px-4 py-8">
-            <!-- Breadcrumb -->
             <div class="breadcrumbs text-sm mb-6">
                 <ul class="text-white/80">
                     <li>
-                        <button onclick="backToComics()" class="text-white hover:text-primary transition-colors duration-200 flex items-center gap-1">
+                        <button onclick="backToComics()" class="text-white hover:text-secondary transition-colors duration-200 flex items-center gap-1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
                             </svg>
@@ -28,9 +25,9 @@
                 </ul>
             </div>
 
-            <!-- Comic Info Section -->
+            <!-- Komik Info -->
             <div class="flex flex-col lg:flex-row gap-8 items-start">
-                <!-- Comic Cover -->
+                <!-- komik Cover -->
                 <div class="relative">
                     <div class="w-48 h-64 sm:w-56 sm:h-72 rounded-xl shadow-2xl overflow-hidden border-4 border-white/20">
                         <img src="{{ $komik->cover_image ?? '/images/no-cover.png' }}" 
@@ -38,7 +35,6 @@
                              class="w-full h-full object-cover" />
                     </div>
                     
-                    <!-- Status Badge -->
                     <div class="absolute -top-2 -right-2">
                         <div class="badge badge-{{ $komik->status === 'ongoing' ? 'success' : 'info' }} badge-lg shadow-lg">
                             {{ ucfirst($komik->status) }}
@@ -46,19 +42,18 @@
                     </div>
                 </div>
 
-                <!-- Comic Details -->
+                <!-- Komik Detail -->
                 <div class="flex-1 text-white min-w-0">
-                    <!-- Title -->
+                    <!-- Judul -->
                     <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
                         {{ $komik->title }}
                     </h1>
                     
-                    <!-- Subtitle/Alternative Title -->
+                    <!-- Judul alternative -->
                     @if($komik->alternative)
                     <p class="text-lg text-white/80 mb-4 font-medium">{{ $komik->alternative }}</p>
                     @endif
                     
-                    <!-- Meta Information Grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                         <!-- Author -->
                         @if($komik->author)
@@ -92,7 +87,7 @@
                             <span class="text-white font-medium text-lg">{{ $chapters->count() }}</span>
                         </div>
                         
-                        <!-- Release Year -->
+                        <!-- Tahun rilis -->
                         @if($komik->release_year)
                         <div class="flex flex-col">
                             <span class="text-white/60 text-sm uppercase tracking-wide font-semibold">Released</span>
@@ -100,20 +95,6 @@
                         </div>
                         @endif
                         
-                        <!-- Rating -->
-                        @if($komik->rating)
-                        <div class="flex flex-col">
-                            <span class="text-white/60 text-sm uppercase tracking-wide font-semibold">Rank</span>
-                            <div class="flex items-center gap-1">
-                                <span class="text-white font-medium">{{ number_format($komik->rank, 1) }}</span>
-                                <div class="rating rating-sm">
-                                    @for($i = 1; $i <= 5; $i++)
-                                    <input type="radio" class="mask mask-star-2 bg-orange-400" disabled {{ $i <= round($komik->rank) ? 'checked' : '' }} />
-                                    @endfor
-                                </div>
-                            </div>
-                        </div>
-                        @endif
                     </div>
                     
                     <!-- Genres -->
@@ -143,10 +124,9 @@
                     </div>
                     @endif
                     
-                    <!-- Action Buttons -->
                     <div class="flex flex-wrap gap-3">
                         <button onclick="openAddChapterModal()" 
-                               class="btn btn-primary btn-lg shadow-xl hover:shadow-2xl transition-all duration-300 gap-2 bg-white text-primary hover:bg-white/90">
+                               class="btn btn-secondary btn-lg shadow-xl hover:shadow-2xl transition-all duration-300 gap-2 bg-white text-secondary hover:bg-white/90">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
@@ -162,7 +142,6 @@
 <div class="min-h-screen bg-base-50">
     <!-- Chapters Section -->
     <div class="container mx-auto px-4 py-8">
-        <!-- Success Alert -->
         @if(session('success'))
         <div class="alert alert-success mb-6 shadow-lg animate-fade-in">
             <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
@@ -176,13 +155,13 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div class="text-center">
                 <h2 class="text-2xl sm:text-3xl font-bold text-base-content mb-2">Chapters</h2>
-                <p class="text-base-content/70">Manage all chapters for this comic</p>
+                <p class="text-base-content/70">Kelola semua chaptersnya disini~!</p>
             </div>
             
             <!-- Search Bar -->
             <div class="relative max-w-sm w-full sm:w-auto">
                 <input type="text" 
-                       placeholder="Search chapters..." 
+                       placeholder="Cari chapters..." 
                        class="input input-bordered w-full pl-10 pr-4 shadow-md focus:ring-2 focus:ring-primary transition-all"
                        id="searchChapter">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-base-content/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -191,12 +170,11 @@
             </div>
         </div>
 
-        <!-- Chapters Grid -->
         <div class="chapters-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             @if($chapters->count() > 0)
                 @foreach($chapters->sortBy('chapter') as $chapter)
                 <div class="chapter-card bg-base-100 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-base-300 group">
-                    <!-- Chapter Thumbnail -->
+                    <!-- cover chapter -->
                     <div class="relative aspect-[3/4] bg-gradient-to-br from-base-200 to-base-300 overflow-hidden">
                         @if($chapter->images->first())
                             <img src="{{ $chapter->images->first()->image_path }}" 
@@ -213,14 +191,12 @@
                             </div>
                         @endif
                         
-                        <!-- Chapter Number Badge -->
                         <div class="absolute top-3 left-3">
-                            <div class="badge badge-primary badge-lg font-bold shadow-lg">
+                            <div class="badge badge-secondary badge-lg font-bold shadow-lg">
                                 Ch. {{ $chapter->chapter }}
                             </div>
                         </div>
                         
-                        <!-- Action Buttons Overlay -->
                         <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-3">
                             <button onclick="viewChapter({{ $chapter->id }})" 
                                     class="btn btn-circle btn-lg btn-ghost text-white hover:bg-white/20 shadow-xl transform hover:scale-110 transition-all"
@@ -233,7 +209,7 @@
                             
                             <a href="javascript:void(0)" 
                                 onclick="editChapter({{ $komik->id }}, {{ $chapter->id }})"
-                                class="btn btn-circle btn-lg btn-warning shadow-xl transform hover:scale-110 transition-all"
+                                class="btn btn-circle btn-lg btn-secondary shadow-xl transform hover:scale-110 transition-all"
                                 title="Edit Chapter">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -253,7 +229,7 @@
                     <!-- Chapter Info -->
                     <div class="p-4 sm:p-5">
                         <div class="flex items-start justify-between gap-2 mb-3">
-                            <h3 class="font-bold text-lg text-primary flex-1 min-w-0">
+                            <h3 class="font-bold text-lg text-secondary flex-1 min-w-0">
                                 Chapter {{ $chapter->chapter }}
                             </h3>
                             <div class="badge badge-outline badge-sm shrink-0">
@@ -286,15 +262,15 @@
                     <div class="card bg-base-100 shadow-xl border border-base-200">
                         <div class="card-body text-center py-16">
                             <div class="text-8xl mb-6">📖</div>
-                            <h3 class="text-2xl font-bold mb-3">No Chapters Yet</h3>
-                            <p class="text-base-content/60 mb-8 text-lg">Start building your comic by adding the first chapter!</p>
+                            <h3 class="text-2xl font-bold mb-3">Yahh, Belum ada chapter saat ini</h3>
+                            <p class="text-base-content/60 mb-8 text-lg">Ayo mulai tambahkan chapter pertamamu!</p>
                             <div class="flex justify-center">
                                 <button onclick="openAddChapterModal()" 
-                                        class="btn btn-primary gap-2 px-6 py-2 shadow-lg hover:shadow-xl transition-all duration-300">
+                                        class="btn btn-secondary gap-2 px-6 py-2 shadow-lg hover:shadow-xl transition-all duration-300">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                     </svg>
-                                    Add Chapter
+                                    Tambah Chapter
                                 </button>
                             </div>
                         </div>
@@ -305,10 +281,9 @@
     </div>
 </div>
 
-<!-- Add Chapter Modal -->
+<!-- Add Chapter -->
 <dialog id="addChapterModal" class="modal">
     <div class="modal-box w-11/12 max-w-4xl max-h-[90vh] p-0 overflow-hidden">
-        <!-- Modal Header -->
         <div class="sticky top-0 z-10 bg-gradient-to-r from-primary to-secondary text-white p-6">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
@@ -318,8 +293,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-bold">Add New Chapter</h2>
-                        <p class="text-white/80 text-sm">Create a new chapter for {{ $komik->title }}</p>
+                        <h2 class="text-2xl font-bold">Tambah Chapter baru</h2>
+                        <p class="text-white/80 text-sm">Buat chapter baru untuk {{ $komik->title }}</p>
                     </div>
                 </div>
                 <form method="dialog">
@@ -332,7 +307,6 @@
             </div>
         </div>
 
-        <!-- Modal Body -->
         <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
             <form action="{{ route('admin.chapters.store', $komik->id) }}" method="POST" enctype="multipart/form-data" id="addChapterForm">
                 @csrf
@@ -341,8 +315,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold text-base">Chapter Number</span>
-                            <span class="label-text-alt text-xs text-error">*Required</span>
+                            <span class="label-text font-semibold text-base">Chapter ke-</span>
+                            <span class="label-text-alt text-xs text-error">*Wajib</span>
                         </label>
                         <input type="number" 
                             name="chapter" 
@@ -357,8 +331,8 @@
                     </div>
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold text-base">Chapter Title</span>
-                            <span class="label-text-alt text-xs text-error">*Required</span>
+                            <span class="label-text font-semibold text-base">Headline chapter</span>
+                            <span class="label-text-alt text-xs text-error">*Wajib</span>
                         </label>
                         <input type="text" 
                                name="title" 
@@ -366,19 +340,18 @@
                                placeholder="Enter chapter title" 
                                required>
                         <label class="label">
-                            <span class="label-text-alt text-xs text-base-content/60">Descriptive title for this chapter</span>
+                            <span class="label-text-alt text-xs text-base-content/60">Deskripsikan headline untuk chapter ini...</span>
                         </label>
                     </div>
                 </div>
 
-                <!-- Images Upload Section -->
+                <!-- Images Upload -->
                 <div class="form-control mb-8">
                     <label class="label">
-                        <span class="label-text font-semibold text-base">Chapter Images</span>
-                        <span class="label-text-alt text-xs text-error">*Required</span>
+                        <span class="label-text font-semibold text-base">Konten chapter</span>
+                        <span class="label-text-alt text-xs text-error">*Wajib</span>
                     </label>
                     
-                    <!-- Custom Upload Area -->
                     <div class="relative">
                         <input type="file" 
                                name="images[]" 
@@ -388,19 +361,19 @@
                                id="chapterImages"
                                required>
                         
-                        <div id="uploadArea" class="border-2 border-dashed border-base-300 hover:border-primary transition-all duration-300 rounded-xl p-8 text-center cursor-pointer group">
+                        <div id="uploadArea" class="border-2 border-dashed border-base-300 hover:border-secondary hover:bg-secondary/5 transition-all duration-300 rounded-xl p-8 text-center cursor-pointer group">
                             <div class="space-y-4">
-                                <div class="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-all">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div class="mx-auto w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center group-hover:bg-secondary/20 transition-all">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-lg font-semibold text-base-content mb-2">Drop your images here or click to browse</p>
+                                    <p class="text-lg font-semibold text-base-content mb-2">Drop gambarmu disini atau klik untuk browse</p>
                                     <p class="text-sm text-base-content/60">Support: JPEG, PNG, JPG • Max size: 2MB each</p>
                                 </div>
-                                <button type="button" class="btn btn-primary btn-outline" id="chooseImagesBtn">
-                                    Choose Images
+                                <button type="button" class="btn btn-secondary btn-outline" id="chooseImagesBtn">
+                                    Pilih
                                 </button>
                             </div>
                         </div>
@@ -409,13 +382,13 @@
                     <!-- Preview Area -->
                     <div id="imagePreview" class="hidden mt-6">
                         <div class="flex items-center justify-between mb-4">
-                            <h4 class="font-semibold text-base">Selected Images</h4>
+                            <h4 class="font-semibold text-base">Gambar yang dipilih</h4>
                             <button type="button" id="clearImages" class="btn btn-sm btn-ghost text-error">
-                                Clear All
+                                Hapus semua
                             </button>
                         </div>
                         <div id="previewContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                            <!-- Preview items will be inserted here -->
+                            
                         </div>
                     </div>
                 </div>
@@ -425,15 +398,15 @@
                     <button type="button" 
                             onclick="document.getElementById('addChapterModal').close()" 
                             class="btn btn-ghost btn-lg order-2 sm:order-1">
-                        Cancel
+                        Batal
                     </button>
                     <button type="submit" 
-                            class="btn btn-primary btn-lg gap-2 order-1 sm:order-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                            class="btn btn-secondary btn-lg gap-2 order-1 sm:order-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                             id="submitBtn">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
-                        Create Chapter
+                        Buat Chapter
                     </button>
                 </div>
             </form>
@@ -441,7 +414,7 @@
     </div>
 </dialog>
 
-<!-- View Chapter Modal -->
+<!-- View Chapter -->
 <dialog id="viewChapterModal" class="modal">
     <div class="modal-box w-11/12 max-w-6xl max-h-[90vh] overflow-y-auto">
         <form method="dialog">
@@ -466,25 +439,24 @@
     </div>
 </dialog>
 
-<!-- Edit Chapter Modal -->
+<!-- Edit Chapter -->
 <dialog id="editChapterModal" class="modal">
     <div class="modal-box w-11/12 max-w-5xl max-h-[95vh] p-0 overflow-hidden bg-base-100 shadow-2xl">
-        <!-- Modal Header - Enhanced with Primary Theme -->
         <div class="sticky top-0 z-10 bg-gradient-to-r from-primary via-primary to-primary-focus text-primary-content p-6">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4">
-                    <div class="p-3 bg-primary-content/20 rounded-xl backdrop-blur-sm">
+                    <div class="p-3 bg-secondary-content/20 rounded-xl backdrop-blur-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
                     </div>
                     <div class="space-y-1">
                         <h2 class="text-2xl font-bold tracking-tight">Edit Chapter</h2>
-                        <p class="text-primary-content/80 text-sm font-medium">Update chapter information and manage images</p>
+                        <p class="text-secondary-content/80 text-sm font-medium">Perbarui konten chaptermu dan kelola gambar</p>
                     </div>
                 </div>
                 <form method="dialog">
-                    <button class="btn btn-sm btn-circle btn-ghost text-primary-content hover:bg-primary-content/20 hover:rotate-90 transition-all duration-300">
+                    <button class="btn btn-sm btn-circle btn-ghost text-secondary-content hover:bg-secondary-content/20 hover:rotate-90 transition-all duration-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -493,37 +465,36 @@
             </div>
         </div>
 
-        <!-- Modal Body - Improved Layout -->
         <div class="p-6 overflow-y-auto max-h-[calc(95vh-140px)] space-y-8">
             <form id="editChapterForm" method="POST" enctype="multipart/form-data" class="space-y-8">
                 @csrf
                 @method('PUT')
                 
-                <!-- Chapter Info Section - Enhanced Cards -->
+                <!-- Chapter Info Section -->
                 <div class="card bg-base-50 shadow-sm border border-base-200">
                     <div class="card-body p-6">
-                        <h3 class="card-title text-lg font-semibold text-primary mb-4 flex items-center gap-2">
+                        <h3 class="card-title text-lg font-semibold text-secondary mb-4 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            Chapter Information
+                            Chapter Info
                         </h3>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="form-control">
                                 <label class="label">
                                     <span class="label-text font-semibold text-base flex items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
                                         </svg>
-                                        Chapter Number
+                                        Chapter ke-
                                     </span>
                                     <span class="label-text-alt text-xs text-error font-medium">*Required</span>
                                 </label>
                                 <input type="number" 
                                     name="chapter" 
                                     id="editChapterNumber"
-                                    class="input input-bordered input-lg focus:input-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 bg-base-100 hover:bg-base-50" 
+                                    class="input input-bordered input-lg focus:input-secondary focus:ring-2 focus:ring-secondary/20 transition-all duration-300 bg-base-100 hover:bg-base-50" 
                                     placeholder="Enter chapter number" 
                                     min="1"
                                     required>
@@ -532,27 +503,27 @@
                             <div class="form-control">
                                 <label class="label">
                                     <span class="label-text font-semibold text-base flex items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                         </svg>
-                                        Chapter Title
+                                        Headline chapter
                                     </span>
                                     <span class="label-text-alt text-xs text-error font-medium">*Required</span>
                                 </label>
                                 <input type="text" 
                                        name="title" 
                                        id="editChapterTitle"
-                                       class="input input-bordered input-lg focus:input-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 bg-base-100 hover:bg-base-50" 
+                                       class="input input-bordered input-lg focus:input-secondary focus:ring-2 focus:ring-secondary/20 transition-all duration-300 bg-base-100 hover:bg-base-50" 
                                        placeholder="Enter chapter title" 
                                        required>
                             </div>
                         </div>
 
-                        <!-- Slug Field - Enhanced -->
+                        <!-- Slug -->
                         <div class="form-control mt-6">
                             <label class="label">
                                 <span class="label-text font-semibold text-base flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                                     </svg>
                                     Chapter Slug
@@ -562,41 +533,40 @@
                             <input type="text" 
                                    name="slug" 
                                    id="editChapterSlug"
-                                   class="input input-bordered input-lg focus:input-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 bg-base-100 hover:bg-base-50" 
+                                   class="input input-bordered input-lg focus:input-secondary focus:ring-2 focus:ring-secondary/20 transition-all duration-300 bg-base-100 hover:bg-base-50" 
                                    placeholder="chapter-slug" 
                                    required>
                         </div>
                     </div>
                 </div>
 
-                <!-- Current Images Section - Enhanced Design -->
+                <!-- Current Images -->
                 <div class="card bg-gradient-to-br from-base-50 to-base-100 shadow-sm border border-base-200">
                     <div class="card-body p-6">
-                        <h3 class="card-title text-lg font-semibold text-primary mb-4 flex items-center gap-2">
+                        <h3 class="card-title text-lg font-semibold text-secondary mb-4 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            Current Images
+                            Gambar saat ini
                         </h3>
                         
                         <div id="currentImagesContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                            <!-- Current images will be loaded here -->
+                            
                         </div>
                     </div>
                 </div>
 
-                <!-- New Images Upload Section - Enhanced Design -->
+                <!-- New Images Upload -->
                 <div class="card bg-gradient-to-br from-primary/5 to-primary/10 shadow-sm border border-primary/20">
                     <div class="card-body p-6">
-                        <h3 class="card-title text-lg font-semibold text-primary mb-4 flex items-center gap-2">
+                        <h3 class="card-title text-lg font-semibold text-secondary mb-4 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                             </svg>
-                            Replace All Images
-                            <span class="badge badge-primary badge-sm">Optional</span>
+                            Perbarui semua gambar
+                            <span class="badge badge-secondary badge-sm">Optional</span>
                         </h3>
-                        
-                        <!-- Custom Upload Area - Enhanced -->
+
                         <div class="relative">
                             <input type="file" 
                                    name="images[]" 
@@ -605,24 +575,23 @@
                                    class="hidden" 
                                    id="editChapterImages">
                             
-                            <div id="editUploadArea" class="border-2 border-dashed border-primary/30 hover:border-primary hover:bg-primary/5 transition-all duration-300 rounded-2xl p-8 text-center cursor-pointer group relative overflow-hidden">
-                                <!-- Background Pattern -->
+                            <div id="editUploadArea" class="border-2 border-dashed border-secondary/30 hover:border-secondary hover:bg-secondary/5 transition-all duration-300 rounded-2xl p-8 text-center cursor-pointer group relative overflow-hidden">
                                 <div class="absolute inset-0 opacity-5">
                                     <div class="absolute inset-0 bg-gradient-to-br from-primary to-primary-focus"></div>
                                 </div>
                                 
                                 <div class="relative space-y-6">
                                     <div class="mx-auto w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                         </svg>
                                     </div>
                                     
                                     <div class="space-y-3">
-                                        <h4 class="text-xl font-bold text-primary">Upload New Images</h4>
+                                        <h4 class="text-xl font-bold text-secondary">Upload Gambar Baru</h4>
                                         <p class="text-base-content/70 text-sm leading-relaxed max-w-md mx-auto">
-                                            Select new images to replace all current chapter images. 
-                                            <span class="font-medium text-primary">Leave empty to keep existing images.</span>
+                                            Pilih gambar baru untuk menggantikan chapter saat ini 
+                                            <span class="font-medium text-secondary">Tinggalkan saja jika tidak ingin mengganti.</span>
                                         </p>
                                         <div class="flex flex-wrap justify-center gap-2 text-xs text-base-content/60">
                                             <span class="badge badge-outline badge-sm">JPEG</span>
@@ -632,41 +601,41 @@
                                         </div>
                                     </div>
                                     
-                                    <button type="button" class="btn btn-primary btn-lg gap-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300" id="editChooseImagesBtn">
+                                    <button type="button" class="btn btn-secondary btn-lg gap-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300" id="editChooseImagesBtn">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                         </svg>
-                                        Choose Images
+                                        Pilih
                                     </button>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Preview Area for New Images - Enhanced -->
+                        <!-- Preview Area | update -->
                         <div id="editImagePreview" class="hidden mt-8 animate-fade-in">
                             <div class="flex items-center justify-between mb-6">
-                                <h4 class="font-bold text-base text-primary flex items-center gap-2">
+                                <h4 class="font-bold text-base text-secondary flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                     </svg>
-                                    New Images Preview
+                                    Preview gambar baru
                                 </h4>
                                 <button type="button" id="editClearImages" class="btn btn-sm btn-ghost text-error hover:bg-error/10 gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
-                                    Clear All
+                                    Hapus semua
                                 </button>
                             </div>
                             <div id="editPreviewContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                                <!-- Preview items will be inserted here -->
+                                
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Form Actions - Enhanced -->
+                <!-- Form Actions -->
                 <div class="card bg-base-100 shadow-sm border border-base-200">
                     <div class="card-body p-6">
                         <div class="flex flex-col sm:flex-row gap-4 justify-end">
@@ -676,10 +645,10 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
-                                Cancel
+                                Batal
                             </button>
                             <button type="submit" 
-                                    class="btn btn-primary btn-lg gap-2 order-1 sm:order-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                                    class="btn btn-secondary btn-lg gap-2 order-1 sm:order-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                                     id="editSubmitBtn">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -694,16 +663,16 @@
     </div>
 </dialog>
 
-<!-- Delete Chapter Modal -->
+<!-- Delete Chapter -->
 <dialog id="deleteChapterModal" class="modal">
     <div class="modal-box">
-        <h3 class="font-bold text-xl mb-4 text-error">Delete Chapter</h3>
-        <p class="py-4 text-lg">Are you sure you want to delete <span id="deleteChapterInfo" class="font-semibold text-error"></span>?</p>
-        <p class="text-sm text-base-content/60 mb-6">This action cannot be undone and will permanently delete all chapter images.</p>
+        <h3 class="font-bold text-xl mb-4 text-error">Hapus Chapter</h3>
+        <p class="py-4 text-lg">Apa anda yakin ingin menghapus <span id="deleteChapterInfo" class="font-semibold text-error"></span>?</p>
+        <p class="text-sm text-base-content/60 mb-6">Chapter yang telah dihapus tidak dapat dikembalikan.</p>
         
         <div class="modal-action">
             <form method="dialog">
-                <button class="btn btn-ghost btn-lg">Cancel</button>
+                <button class="btn btn-ghost btn-lg">Batal</button>
             </form>
             <form id="deleteChapterForm" method="POST" class="inline">
                 @csrf
@@ -712,7 +681,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
-                    Delete Chapter
+                    Hapus Chapter
                 </button>
             </form>
         </div>
@@ -720,10 +689,8 @@
 </dialog>
 
 <script>
-    // Global variables
     let selectedFiles = [];
     
-    // Smooth back navigation
     function backToComics() {
         const loadingOverlay = document.createElement('div');
         loadingOverlay.innerHTML = `
@@ -741,7 +708,6 @@
         }, 600);
     }
 
-    // Global function to update image preview
     function updateImagePreview() {
         const fileInput = document.getElementById('chapterImages');
         const imagePreview = document.getElementById('imagePreview');
@@ -763,7 +729,6 @@
         imagePreview.classList.remove('hidden');
         previewContainer.innerHTML = '';
 
-        // Create placeholders for each file first to maintain order
         const filePreviews = Array.from(files).map((file, index) => {
             const previewItem = document.createElement('div');
             previewItem.className = 'relative group';
@@ -771,7 +736,7 @@
                 <div class="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
                     <div class="loading loading-spinner loading-sm"></div>
                 </div>
-                <div class="absolute bottom-2 left-2 badge badge-primary badge-sm">
+                <div class="absolute bottom-2 left-2 badge badge-secondary badge-sm">
                     Page ${index + 1}
                 </div>
             `;
@@ -779,7 +744,6 @@
             return { element: previewItem, index };
         });
 
-        // Now load images and update the corresponding placeholder
         Array.from(files).forEach((file, index) => {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -797,7 +761,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
-                    <div class="absolute bottom-2 left-2 badge badge-primary badge-sm">
+                    <div class="absolute bottom-2 left-2 badge badge-secondary badge-sm">
                         Page ${index + 1}
                     </div>
                 `;
@@ -805,7 +769,7 @@
             reader.readAsDataURL(file);
         });
     }
-    // Global function to remove image
+
     function removeImage(index) {
         const fileInput = document.getElementById('chapterImages');
         if (!fileInput) return;
@@ -813,17 +777,14 @@
         const files = Array.from(fileInput.files);
         files.splice(index, 1);
         
-        // Create new FileList maintaining order
         const dt = new DataTransfer();
         files.forEach(file => dt.items.add(file));
         fileInput.files = dt.files;
         
-        // Re-render preview to update indices
         updateImagePreview();
         showToast('Gambar dihapus', 'info');
     }
 
-    // Open Add Chapter Modal
     function openAddChapterModal() {
         const modal = document.getElementById('addChapterModal');
         if (modal) {
@@ -836,7 +797,7 @@
             form.reset();
         }
         
-        // Clear file input and preview
+        // Clear image
         const fileInput = document.getElementById('chapterImages');
         if (fileInput) {
             fileInput.value = '';
@@ -844,7 +805,6 @@
         
         updateImagePreview();
         
-        // Set next chapter number
         const nextChapter = {{ ($chapters->max('chapter') ?? 0) + 1 }};
         const chapterInput = document.querySelector('input[name="chapter"]');
         if (chapterInput) {
@@ -852,7 +812,7 @@
         }
     }
 
-    // Enhanced search functionality
+    // search function
     document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('searchChapter');
         if (searchInput) {
@@ -876,7 +836,7 @@
         }
     });
 
-    // Toast notification function
+    // notification
     function showToast(message, type = 'info') {
         const toast = document.createElement('div');
         const typeClasses = {
@@ -903,7 +863,7 @@
         }, 5000);
     }
 
-    // Toggle synopsis functionality
+    // synopsis
     document.addEventListener('DOMContentLoaded', function () {
         const toggleBtn = document.getElementById('toggleSinopsis');
         const sinopsisText = document.getElementById('sinopsisText');
@@ -918,11 +878,9 @@
         }
     });
 
-
-    // Improved file validation
     function validateFile(file) {
         const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        const maxSize = 2 * 1024 * 1024; // 2MB sesuai dengan controller validation
+        const maxSize = 2 * 1024 * 1024; 
         
         if (!allowedTypes.includes(file.type)) {
             showToast(`File ${file.name} bukan format yang didukung. Gunakan JPEG, PNG, atau JPG.`, 'error');
@@ -937,7 +895,6 @@
         return true;
     }
 
-    // Handle file selection with better validation
     function handleFileSelection(files) {
         console.log('Files selected:', files.length);
         
@@ -946,7 +903,6 @@
             return;
         }
         
-        // Filter dan validasi file
         const validFiles = Array.from(files).filter(file => {
             const isImage = file.type.startsWith('image/');
             const isValidSize = file.size <= 2 * 1024 * 1024; // 2MB
@@ -968,7 +924,6 @@
         if (validFiles.length > 0) {
             const fileInput = document.getElementById('chapterImages');
             if (fileInput) {
-                // Update file input dengan file yang valid
                 const dt = new DataTransfer();
                 validFiles.forEach(file => dt.items.add(file));
                 fileInput.files = dt.files;
@@ -987,8 +942,6 @@
         }
     }
 
-    // DOMContentLoaded event listener
-    // GANTI SELURUH BAGIAN DOMContentLoaded INI
     document.addEventListener('DOMContentLoaded', function() {
         console.log('DOM loaded, initializing...');
         
@@ -1006,7 +959,6 @@
             chooseImagesBtn: !!chooseImagesBtn
         });
 
-        // Handle click pada button "Choose Images"
         if (chooseImagesBtn && fileInput) {
             chooseImagesBtn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1016,10 +968,8 @@
             });
         }
 
-        // Upload area click handler (hanya untuk area selain button)
         if (uploadArea && fileInput) {
             uploadArea.addEventListener('click', function(e) {
-                // Jika yang diklik bukan button, baru trigger file input
                 if (e.target !== chooseImagesBtn && !e.target.closest('button')) {
                     e.preventDefault();
                     console.log('Upload area clicked');
@@ -1028,24 +978,24 @@
             });
         }
 
-        // Drag and drop functionality
+        // Drag and drop 
         if (uploadArea) {
             uploadArea.addEventListener('dragover', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                uploadArea.classList.add('border-primary', 'bg-primary/5');
+                uploadArea.classList.add('border-secondary', 'bg-secondary/5');
             });
 
             uploadArea.addEventListener('dragleave', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                uploadArea.classList.remove('border-primary', 'bg-primary/5');
+                uploadArea.classList.remove('border-secondary', 'bg-secondary/5');
             });
 
             uploadArea.addEventListener('drop', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                uploadArea.classList.remove('border-primary', 'bg-primary/5');
+                uploadArea.classList.remove('border-secondary', 'bg-secondary/5');
                 
                 const files = Array.from(e.dataTransfer.files);
                 console.log('Files dropped:', files.length);
@@ -1053,7 +1003,7 @@
             });
         }
 
-        // File input change handler
+        // File input handler
         if (fileInput) {
             fileInput.addEventListener('change', function(e) {
                 console.log('File input changed');
@@ -1133,9 +1083,8 @@
         });
     });
 
-    // View chapter images with enhanced loading
+    // View chapter
     function viewChapter(chapterId) {
-        // Show loading overlay
         const loadingOverlay = document.createElement('div');
         loadingOverlay.innerHTML = `
             <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" id="viewLoadingOverlay">
@@ -1147,13 +1096,11 @@
         `;
         document.body.appendChild(loadingOverlay);
 
-        // Navigate to chapter view page
         setTimeout(() => {
             window.location.href = `/admin/komiks/{{ $komik->id }}/chapters/${chapterId}/view`;
         }, 500);
     }
 
-    // Global function untuk edit chapter
 function editChapter(komikId, chapterId) {
     console.log('Edit chapter:', komikId, chapterId);
     
@@ -1165,13 +1112,10 @@ function editChapter(komikId, chapterId) {
         return;
     }
 
-    // Set form action URL
     form.action = `/admin/komiks/${komikId}/chapters/${chapterId}`;
     
-    // Show modal dengan loading state
     modal.showModal();
     
-    // Load chapter data dari endpoint yang benar
     fetch(`/admin/komiks/${komikId}/chapters/${chapterId}`)
         .then(response => {
             if (!response.ok) {
@@ -1182,15 +1126,12 @@ function editChapter(komikId, chapterId) {
         .then(data => {
             const chapter = data.chapter;
             
-            // Populate form fields
             document.getElementById('editChapterNumber').value = chapter.chapter;
             document.getElementById('editChapterTitle').value = chapter.title;
             document.getElementById('editChapterSlug').value = chapter.slug;
             
-            // Load current images
             loadCurrentImages(chapter.images);
             
-            // Clear new image selection
             const fileInput = document.getElementById('editChapterImages');
             if (fileInput) {
                 fileInput.value = '';
@@ -1204,7 +1145,6 @@ function editChapter(komikId, chapterId) {
         });
 }
 
-// Function untuk load current images
 function loadCurrentImages(images) {
     const container = document.getElementById('currentImagesContainer');
     if (!container) return;
@@ -1229,7 +1169,7 @@ function loadCurrentImages(images) {
                     alt="Page ${image.page_number}" 
                     class="w-full h-full object-cover">
             </div>
-            <div class="absolute bottom-2 left-2 badge badge-warning badge-sm">
+            <div class="absolute bottom-2 left-2 badge badge-secondary badge-sm">
                 Page ${image.page_number}
             </div>
         `;
@@ -1237,7 +1177,6 @@ function loadCurrentImages(images) {
     });
 }
 
-// Function untuk update preview edit images
 function updateEditImagePreview() {
     const fileInput = document.getElementById('editChapterImages');
     const imagePreview = document.getElementById('editImagePreview');
@@ -1258,7 +1197,6 @@ function updateEditImagePreview() {
     imagePreview.classList.remove('hidden');
     previewContainer.innerHTML = '';
 
-    // Create placeholders for each file first to maintain order
     const filePreviews = Array.from(files).map((file, index) => {
         const previewItem = document.createElement('div');
         previewItem.className = 'relative group';
@@ -1266,7 +1204,7 @@ function updateEditImagePreview() {
             <div class="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
                 <div class="loading loading-spinner loading-sm"></div>
             </div>
-            <div class="absolute bottom-2 left-2 badge badge-warning badge-sm">
+            <div class="absolute bottom-2 left-2 badge badge-secondary badge-sm">
                 Page ${index + 1}
             </div>
         `;
@@ -1274,7 +1212,6 @@ function updateEditImagePreview() {
         return { element: previewItem, index };
     });
 
-    // Now load images and update the corresponding placeholder
     Array.from(files).forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -1292,7 +1229,7 @@ function updateEditImagePreview() {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-                <div class="absolute bottom-2 left-2 badge badge-warning badge-sm">
+                <div class="absolute bottom-2 left-2 badge badge-secondary badge-sm">
                     Page ${index + 1}
                 </div>
             `;
@@ -1301,7 +1238,6 @@ function updateEditImagePreview() {
     });
 }
 
-// Function untuk remove edit image
 function removeEditImage(index) {
     const fileInput = document.getElementById('editChapterImages');
     if (!fileInput) return;
@@ -1309,17 +1245,14 @@ function removeEditImage(index) {
     const files = Array.from(fileInput.files);
     files.splice(index, 1);
     
-    // Create new FileList maintaining order
     const dt = new DataTransfer();
     files.forEach(file => dt.items.add(file));
     fileInput.files = dt.files;
     
-    // Re-render preview to update indices
     updateEditImagePreview();
     showToast('Gambar dihapus', 'info');
 }
 
-// Event listeners untuk edit chapter (tambahkan ke DOMContentLoaded)
 document.addEventListener('DOMContentLoaded', function() {
     // ... existing code ...
     
@@ -1330,7 +1263,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const editClearImagesBtn = document.getElementById('editClearImages');
     const editForm = document.getElementById('editChapterForm');
 
-    // Handle click pada button "Choose Images" untuk edit
     if (editChooseImagesBtn && editFileInput) {
         editChooseImagesBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -1339,7 +1271,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Upload area click handler untuk edit
     if (editUploadArea && editFileInput) {
         editUploadArea.addEventListener('click', function(e) {
             if (e.target !== editChooseImagesBtn && !e.target.closest('button')) {
@@ -1349,24 +1280,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Drag and drop untuk edit
+    // Drag and drop edit
     if (editUploadArea) {
         editUploadArea.addEventListener('dragover', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            editUploadArea.classList.add('border-warning', 'bg-warning/5');
+            editUploadArea.classList.add('border-secondary', 'bg-secondary/5');
         });
 
         editUploadArea.addEventListener('dragleave', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            editUploadArea.classList.remove('border-warning', 'bg-warning/5');
+            editUploadArea.classList.remove('border-secondary', 'bg-secondary/5');
         });
 
         editUploadArea.addEventListener('drop', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            editUploadArea.classList.remove('border-warning', 'bg-warning/5');
+            editUploadArea.classList.remove('border-secondary', 'bg-secondary/5');
             
             const files = Array.from(e.dataTransfer.files);
             handleEditFileSelection(files);
@@ -1404,7 +1335,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Auto-generate slug ketika title berubah di edit form
     const editTitleInput = document.getElementById('editChapterTitle');
     const editChapterNumberInput = document.getElementById('editChapterNumber');
     const editSlugInput = document.getElementById('editChapterSlug');
@@ -1456,7 +1386,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-    // Function untuk handle file selection di edit
     function handleEditFileSelection(files) {
         if (!files || files.length === 0) {
             return;
@@ -1492,7 +1421,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         if (deleteChapterForm) {
-            // Perbaikan route sesuai dengan parameter controller yang benar
+            
             deleteChapterForm.action = `/admin/komiks/${komikId}/chapters/${chapterId}`;
         }
         
@@ -1500,7 +1429,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (modal) modal.showModal();
     }
 
-    // Auto-hide success alerts with smooth animation
     setTimeout(() => {
         const alert = document.querySelector('.alert');
         if (alert) {
@@ -1578,13 +1506,12 @@ document.addEventListener('DOMContentLoaded', function() {
     .chapter-card:nth-child(5) { animation-delay: 0.5s; }
     .chapter-card:nth-child(6) { animation-delay: 0.6s; }
 
-    /* Hero section backdrop blur */
+
     .backdrop-blur {
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
     }
 
-    /* Custom scrollbar for modal */
     .modal-box {
         scrollbar-width: thin;
         scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
@@ -1608,8 +1535,7 @@ document.addEventListener('DOMContentLoaded', function() {
         background: rgba(255, 255, 255, 0.5);
     }
 
-    /* Enhanced button hover effects */
-    .btn-primary:hover {
+    .btn-secondary:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     }
@@ -1618,7 +1544,6 @@ document.addEventListener('DOMContentLoaded', function() {
         transform: translateY(-2px);
     }
 
-    /* Smooth transitions for all interactive elements */
     * {
         transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -1635,7 +1560,6 @@ document.addEventListener('DOMContentLoaded', function() {
         animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
 
-    /* Responsive text scaling */
     @media (max-width: 480px) {
         .chapters-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -1647,14 +1571,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    /* Enhanced focus states for accessibility */
     .btn:focus-visible,
     .input:focus-visible {
         outline: 2px solid currentColor;
         outline-offset: 2px;
     }
 
-    /* Custom badge animations */
     .badge {
         transition: all 0.2s ease;
     }
@@ -1663,7 +1585,6 @@ document.addEventListener('DOMContentLoaded', function() {
         transform: scale(1.05);
     }
 
-    /* Smooth image loading */
     img {
         transition: opacity 0.3s ease;
     }
@@ -1678,9 +1599,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </style>
 
 <script>
-    // Initialize page
+
     document.addEventListener('DOMContentLoaded', function() {
-        // Add loaded class to images when they finish loading
         const images = document.querySelectorAll('img[loading="lazy"]');
         images.forEach(img => {
             img.addEventListener('load', function() {
@@ -1688,7 +1608,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Smooth reveal animation for chapter cards
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
