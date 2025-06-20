@@ -41,14 +41,17 @@ Route::middleware('auth')->group(function () {
 });
 
 // HOME ROUTES
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/explore', [ExploreController::class, 'index'])->name('explore');
-Route::get('/library', [LibraryController::class, 'index'])->name('library');
-Route::get('/search', [SearchController::class, 'index'])->name('search');
+Route::middleware('auth')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/explore', [ExploreController::class, 'index'])->name('explore');
+    Route::get('/library', [LibraryController::class, 'index'])->name('library');
+    Route::get('/search', [SearchController::class, 'index'])->name('search');
+});
+
 
 
 // ADMIN ROUTES
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('komiks', AdminComicController::class);
@@ -61,10 +64,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('chapters', [AdminChapterController::class, 'store'])->name('chapters.store');
         Route::get('chapters/{chapterId}/edit', [AdminChapterController::class, 'edit'])->name('chapters.edit');
         Route::put('chapters/{chapterId}', [AdminChapterController::class, 'update'])->name('chapters.update');
-        // Route untuk delete chapter - PENTING: pastikan ini sesuai dengan parameter controller
+ 
         Route::delete('chapters/{chapterId}', [AdminChapterController::class, 'destroy'])->name('chapters.destroy');
     
-        // Route untuk API get chapter images
         Route::get('chapters/{chapterId}/images', [AdminChapterController::class, 'getImages'])->name('chapters.images');
 
          Route::get('chapters/{chapterId}', [AdminChapterController::class, 'show'])->name('chapters.show');
@@ -75,7 +77,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 // USER ROUTES
-Route::prefix('user')->name('user.')->group(function () {
+Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     Route::resource('komiks', ComicController::class);
     Route::resource('chapters', ChapterController::class);
     Route::resource('bookmark', BookmarkController::class);

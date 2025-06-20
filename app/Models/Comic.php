@@ -60,6 +60,11 @@ class Comic extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    
+
+    public function latestChapter()
+    {
+        return $this->hasOne(Chapter::class, 'komik_id')->latest('release_at');
+    }
+
 
 }

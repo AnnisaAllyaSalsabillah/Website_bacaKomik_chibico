@@ -33,11 +33,12 @@ class HomeController extends Controller
         ->whereHas('chapters')
         ->withCount('upvotes')
         ->join('chapters', 'komiks.id', '=', 'chapters.komik_id')
-        ->select('komiks.*')
-        ->orderByDesc('chapters.release_at')
-        ->distinct()
+        ->selectRaw('komiks.*, MAX(chapters.release_at) as latest_release')
+        ->groupBy('komiks.id')
+        ->orderByDesc('latest_release')
         ->take(9)
         ->get();
+
 
     // Komik populer berdasarkan upvotes
     $popularComics = Comic::withCount('upvotes')

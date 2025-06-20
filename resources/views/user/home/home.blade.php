@@ -24,8 +24,8 @@
                       <img src="https://i.pinimg.com/736x/d6/c3/7d/d6c37d49a59769fe4ccb119a9f30841c.jpg"
                           class="w-full object-cover h-[300px]" />
                       <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-white">
-                        <h3 class="text-lg font-bold">Judul Komik 1</h3>
-                        <p class="text-sm">Deskripsi singkat komik 1 ditulis manual di sini.</p>
+                        <h3 class="text-lg font-bold">No Place For The Fakes Princess</h3>
+                        <p class="text-sm">Philomel - seorang putri palsu yang menyebabkan perang dengan memisahkan menara dan kekaisaran...</p>
                       </div>
                     </a>
 
@@ -35,8 +35,8 @@
                       <img src="https://i.pinimg.com/originals/0a/1a/8d/0a1a8d4c1bcae5ec83bbc0af395ca9a1.jpg"
                           class="w-full object-cover h-[300px]" />
                       <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-white">
-                        <h3 class="text-lg font-bold">Judul Komik 2</h3>
-                        <p class="text-sm">Deskripsi singkat komik 2 yang kamu tulis sendiri di sini.</p>
+                        <h3 class="text-lg font-bold">Under The Oak Tree</h3>
+                        <p class="text-sm">Wanita gagap Maximilian dipaksa menikah dengan Sir Riftan, tetapi dia pergi...</p>
                       </div>
                     </a>
 
@@ -46,8 +46,8 @@
                       <img src="https://wallpapercave.com/wp/wp11998991.jpg"
                           class="w-full object-cover h-[300px]" />
                       <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-white">
-                        <h3 class="text-lg font-bold">Judul Komik 3</h3>
-                        <p class="text-sm">Sinopsis singkat bisa kamu edit langsung di blade.</p>
+                        <h3 class="text-lg font-bold">Chainsaw man</h3>
+                        <p class="text-sm">seorang pemuda miskin yang menjadi pemburu iblis bersama iblis peliharaannya, Pochita...</p>
                       </div>
                     </a>
 
