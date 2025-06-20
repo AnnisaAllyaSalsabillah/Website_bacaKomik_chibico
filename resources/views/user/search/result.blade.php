@@ -1,281 +1,188 @@
-{{-- resources/views/user/search/result.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Hasil Pencarian: ' . $query)
+@section('title', 'Cari Komik')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header Section -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-                <i class="fas fa-search mr-2"></i>Pencarian Komik
+<div class="min-h-screen">
+    <!-- Compact Header -->
+    <div class="bg-gradient-to-r from-primary to-secondary py-6">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">
+                Cari Komik? Gampang Banget!
             </h1>
+            <p class="text-white/80 text-sm">
+                Tinggal ketik, pilih, langsung baca. No ribet-ribet club!
+            </p>
         </div>
+    </div>
 
-        <!-- Search Form -->
-        <div class="max-w-2xl mx-auto mb-8">
-            <form action="{{ route('search.result') }}" method="GET" class="relative">
-                <div class="relative">
-                    <input type="text" 
-                           name="query" 
-                           value="{{ $query }}"
-                           placeholder="Cari berdasarkan judul, alternatif, author, atau artist..."
-                           class="w-full px-6 py-4 pr-16 text-lg border-2 border-gray-200 rounded-full shadow-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300"
-                           required>
-                    <button type="submit" 
-                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-6 py-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Search Results Header -->
-        <div class="mb-6">
-            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
-                <div class="flex items-center justify-between flex-wrap gap-4">
-                    <div>
-                        <h2 class="text-xl font-semibold text-gray-800 mb-1">
-                            Hasil pencarian untuk: <span class="text-blue-600">"{{ $query }}"</span>
-                        </h2>
-                        <p class="text-gray-600">
-                            <i class="fas fa-list-ul mr-1"></i>
-                            Ditemukan {{ $result->count() }} komik
-                        </p>
-                    </div>
-                    <div class="text-sm text-gray-500">
-                        <i class="fas fa-clock mr-1"></i>
-                        {{ now()->format('d M Y, H:i') }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        @if($result->count() > 0)
-            <!-- Search Results Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                @foreach($result as $comic)
-                <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
-                    <!-- Comic Cover -->
-                    <div class="relative overflow-hidden">
-                        <img src="{{ $comic->cover_image ?? 'https://via.placeholder.com/300x400/4F46E5/FFFFFF?text=' . urlencode($comic->title) }}" 
-                             alt="{{ $comic->title }}" 
-                             class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
-                        
-                        <!-- Overlay on Hover -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <div class="absolute bottom-4 left-4 right-4">
-                                <a href="{{ route('comic.show', $comic->id) }}" 
-                                   class="w-full bg-white/90 hover:bg-white text-gray-800 font-medium py-2 px-4 rounded-lg text-center block transition-all duration-200 transform hover:scale-105">
-                                    <i class="fas fa-book-open mr-2"></i>Baca Komik
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Status Badge -->
-                        @if($comic->status)
-                        <div class="absolute top-3 right-3">
-                            <span class="px-2 py-1 text-xs font-semibold rounded-full
-                                {{ $comic->status == 'ongoing' ? 'bg-green-500 text-white' : 
-                                   ($comic->status == 'completed' ? 'bg-blue-500 text-white' : 'bg-gray-500 text-white') }}">
-                                {{ ucfirst($comic->status) }}
-                            </span>
-                        </div>
-                        @endif
-                    </div>
-
-                    <!-- Comic Info -->
-                    <div class="p-5">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200">
-                            {{ $comic->title }}
-                        </h3>
-
-                        @if($comic->alternative && $comic->alternative != $comic->title)
-                        <p class="text-sm text-gray-500 mb-2 line-clamp-1">
-                            <i class="fas fa-tag mr-1"></i>
-                            {{ $comic->alternative }}
-                        </p>
-                        @endif
-
-                        <div class="space-y-1 mb-3">
-                            @if($comic->author)
-                            <p class="text-sm text-gray-600">
-                                <i class="fas fa-user-edit mr-2 text-blue-500"></i>
-                                <span class="font-medium">Author:</span> {{ $comic->author }}
-                            </p>
-                            @endif
-
-                            @if($comic->artist && $comic->artist != $comic->author)
-                            <p class="text-sm text-gray-600">
-                                <i class="fas fa-paint-brush mr-2 text-purple-500"></i>
-                                <span class="font-medium">Artist:</span> {{ $comic->artist }}
-                            </p>
-                            @endif
-                        </div>
-
-                        @if($comic->description)
-                        <p class="text-sm text-gray-600 mb-4 line-clamp-3">
-                            {{ $comic->description }}
-                        </p>
-                        @endif
-
-                        <!-- Action Buttons -->
-                        <div class="flex items-center justify-between pt-3 border-t border-gray-100">
-                            <div class="flex items-center space-x-3 text-sm text-gray-500">
-                                @if($comic->rank)
-                                <div class="flex items-center">
-                                    <i class="fas fa-star text-yellow-500 mr-1"></i>
-                                    <span>{{ $comic->rank }}</span>
-                                </div>
-                                @endif
-
-                                @if($comic->views)
-                                <div class="flex items-center">
-                                    <i class="fas fa-eye text-gray-400 mr-1"></i>
-                                    <span>{{ number_format($comic->views) }}</span>
-                                </div>
-                                @endif
-                            </div>
-
-                            <a href="{{ route('comic.show', $comic->id) }}" 
-                               class="text-blue-600 hover:text-blue-800 font-semibold text-sm hover:underline transition-colors duration-200">
-                                Selengkapnya <i class="fas fa-arrow-right ml-1"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-
-            <!-- Load More atau Pagination (jika ada) -->
-            <div class="mt-12 text-center">
-                <button class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                    <i class="fas fa-plus-circle mr-2"></i>Muat Lebih Banyak
-                </button>
-            </div>
-
-        @else
-            <!-- No Results Found -->
-            <div class="text-center py-16">
-                <div class="max-w-md mx-auto">
-                    <!-- Illustration -->
-                    <div class="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
-                        <i class="fas fa-search text-4xl text-gray-400"></i>
-                    </div>
-                    
-                    <h3 class="text-2xl font-bold text-gray-600 mb-4">
-                        Tidak Ada Hasil Ditemukan
-                    </h3>
-                    
-                    <p class="text-gray-500 mb-6 leading-relaxed">
-                        Maaf, kami tidak dapat menemukan komik yang sesuai dengan pencarian <strong>"{{ $query }}"</strong>. 
-                        Coba gunakan kata kunci yang berbeda atau periksa ejaan Anda.
-                    </p>
-
-                    <!-- Search Suggestions -->
-                    <div class="bg-blue-50 rounded-xl p-6 mb-6">
-                        <h4 class="font-semibold text-gray-700 mb-3">
-                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>Tips Pencarian:
-                        </h4>
-                        <ul class="text-sm text-gray-600 space-y-2 text-left">
-                            <li>• Gunakan kata kunci yang lebih umum</li>
-                            <li>• Periksa ejaan kata yang Anda masukkan</li>
-                            <li>• Coba cari berdasarkan nama author atau artist</li>
-                            <li>• Gunakan judul alternatif jika ada</li>
-                        </ul>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                        <a href="{{ route('comics.index') }}" 
-                           class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
-                            <i class="fas fa-home mr-2"></i>Lihat Semua Komik
-                        </a>
-                        
-                        <button onclick="document.querySelector('input[name=query]').focus()" 
-                                class="bg-white hover:bg-gray-50 text-gray-700 font-semibold py-3 px-6 rounded-full border-2 border-gray-200 hover:border-gray-300 transition-all duration-300">
-                            <i class="fas fa-search mr-2"></i>Cari Lagi
+    <!-- Compact Search Form -->
+    <div class="container mx-auto px-4 -mt-4 relative z-10 max-w-2xl">
+        <div class="card shadow-lg">
+            <div class="card-body p-4">
+                <form action="{{ route('user.search.index') }}" method="GET">
+                    <div class="join w-full">
+                        <input 
+                            type="text" 
+                            name="query" 
+                            value="{{ request('query') }}" 
+                            placeholder="Ketik judul komik, author, artist..." 
+                            class="input input-bordered join-item flex-1 focus:input-primary"
+                            autocomplete="off"
+                        >
+                        <button type="submit" class="btn btn-primary join-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
                         </button>
                     </div>
+                </form>
+                <!-- Search Tips -->
+                    <div class="text-sm text-base-content/60 text-left">
+                        <span class="badge badge-ghost mr-2">Tips:</span>
+                        Pencarian berdasarkan <span class="font-semibold">judul</span>, 
+                        <span class="font-semibold">nama alternatif</span>, 
+                        <span class="font-semibold">author</span>, atau 
+                        <span class="font-semibold">artist</span>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="container mx-auto px-4 py-6">
+        @if(isset($query) && $query)
+            <!-- Results Header -->
+            <div class="mb-4">
+                <h2 class="text-lg font-semibold">
+                    Hasil untuk: <span class="text-primary">"{{ $query }}"</span>
+                </h2>
+                @if(isset($result))
+                    <p class="text-sm text-base-content/60">
+                        {{ $result->count() }} komik ditemukan
+                    </p>
+                @endif
+            </div>
+
+            @if(isset($result) && $result->count() > 0)
+                <!-- Compact Results Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                    @foreach($result as $comic)
+                        <div class="card bg-base-100 shadow hover:shadow-md transition-shadow group">
+                            <figure class="relative">
+                                @if($comic->cover_image)
+                                    <img 
+                                        src="{{ $comic->cover_image }}" 
+                                        alt="{{ $comic->title }}"
+                                        class="w-full h-40 object-cover"
+                                        loading="lazy"
+                                    >
+                                @else
+                                    <div class="w-full h-40 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-base-content/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        </svg>
+                                    </div>
+                                @endif
+                                
+                                <div class="absolute top-1 right-1">
+                                    <div class="badge badge-primary badge-xs">{{ $comic->status ?? 'Ongoing' }}</div>
+                                </div>
+                            </figure>
+                            
+                            <div class="card-body p-3">
+                                <h3 class="font-semibold text-sm line-clamp-2 group-hover:text-primary transition-colors">
+                                    {{ $comic->title }}
+                                </h3>
+                                
+                                @if($comic->author)
+                                    <p class="text-xs text-base-content/60 line-clamp-1">
+                                        {{ $comic->author }}
+                                    </p>
+                                @endif
+                                
+                                <div class="card-actions justify-between items-center mt-2">
+                                    @if($comic->genres)
+                                        <div class="badge badge-outline badge-xs">
+                                            {{ $comic->genres->first()->name ?? '' }}
+                                        </div>
+                                    @endif
+                                    
+                                    <a href="{{ route('user.komiks.show', $comic->slug) }}" 
+                                       class="btn btn-primary btn-xs">
+                                        Baca
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
+                
+                <!-- Pagination -->
+                @if(method_exists($result, 'links'))
+                    <div class="mt-6 flex justify-center">
+                        {{ $result->links() }}
+                    </div>
+                @endif
+                
+            @else
+                <!-- No Results -->
+                <div class="text-center py-12">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-base-content/30 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.137 0-4.146-.832-5.657-2.343m0 0L3.515 9.829A11.962 11.962 0 0112 3c2.137 0 4.146.832 5.657 2.343m0 0L20.485 9.829A11.962 11.962 0 0112 21c-2.137 0-4.146-.832-5.657-2.343" />
+                    </svg>
+                    <h3 class="text-lg font-semibold mb-1">Tidak ada hasil</h3>
+                    <p class="text-sm text-base-content/60 mb-3">
+                        Coba kata kunci yang berbeda
+                    </p>
+                    <div class="flex gap-2 justify-center flex-wrap">
+                        <span class="badge badge-ghost badge-sm">Periksa ejaan</span>
+                        <span class="badge badge-ghost badge-sm">Kata kunci umum</span>
+                    </div>
+                </div>
+            @endif
+        @else
+            <!-- Welcome State -->
+            <div class="text-center py-12">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto text-primary/30 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <h2 class="text-xl font-semibold mb-2">Cari Komik Favorit</h2>
+                <p class="text-base-content/60 mb-4">
+                    Ketik kata kunci di atas untuk memulai
+                </p>
+                
             </div>
         @endif
-
-        <!-- Back to Top Button -->
-        <button id="backToTop" 
-                class="fixed bottom-6 right-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 opacity-0 invisible"
-                onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-            <i class="fas fa-arrow-up"></i>
-        </button>
     </div>
 </div>
+@endsection
 
+@push('styles')
 <style>
-.line-clamp-1 {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-</style>
-
-<script>
-// Back to Top Button
-window.addEventListener('scroll', function() {
-    const backToTop = document.getElementById('backToTop');
-    if (window.pageYOffset > 300) {
-        backToTop.classList.remove('opacity-0', 'invisible');
-        backToTop.classList.add('opacity-100', 'visible');
-    } else {
-        backToTop.classList.add('opacity-0', 'invisible');
-        backToTop.classList.remove('opacity-100', 'visible');
+    .line-clamp-1 {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
     }
-});
+    .line-clamp-2 {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+</style>
+@endpush
 
-// Auto focus search input when page loads
+@push('scripts')
+<script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Auto-focus search input
     const searchInput = document.querySelector('input[name="query"]');
     if (searchInput && !searchInput.value) {
-        setTimeout(() => searchInput.focus(), 500);
+        searchInput.focus();
     }
-});
-
-// Highlight search terms in results
-document.addEventListener('DOMContentLoaded', function() {
-    const query = '{{ $query }}';
-    const searchTerms = query.toLowerCase().split(' ');
-    
-    // Function to highlight text
-    function highlightText(element, terms) {
-        let html = element.innerHTML;
-        terms.forEach(term => {
-            if (term.length > 2) { // Only highlight terms longer than 2 characters
-                const regex = new RegExp(`(${term})`, 'gi');
-                html = html.replace(regex, '<mark class="bg-yellow-200 px-1 rounded">$1</mark>');
-            }
-        });
-        element.innerHTML = html;
-    }
-    
-    // Highlight in titles and descriptions
-    document.querySelectorAll('.line-clamp-2, .line-clamp-3').forEach(element => {
-        highlightText(element, searchTerms);
-    });
 });
 </script>
-@endsection
+@endpush

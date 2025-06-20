@@ -7,7 +7,7 @@
             <h1 class="text-3xl font-bold text-base-content">Manajemen Komik</h1>
             <p class="text-base-content/70 mt-1">Kelola semua komik dalam aplikasi</p>
         </div>
-        <button class="btn btn-primary gap-2" onclick="openAddModal()">
+        <button class="btn btn-secondary gap-2" onclick="openAddModal()">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
@@ -28,34 +28,37 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div class="stat bg-base-100 rounded-2xl shadow-sm border border-base-200">
             <div class="stat-figure text-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
+
             </div>
             <div class="stat-title">Total Komik</div>
-            <div class="stat-value text-primary">{{ $komiks->count() }}</div>
+            <div class="stat-value text-secondary">{{ $komiks->count() }}</div>
             <div class="stat-desc">Dari semua kategori</div>
         </div>
         
         <div class="stat bg-base-100 rounded-2xl shadow-sm border border-base-200">
             <div class="stat-figure text-success">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
+
             </div>
             <div class="stat-title">Ongoing</div>
-            <div class="stat-value text-success">{{ $komiks->where('status', 'ongoing')->count() }}</div>
+            <div class="stat-value text-secondary">{{ $komiks->where('status', 'ongoing')->count() }}</div>
             <div class="stat-desc">Masih berlanjut</div>
         </div>
         
         <div class="stat bg-base-100 rounded-2xl shadow-sm border border-base-200">
             <div class="stat-figure text-info">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
+
             </div>
             <div class="stat-title">Completed</div>
-            <div class="stat-value text-info">{{ $komiks->where('status', 'completed')->count() }}</div>
+            <div class="stat-value text-secondary">{{ $komiks->where('status', 'completed')->count() }}</div>
             <div class="stat-desc">Sudah tamat</div>
         </div>
     </div>
@@ -193,7 +196,7 @@
         <div class="text-6xl mb-4">📚</div>
         <h3 class="text-2xl font-bold mb-2">Belum Ada Komik</h3>
         <p class="text-base-content/70 mb-4">Mulai tambahkan komik pertama Anda</p>
-        <button class="btn btn-primary" onclick="openAddModal()">Tambah Komik</button>
+        <button class="btn btn-secondary" onclick="openAddModal()">Tambah Komik</button>
     </div>
     @endif
 </div>
@@ -298,7 +301,7 @@
                             @if(isset($genres) && $genres->count() > 0)
                                 @foreach($genres as $genre)
                                 <label class="label cursor-pointer justify-start gap-2 hover:bg-base-200 p-1 rounded">
-                                    <input type="checkbox" name="genres[]" value="{{ $genre->id }}" class="checkbox checkbox-sm checkbox-primary">
+                                    <input type="checkbox" name="genres[]" value="{{ $genre->id }}" class="checkbox checkbox-sm checkbox-secondary">
                                     <span class="label-text text-sm">{{ $genre->name }}</span>
                                 </label>
                                 @endforeach
@@ -324,7 +327,7 @@
             
             <div class="modal-action">
                 <button type="button" class="btn btn-ghost" onclick="closeAddModal()">Batal</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="submit" class="btn btn-secondary">Simpan</button>
             </div>
         </form>
     </div>
@@ -451,7 +454,7 @@
             
             <div class="modal-action">
                 <button type="button" class="btn btn-ghost" onclick="closeEditModal()">Batal</button>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-secondary">Update</button>
             </div>
         </form>
     </div>
@@ -752,7 +755,7 @@
                         <div class="text-error text-lg mb-2">❌</div>
                         <h3 class="text-lg font-bold mb-2">Error Loading Comic</h3>
                         <p class="text-base-content/70 mb-4">Terjadi kesalahan saat memuat detail komik</p>
-                        <button class="btn btn-primary btn-sm" onclick="viewComic(${id})">Try Again</button>
+                        <button class="btn btn-secondary btn-sm" onclick="viewComic(${id})">Try Again</button>
                     </div>
                 `;
             });
@@ -785,7 +788,7 @@
                     const isChecked = komik.genres.some(g => g.id === genre.id);
                     genresContainer.innerHTML += `
                         <label class="label cursor-pointer justify-start gap-2 hover:bg-base-200 p-1 rounded">
-                            <input type="checkbox" name="genres[]" value="${genre.id}" class="checkbox checkbox-sm checkbox-primary" ${isChecked ? 'checked' : ''}>
+                            <input type="checkbox" name="genres[]" value="${genre.id}" class="checkbox checkbox-sm checkbox-secondary" ${isChecked ? 'checked' : ''}>
                             <span class="label-text text-sm">${genre.name}</span>
                         </label>
                     `;

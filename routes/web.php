@@ -38,12 +38,13 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/library', [LibraryController::class, 'index'])->name('user.library.index');
+    Route::post('/bookmark/{id}/toggle', [BookmarkController::class, 'toggle'])->name('bookmark.toggle');
 });
 
 // HOME ROUTES
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/explore', [ExploreController::class, 'index'])->name('explore');
-Route::get('/library', [LibraryController::class, 'index'])->name('library');
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 
@@ -68,6 +69,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('chapters/{chapterId}/images', [AdminChapterController::class, 'getImages'])->name('chapters.images');
 
          Route::get('chapters/{chapterId}', [AdminChapterController::class, 'show'])->name('chapters.show');
+
+         Route::get('chapters/{chapterId}/view', [AdminChapterController::class, 'viewChapter'])->name('chapters.view');
     });
 
 });
@@ -82,7 +85,7 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::resource('history', HistoryController::class);
     Route::resource('search', SearchController::class);
     Route::resource('pengumuman', PengumumanController::class);
-    Route::get('/komik/{slug}', [ComicController::class, 'show'])->name('komiks.show');
+
 
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');

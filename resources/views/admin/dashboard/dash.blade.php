@@ -8,13 +8,15 @@
     </a>
   </div>
   <div class="navbar-end">
-    <button class="btn btn-ghost text-white">
-      <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24" fill="none" stroke="#d7dae1" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16 17l5-5m0 0l-5-5m5 5H9" />
-        <path stroke-linecap="round" stroke-linejoin="round" d="M13 21H5a2 2 0 01-2-2V5a2 2 0 012-2h8" />
-      </svg>
-
-    </button>
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="btn btn-ghost text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24" fill="none" stroke="#d7dae1" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 17l5-5m0 0l-5-5m5 5H9" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 21H5a2 2 0 01-2-2V5a2 2 0 012-2h8" />
+            </svg>
+        </button>
+    </form>
   </div>
 </div>
 
@@ -37,12 +39,12 @@
   <!-- Total komik -->
   <div class="stat bg-base-100 shadow-lg rounded-2xl p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
     <div class="stat-figure text-primary">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block h-8 w-8 stroke-current">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block h-8 w-8 stroke-current text-secondary">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
       </svg>
     </div>
     <div class="stat-title text-sm sm:text-base">Total Komik</div>
-    <div class="stat-value text-primary text-2xl sm:text-3xl">{{ number_format($totalComics) }}</div>
+    <div class="stat-value text-secondary text-2xl sm:text-3xl">{{ number_format($totalComics) }}</div>
   </div>
 
   <!-- Total chapters -->
@@ -107,103 +109,6 @@
           </svg>
           <span class="text-xs sm:text-sm">Pengumuman</span>
         </a>
-      </div>
-    </div>
-
-    <!-- Top 5 Komik dengan Upvote Terbanyak -->
-    <div class="mb-8">
-      <h2 class="text-xl lg:text-2xl font-bold mb-6 text-base-content flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-        </svg>
-        Top 5 Komik Terpopuler
-      </h2>
-      
-      <div class="bg-base-100 rounded-2xl shadow-lg p-6 lg:p-8">
-        @if($topUpvoteComics->count() > 0)
-          <div class="grid gap-4">
-            @foreach($topUpvoteComics as $index => $komik)
-              <div class="flex items-center space-x-4 p-4 bg-base-200 rounded-xl hover:bg-base-300 transition-all duration-200 hover:scale-[1.02]">
-                <div class="flex-shrink-0">
-                  <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white
-                    {{ $index == 0 ? 'bg-gradient-to-r from-yellow-400 to-yellow-600' : '' }}
-                    {{ $index == 1 ? 'bg-gradient-to-r from-gray-400 to-gray-600' : '' }}
-                    {{ $index == 2 ? 'bg-gradient-to-r from-orange-400 to-orange-600' : '' }}
-                    {{ $index > 2 ? 'bg-gradient-to-r from-blue-400 to-blue-600' : '' }}
-                  ">
-                    @if($index == 0)
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z" />
-                      </svg>
-                    @else
-                      {{ $index + 1 }}
-                    @endif
-                  </div>
-                </div>
-
-                <!-- Cover komik -->
-                <div class="flex-shrink-0">
-                  <div class="w-16 h-20 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center overflow-hidden">
-                    @if(isset($komik->cover_image) && $komik->cover_image)
-                      <img src="{{ asset('storage/' . $komik->cover_image) }}" alt="{{ $komik->title }}" class="w-full h-full object-cover">
-                    @else
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-base-content/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.168 18.477 18.582 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                      </svg>
-                    @endif
-                  </div>
-                </div>
-
-                <!-- Komik Info -->
-                <div class="flex-1 min-w-0">
-                  <h3 class="font-bold text-base sm:text-lg text-base-content truncate">{{ $komik->title }}</h3>
-                  <p class="text-sm text-base-content/70 truncate">
-                    @if(isset($komik->description))
-                      {{ Str::limit($komik->description, 60) }}
-                    @else
-                      Deskripsi tidak tersedia
-                    @endif
-                  </p>
-                  <div class="flex items-center mt-2 space-x-4">
-                    <div class="flex items-center space-x-1 text-red-500">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                      </svg>
-                      <span class="text-sm font-semibold">{{ number_format($komik->upvotes_count) }}</span>
-                    </div>
-                    @if(isset($komik->chapters_count))
-                      <div class="flex items-center space-x-1 text-blue-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <span class="text-sm">{{ $komik->chapters_count ?? 0 }} Chapter</span>
-                      </div>
-                    @endif
-                  </div>
-                </div>
-
-                <div class="flex-shrink-0">
-                  <button class="btn btn-sm btn-circle btn-ghost hover:btn-primary transition-all duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            @endforeach
-          </div>
-        @else
-          <!-- Empty State -->
-          <div class="text-center py-12">
-            <div class="w-24 h-24 mx-auto mb-4 bg-base-200 rounded-full flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-base-content/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.168 18.477 18.582 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-base-content/70 mb-2">Belum ada komik</h3>
-            <p class="text-sm text-base-content/50">Tambahkan komik pertama untuk melihat statistik upvote</p>
-          </div>
-        @endif
       </div>
     </div>
   </div>

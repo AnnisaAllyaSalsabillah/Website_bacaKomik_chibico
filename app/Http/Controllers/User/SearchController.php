@@ -8,7 +8,20 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
-    public function index(Request $request){
+    // Method untuk menampilkan halaman search
+    public function show()
+    {
+        return view('user.search.result');
+    }
+
+    // Method untuk menangani pencarian
+    public function index(Request $request)
+    {
+        // Jika tidak ada query, tampilkan halaman search
+        if (!$request->has('query') || empty($request->query('query'))) {
+            return view('user.search.result');
+        }
+
         $request->validate([
             'query' => 'required|string|max:255',
         ]);

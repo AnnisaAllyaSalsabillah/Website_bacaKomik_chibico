@@ -60,5 +60,14 @@ class Comic extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+<<<<<<< HEAD
+    public function latestChapter()
+    {
+        return $this->hasOne(Chapter::class, 'komik_id')->latestOfMany('release_at');
+    }
+
+=======
+    
+>>>>>>> de7d9225c9a8137f4d2353583d61f2e829fd2859
 
 }

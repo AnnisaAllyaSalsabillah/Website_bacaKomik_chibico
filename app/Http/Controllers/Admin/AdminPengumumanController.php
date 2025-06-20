@@ -13,7 +13,6 @@ class AdminPengumumanController extends Controller
     {
         $pengumuman = Pengumuman::all();
 
-        // Konversi data ke array sesuai format yang dibutuhkan JS
         $pengumumanData = $pengumuman->map(function ($item) {
             return [
                 'id' => $item->id,
@@ -25,7 +24,7 @@ class AdminPengumumanController extends Controller
             ];
         })->toArray();
 
-        // Kirim ke view
+        
         return view('admin.pengumuman.index', compact('pengumuman', 'pengumumanData'));
     }
 

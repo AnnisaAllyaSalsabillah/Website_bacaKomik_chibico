@@ -98,4 +98,9 @@ a {
 .carousel-image.active {
   display: block;
 }
+.tab-button.active {
+        background-color: #5600bf !important;
+        color: white !important;
+        border-color: #5600bf !important;
+    }
 

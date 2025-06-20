@@ -15,7 +15,7 @@ class ComicController extends Controller
     }
 
     public function show($slug)
-{
+    {
     $comic = Comic::with(['genres', 'chapters'])
                 ->where('slug', $slug)
                 ->firstOrFail();

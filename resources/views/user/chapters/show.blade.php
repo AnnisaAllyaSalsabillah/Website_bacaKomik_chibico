@@ -11,7 +11,7 @@
                 <!-- Back to Comic -->
                 <div class="flex items-center space-x-4">
                     <a href="{{ route('comic.show', $komik->slug) }}" 
-                       class="inline-flex items-center text-gray-300 hover:text-white transition-colors duration-200">
+                    class="inline-flex items-center text-gray-300 hover:text-white transition-colors duration-200">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                         </svg>
@@ -28,7 +28,7 @@
                 <div class="flex items-center space-x-2">
                     @if($prevChapter)
                         <a href="{{ route('chapter.show', [$komik->slug, $prevChapter->number]) }}" 
-                           class="inline-flex items-center px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors duration-200">
+                        class="inline-flex items-center px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors duration-200">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                             </svg>
@@ -63,7 +63,7 @@
 
                     @if($nextChapter)
                         <a href="{{ route('chapter.show', [$komik->slug, $nextChapter->number]) }}" 
-                           class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md transition-colors duration-200">
+                        class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md transition-colors duration-200">
                             <span class="hidden sm:inline">Next</span>
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -144,10 +144,10 @@
                 @foreach($chapter->images as $index => $image)
                     <div class="chapter-page flex justify-center" data-page="{{ $index + 1 }}">
                         <img src="{{ $image }}" 
-                             alt="Page {{ $index + 1 }}" 
-                             class="max-w-full h-auto shadow-lg rounded-lg"
-                             loading="{{ $index < 3 ? 'eager' : 'lazy' }}"
-                             onload="updatePageCounter()">
+                            alt="Page {{ $index + 1 }}" 
+                            class="max-w-full h-auto shadow-lg rounded-lg"
+                            loading="{{ $index < 3 ? 'eager' : 'lazy' }}"
+                            onload="updatePageCounter()">
                     </div>
                 @endforeach
             @elseif($chapter->content)
@@ -172,7 +172,7 @@
             <div class="flex items-center justify-between">
                 @if($prevChapter)
                     <a href="{{ route('chapter.show', [$komik->slug, $prevChapter->number]) }}" 
-                       class="inline-flex items-center px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors duration-200">
+                    class="inline-flex items-center px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors duration-200">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                         </svg>
@@ -187,7 +187,7 @@
 
                 <!-- Back to Comic -->
                 <a href="{{ route('comic.show', $komik->slug) }}" 
-                   class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200">
+                class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                     </svg>
@@ -196,7 +196,7 @@
 
                 @if($nextChapter)
                     <a href="{{ route('chapter.show', [$komik->slug, $nextChapter->number]) }}" 
-                       class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors duration-200">
+                    class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors duration-200">
                         <div class="text-right">
                             <div class="text-sm font-medium">Next</div>
                             <div class="text-xs text-gray-400">Chapter {{ $nextChapter->number }}</div>
