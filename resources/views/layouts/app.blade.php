@@ -51,8 +51,10 @@
         <ul class="flex flex-wrap gap-2 px-1">
           <li><a class="btn btn-sm btn-ghost" href="{{ route('home') }}">Home</a></li>
           <li><a class="btn btn-sm btn-ghost" href="{{ route('explore') }}">Explore</a></li>
-          <li><a class="btn btn-sm btn-ghost" href="{{ route('library') }}">Library</a></li>
+          @auth
+          <li><a class="btn btn-sm btn-ghost" href="{{ route('user.library.index') }}">Library</a></li>
           <li><a class="btn btn-sm btn-ghost" href="{{ route('user.search.index') }}">Search</a></li>
+          @endauth
         </ul>
       </div>
 
@@ -60,7 +62,7 @@
         <div class="dropdown">
           <label tabindex="0" class="btn btn-ghost btn-circle">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                 viewBox="0 0 24 24" stroke="currentColor">
+                viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M4 6h16M4 12h16M4 18h16" />
             </svg>
@@ -68,8 +70,10 @@
           <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-48 z-[1]">
             <li><a href="{{ route('home') }}">Home</a></li>
             <li><a href="{{ route('explore') }}">Explore</a></li>
-            <li><a href="{{ route('library') }}">Library</a></li>
+            @auth
+            <li><a href="{{ route('user.library.index') }}">Library</a></li>
             <li><a href="{{ route('user.search.index') }}">Search</a></li>
+            @endauth
           </ul>
         </div>
       </div>
@@ -82,13 +86,24 @@
           <div class="w-10 rounded-full">
             @auth
               <a href="{{ route('user.profile.index') }}">
-                @if(Auth::user()->profile_photo)
-                  <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile">
+                @if (Auth::user()->profile_photo)
+                  <img src="{{ Auth::user()->profile_photo }}?tr=w-40,h-40,q-90,c-maintain_ratio" 
+                      alt="{{ Auth::user()->name }}" 
+                      class="w-full h-full object-cover rounded-full"
+                      onerror="this.onerror=null; this.src='{{ asset('images/default-avatar.png') }}'; this.classList.add('opacity-75');">
                 @else
-                  <img src="{{ asset('/images/profile.png') }}" alt="Default Profile">
+                  <img src="{{ asset('images/default-avatar.png') }}" 
+                      alt="Default Profile" 
+                      class="w-full h-full object-cover rounded-full">
                 @endif
               </a>
             @else
+<<<<<<< HEAD
+              <img src="{{ asset('images/default-avatar.png') }}" 
+                  alt="Guest Profile" 
+                  class="cursor-pointer w-full h-full object-cover rounded-full" 
+                  onclick="showLoginPrompt()" />
+=======
               <div tabindex="0" role="button" class="dropdown dropdown-end">
                 <img src="{{ asset('/images/profile.png') }}" alt="Guest Profile" />
                 <ul tabindex="0" class="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-60 z-[1]">
@@ -96,6 +111,7 @@
                   <li><button onclick="showLoginPrompt()" class="text-left w-full text-blue-600">Login / Register</button></li>
                 </ul>
               </div>
+>>>>>>> de7d9225c9a8137f4d2353583d61f2e829fd2859
             @endauth
           </div>
         </div>

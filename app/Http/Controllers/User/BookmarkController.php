@@ -21,7 +21,7 @@ class BookmarkController extends Controller
 
     public function toggle($id){
         $bookmark = Bookmark::where('user_id', Auth::id())
-            ->where('comic_id', $id)
+            ->where('komik_id', $id)
             ->first();
         
         if($bookmark){
@@ -29,10 +29,10 @@ class BookmarkController extends Controller
         } else {
             Bookmark::create([
                 'user_id' => Auth::id(),
-                'comic_id' => $id,
+                'komik_id' => $id,
             ]);
         }
 
-        return redirect()->back()->with('success', 'Bookmark berhasil diupdate!');
+        return redirect()->back()->with('success', 'Bookmark berhasil diperbarui');
     }
 }

@@ -38,6 +38,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/library', [LibraryController::class, 'index'])->name('user.library.index');
+    Route::post('/bookmark/{id}/toggle', [BookmarkController::class, 'toggle'])->name('bookmark.toggle');
 });
 
 // HOME ROUTES
@@ -86,7 +88,7 @@ Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     Route::resource('history', HistoryController::class);
     Route::resource('search', SearchController::class);
     Route::resource('pengumuman', PengumumanController::class);
-    Route::get('/komik/{slug}', [ComicController::class, 'show'])->name('komiks.show');
+
 
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');

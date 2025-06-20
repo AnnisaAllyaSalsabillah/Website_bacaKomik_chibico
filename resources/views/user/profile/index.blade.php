@@ -6,7 +6,8 @@
 
 <div class="min-h-screen w-full bg-[#0b0b0f] px-6 py-10 font-inter text-white relative z-0">
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-pink-800/10 via-[#1a1b23]/50 to-transparent blur-3xl z-[-1]"></div>
-@if(session('success'))
+    
+    @if(session('success'))
         <div class="max-w-4xl mx-auto mb-8 animate-fade-in-down">
             <div class="bg-pink-800/20 border border-pink-500/40 rounded-xl p-4 text-sm text-pink-200 shadow-lg backdrop-blur">
                 <div class="flex items-center">
@@ -18,13 +19,14 @@
             </div>
         </div>
     @endif
+    
     <!-- Header -->
-<div class="mb-12 text-center">
-    <h1 class="text-6xl font-extrabold text-white drop-shadow-glow">
-        Profile
-    </h1>
-    <p class="text-white text-sm mt-2 tracking-wide">Welcome back, {{ $user->name }}.</p>
-</div>
+    <div class="mb-12 text-center">
+        <h1 class="text-6xl font-extrabold text-white drop-shadow-glow">
+            Profile
+        </h1>
+        <p class="text-white text-sm mt-2 tracking-wide">Welcome back, {{ $user->name }}.</p>
+    </div>
 
     <!-- Profile Card -->
     <div class="w-full px-4 md:px-10 xl:px-32">
@@ -32,13 +34,17 @@
             <!-- Top Section -->
             <div class="flex flex-col md:flex-row items-center gap-8 mb-10">
                 <!-- Profile Picture -->
-                <div>
+                <div class="relative">
                     @if($user->profile_photo)
-                        <img src="{{ asset('storage/' . $user->profile_photo) }}"
-                             class="w-32 h-32 rounded-full border-4 border-pink-300 object-cover shadow-[0_0_25px_rgba(255,192,203,0.5)] transition duration-300"
-                             alt="{{ $user->name }}">
+                        <!-- Gambar dari ImageKit dengan transformasi -->
+                        <img src="{{ $user->profile_photo }}?tr=w-128,h-128,q-90,c-maintain_ratio"
+                            class="w-32 h-32 rounded-full border-4 border-pink-300 object-cover shadow-[0_0_25px_rgba(255,192,203,0.5)] transition duration-300 hover:shadow-[0_0_35px_rgba(255,192,203,0.7)] cursor-pointer"
+                            alt="{{ $user->name }}"
+                            onclick="openImageModal()"
+                            onerror="handleImageError(this)">
                     @else
-                        <div class="w-32 h-32 rounded-full bg-[#2e2b3b] border-4 border-pink-300 flex items-center justify-center shadow-lg">
+                        <!-- Default avatar -->
+                        <div class="w-32 h-32 rounded-full bg-[#2e2b3b] border-4 border-pink-300 flex items-center justify-center shadow-lg hover:shadow-[0_0_25px_rgba(255,192,203,0.3)] transition duration-300">
                             <svg class="w-14 h-14 text-white" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                             </svg>
@@ -116,8 +122,109 @@
                     </button>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
+
+<!-- Image Modal -->
+@if($user->profile_photo)
+<div id="imageModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm">
+    <div class="relative max-w-4xl max-h-[90vh] p-4">
+        <button onclick="closeImageModal()" 
+                class="absolute -top-2 -right-2 w-8 h-8 bg-red-600 hover:bg-red-700 rounded-full text-white flex items-center justify-center transition-colors z-10">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        
+        <!-- Full resolution image with loading indicator -->
+        <div class="relative">
+            <div id="modalImageLoader" class="absolute inset-0 flex items-center justify-center">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
+            </div>
+            <img id="modalImage" 
+                 src="{{ $user->profile_photo }}?tr=w-800,h-800,q-95,c-maintain_ratio" 
+                 alt="{{ $user->name }}" 
+                 class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl opacity-0 transition-opacity duration-300"
+                 onload="showModalImage(this)"
+                 onerror="handleModalImageError(this)">
+        </div>
+        
+        <!-- Image info -->
+        <div class="mt-4 text-center text-white">
+            <p class="text-sm opacity-75">{{ $user->name }}'s Profile Photo</p>
+            <p class="text-xs opacity-50 mt-1">Click outside to close</p>
+        </div>
+    </div>
+</div>
+@endif
+
+<script>
+// Image error handling
+function handleImageError(img) {
+    console.log('Image failed to load, switching to default avatar');
+    
+    // Replace with default avatar div
+    const defaultAvatar = document.createElement('div');
+    defaultAvatar.className = 'w-32 h-32 rounded-full bg-[#2e2b3b] border-4 border-pink-300 flex items-center justify-center shadow-lg hover:shadow-[0_0_25px_rgba(255,192,203,0.3)] transition duration-300';
+    defaultAvatar.innerHTML = `
+        <svg class="w-14 h-14 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+        </svg>
+    `;
+    
+    // Replace the img element with the default avatar
+    img.parentNode.replaceChild(defaultAvatar, img);
+}
+
+function openImageModal() {
+    const modal = document.getElementById('imageModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function showModalImage(img) {
+    const loader = document.getElementById('modalImageLoader');
+    if (loader) {
+        loader.style.display = 'none';
+    }
+    img.classList.remove('opacity-0');
+    img.classList.add('opacity-100');
+}
+
+function handleModalImageError(img) {
+    const loader = document.getElementById('modalImageLoader');
+    if (loader) {
+        loader.innerHTML = '<p class="text-red-400 text-sm">Failed to load image</p>';
+    }
+    closeImageModal();
+}
+
+// Close modal when clicking outside
+document.getElementById('imageModal')?.addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeImageModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeImageModal();
+    }
+});
+</script>
+
 @endsection
